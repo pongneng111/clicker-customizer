@@ -60,7 +60,7 @@
             height: 100dvh;
         }
 
-        /* --- พรีวิว (ล็อกไว้ด้านบน) --- */
+        /* --- พรีวิว --- */
         .preview-wrapper {
             flex: none;
             display: flex;
@@ -91,14 +91,14 @@
             align-items: center;
         }
 
-        /* กล่องพรีวิว 2.5D แบบกะทัดรัด */
+        /* กล่องพรีวิว 2.5D */
         .preview-section {
             display: flex;
             justify-content: center;
             align-items: center;
             background: radial-gradient(circle at 50% 30%, #FFFFFF 0%, #EDF2F7 100%);
             border-radius: 14px;
-            padding: 10px 8px;
+            padding: 10px 16px;
             min-height: 100px;
             max-height: 125px;
             border: 1.5px solid #E2E8F0;
@@ -124,28 +124,26 @@
             box-shadow: -3px 3px 6px rgba(0,0,0,0.12), inset 0 2px 2px rgba(255,255,255,0.7);
         }
 
+        /* ฐานถาดมนนุ่มนวลแบบ Linear Gradient */
         .base-case-frame {
             display: flex;
             align-items: center;
-            padding: 6px;
-            border-radius: 14px;
+            padding: 7px;
+            border-radius: 18px;
             position: relative;
-            box-shadow: 
-                0 8px 16px rgba(0,0,0,0.15),
-                inset 0 2.5px 3px rgba(255,255,255,0.9),
-                inset 0 -3px 5px rgba(0,0,0,0.18);
-            border: 3.5px solid rgba(255,255,255,0.4);
+            background-image: linear-gradient(180deg, rgba(255,255,255,0.35) 0%, rgba(0,0,0,0.1) 100%);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.12), 0 3px 6px rgba(0,0,0,0.08);
         }
 
         .base-inner-slot {
             display: flex;
-            gap: 5px;
-            padding: 3px;
-            background: rgba(0, 0, 0, 0.12);
-            border-radius: 10px;
-            box-shadow: inset 0 3px 6px rgba(0,0,0,0.35);
+            gap: 6px;
+            padding: 5px;
+            background: rgba(0, 0, 0, 0.15);
+            border-radius: 13px;
         }
 
+        /* ปุ่มคีย์แคปนูน 3D */
         .keycap {
             flex-shrink: 0;
             display: flex;
@@ -157,29 +155,21 @@
             position: relative;
             user-select: none;
             line-height: 1;
-            box-shadow: 
-                0 4px 0px rgba(0,0,0,0.16),
-                0 6px 8px rgba(0,0,0,0.15),
-                inset 0 3px 3px rgba(255,255,255,0.9),
-                inset 0 -3px 4px rgba(0,0,0,0.15);
+            background-image: linear-gradient(180deg, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0) 50%, rgba(0,0,0,0.15) 100%);
+            box-shadow: 0 5px 0px rgba(0,0,0,0.18), 0 8px 10px rgba(0,0,0,0.12);
             transition: transform 0.08s ease, box-shadow 0.08s ease;
         }
 
         .keycap-content {
             display: inline-block;
-            filter: drop-shadow(0 2px 1px rgba(0, 0, 0, 0.25)) 
-                    drop-shadow(0 -1px 1px rgba(255, 255, 255, 0.7));
+            text-shadow: 0 -1px 1px rgba(255, 255, 255, 0.8), 0 2px 3px rgba(0, 0, 0, 0.35);
             pointer-events: none;
             transform: translateY(-1px);
         }
 
         .keycap:active {
             transform: translateY(3px);
-            box-shadow: 
-                0 1px 0px rgba(0,0,0,0.18),
-                0 2px 3px rgba(0,0,0,0.1),
-                inset 0 2px 2px rgba(255,255,255,0.6),
-                inset 0 -2px 2px rgba(0,0,0,0.2);
+            box-shadow: 0 1px 0px rgba(0,0,0,0.18), 0 2px 4px rgba(0,0,0,0.1);
         }
 
         .keycap.selected {
@@ -471,9 +461,9 @@
         const COLOR_WHITE = '#FFFFFF';
         
         const paletteColors = [
-            '#FFFFFF', '#FFB6C1', '#FF4D80', '#E71D36', '#FF6B35', 
-            '#FEE440', '#B5EAD7', '#52B788', '#007F5F', '#A0C4FF', 
-            '#4CC9F0', '#5E60CE', '#9B5DE5', '#2B2D42'
+            '#FFFFFF', '#FFB6C1', '#FF4D80', '#E71D36', '#FF6B35', '#fffd2e', '#ffe9db',
+            '#FEE440', '#B5EAD7', '#52B788', '#007F5F', '#A0C4FF', '#d9d9d9', '#cccccc',
+            '#4CC9F0', '#5E60CE', '#bca9ef', '#2B2D42', '#000000', '#deb991'
         ];
 
         const baseColors = paletteColors;
@@ -594,7 +584,7 @@
             }
         }, { passive: true });
 
-        // --- AUDIO ENGINE (POP SOUND ONLY) ---
+        // --- AUDIO ENGINE (POP SOUND) ---
         let audioCtx = null;
 
         function getAudioContext() {
@@ -690,7 +680,6 @@
             renderPreview();
         }
 
-        // ปรับขนาดตัวอักษรให้ใหญ่ขึ้นเต็มปุ่ม
         function getDynamicDimensions(slots) {
             if (slots <= 3) return { keySize: 48, fontSize: 34, gap: 6, rad: 10 };
             if (slots <= 5) return { keySize: 42, fontSize: 30, gap: 5, rad: 9 };
@@ -817,19 +806,28 @@
 
         function saveImage() {
             const oldIndex = state.selectedSlotIndex;
-
             state.selectedSlotIndex = -1; 
             renderPreview();
 
+            const target = document.getElementById('capture-area');
+
             setTimeout(() => {
-                html2canvas(elements.captureArea, { 
-                    backgroundColor: '#FFFFFF', 
+                html2canvas(target, { 
+                    backgroundColor: null,
                     scale: 3,
-                    useCORS: true
+                    useCORS: true,
+                    logging: false,
+                    onclone: (clonedDoc) => {
+                        const clonedArea = clonedDoc.getElementById('capture-area');
+                        if (clonedArea) {
+                            clonedArea.style.background = 'transparent';
+                            clonedArea.style.border = 'none';
+                        }
+                    }
                 }).then(canvas => {
                     const link = document.createElement('a');
-                    link.download = `clicker-${state.slots}slots.png`;
-                    link.href = canvas.toDataURL();
+                    link.download = `bunnymew-${state.slots}slots.png`;
+                    link.href = canvas.toDataURL('image/png');
                     link.click();
                     
                     state.selectedSlotIndex = oldIndex;
