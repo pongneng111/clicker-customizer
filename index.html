@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Clicker Keychain Customizer</title>
-    <link rel="icon" type="image/png" href="Logo.png">
+    <title>BunnyMew - Clicker Keychain</title>
     
+    <link rel="icon" type="image/png" href="logo.png">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
     <style>
@@ -18,12 +18,12 @@
         }
 
         :root {
-            --bg-color: #F8F9FA;
+            --bg-color: #FFFDF9;
             --panel-bg: #FFFFFF;
-            --border-color: #E9ECEF;
+            --border-color: #F0EAE1;
             --text-main: #2D3436;
             --text-muted: #636E72;
-            --accent: #E84393;
+            --accent: #FF4D80;
         }
 
         * {
@@ -39,6 +39,17 @@
             background-color: var(--bg-color);
             color: var(--text-main);
             overflow: hidden;
+            user-select: none;
+        }
+
+        #fx-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 999;
         }
 
         .app-container {
@@ -49,15 +60,15 @@
             height: 100dvh;
         }
 
-        /* --- พรีวิว (ล็อกไว้ด้านบน ไม่เลื่อนหลุด) --- */
+        /* --- ฝั่งพรีวิว --- */
         .preview-wrapper {
             flex: none;
             display: flex;
             flex-direction: column;
-            padding: 12px 15px;
+            padding: 10px 14px 12px 14px;
             background: #FFFFFF;
             border-bottom: 2px solid var(--border-color);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.03);
             z-index: 20;
         }
 
@@ -68,82 +79,151 @@
             margin-bottom: 8px;
         }
 
-        .header-title {
-            font-size: 1.2rem;
-            font-weight: bold;
-            color: var(--text-main);
-            margin: 0;
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
+        .btn-bgm {
+            background: #FFF0F5;
+            color: #FF4D80;
+            border: 1.5px solid #FFD1DC;
+            border-radius: 20px;
+            padding: 4px 10px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-family: 'FCCandy', sans-serif;
+            transition: all 0.2s ease;
+        }
+
+        .btn-bgm.playing {
+            background: #FF4D80;
+            color: #FFF;
+            box-shadow: 0 0 10px rgba(255, 77, 128, 0.4);
+            animation: pulse-music 1.5s infinite;
+        }
+
+        @keyframes pulse-music {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        /* ป้ายราคา ปรับให้ใหญ่ขึ้น */
         .price-tag {
             background: #FFF3E0;
             color: #E65100;
-            padding: 4px 14px;
+            padding: 4px 16px;
             border-radius: 20px;
             font-weight: bold;
-            font-size: 1.15rem;
+            font-size: 1.6rem; /* ขยายขนาดใหญ่ขึ้น */
             border: 1.5px solid #FFE0B2;
+            display: flex;
+            align-items: center;
         }
 
-        /* ช่องพรีวิว ปรับขนาดตามหน้าจอ ไม่ต้องเลื่อน */
+        /* กล่องพรีวิว 2.5D */
         .preview-section {
             display: flex;
             justify-content: center;
             align-items: center;
-            background: #F1F3F5;
+            background: radial-gradient(circle at 50% 30%, #FFFFFF 0%, #EDF2F7 100%);
+            border-radius: 18px;
+            padding: 22px 12px;
+            min-height: 150px;
+            max-height: 170px;
+            border: 1.5px solid #E2E8F0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .model-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .keychain-ear-loop {
+            width: 14px;
+            height: 32px;
+            border-radius: 12px 0 0 12px;
+            border: 4.5px solid currentColor;
+            border-right: none;
+            margin-right: -2px;
+            position: relative;
+            background: transparent;
+            box-shadow: -3px 3px 6px rgba(0,0,0,0.12), inset 0 2px 2px rgba(255,255,255,0.7);
+        }
+
+        .base-case-frame {
+            display: flex;
+            align-items: center;
+            padding: 7px;
             border-radius: 14px;
-            padding: 15px 8px;
-            min-height: 120px;
-            max-height: 145px;
-            border: 1.5px solid #E9ECEF;
-            overflow: hidden; /* ไม่ต้องมี Scrollbar */
+            position: relative;
+            box-shadow: 
+                0 8px 16px rgba(0,0,0,0.15),
+                inset 0 2.5px 3px rgba(255,255,255,0.9),
+                inset 0 -3px 5px rgba(0,0,0,0.18);
+            border: 4px solid rgba(255,255,255,0.4);
         }
 
-        .base-container {
+        .base-inner-slot {
             display: flex;
-            gap: 4px;
-            padding: 6px;
+            gap: 5px;
+            padding: 4px;
+            background: rgba(0, 0, 0, 0.12);
             border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08), inset 0 2px 3px rgba(255,255,255,0.7);
-            transition: background-color 0.2s ease;
-            border: 2px solid rgba(255,255,255,0.6);
-            margin: auto;
-            max-width: 100%;
-            justify-content: center;
-            align-items: center;
+            box-shadow: inset 0 3px 6px rgba(0,0,0,0.35);
         }
 
-        /* Keycap ปรับขนาดตามจำนวนช่องอัตโนมัติ */
         .keycap {
-            width: clamp(28px, 8vw, 48px);
-            height: clamp(28px, 8vw, 48px);
             flex-shrink: 0;
-            border-radius: 6px;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: clamp(16px, 4.8vw, 28px);
             font-family: 'FCCandy', sans-serif;
+            font-weight: bold;
             cursor: pointer;
-            box-shadow: 0 3px 0px rgba(0,0,0,0.18), inset 0 1px 2px rgba(255,255,255,0.7);
-            transition: transform 0.05s, box-shadow 0.05s;
+            position: relative;
             user-select: none;
-            border: 2px solid transparent;
             line-height: 1;
+            box-shadow: 
+                0 4px 0px rgba(0,0,0,0.16),
+                0 6px 8px rgba(0,0,0,0.15),
+                inset 0 3px 3px rgba(255,255,255,0.9),
+                inset 0 -3px 4px rgba(0,0,0,0.15);
+            transition: transform 0.08s ease, box-shadow 0.08s ease;
+        }
+
+        .keycap-content {
+            display: inline-block;
+            filter: drop-shadow(0 2px 1px rgba(0, 0, 0, 0.25)) 
+                    drop-shadow(0 -1px 1px rgba(255, 255, 255, 0.7));
+            pointer-events: none;
         }
 
         .keycap:active {
             transform: translateY(3px);
-            box-shadow: 0 0px 0px rgba(0,0,0,0.18);
+            box-shadow: 
+                0 1px 0px rgba(0,0,0,0.18),
+                0 2px 3px rgba(0,0,0,0.1),
+                inset 0 2px 2px rgba(255,255,255,0.6),
+                inset 0 -2px 2px rgba(0,0,0,0.2);
         }
 
         .keycap.selected {
-            border: 2px solid #0984E3;
-            transform: scale(1.08);
+            outline: 2.5px solid #0984E3;
+            outline-offset: 1px;
+            transform: scale(1.06);
             z-index: 5;
         }
 
-        /* --- แถบปุ่ม Action --- */
+        /* ปุ่ม Action */
         .action-buttons {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -154,7 +234,7 @@
         .btn {
             padding: 8px 4px;
             border: none;
-            border-radius: 8px;
+            border-radius: 10px;
             font-family: 'FCCandy', sans-serif;
             font-size: 0.95rem;
             cursor: pointer;
@@ -167,94 +247,147 @@
         }
 
         .btn:active { transform: scale(0.95); }
-        .btn-save { background: #00B894; color: #FFF; }
-        .btn-link { background: #0984E3; color: #FFF; }
-        .btn-random { background: #6C5CE7; color: #FFF; }
-        .btn-mono { background: #E17055; color: #FFF; }
+        .btn-save { background: #00B894; color: #FFF; box-shadow: 0 3px 8px rgba(0, 184, 148, 0.25); }
+        .btn-link { background: #0984E3; color: #FFF; box-shadow: 0 3px 8px rgba(9, 132, 227, 0.25); }
+        .btn-random { background: #6C5CE7; color: #FFF; box-shadow: 0 3px 8px rgba(108, 92, 231, 0.25); }
+        .btn-mono { background: #E17055; color: #FFF; box-shadow: 0 3px 8px rgba(225, 112, 85, 0.25); }
+        
+        .btn-order { 
+            grid-column: span 4; 
+            background: #06C755; 
+            color: #FFF; 
+            font-size: 1.1rem; 
+            padding: 10px; 
+            box-shadow: 0 4px 10px rgba(6, 199, 85, 0.25);
+            margin-top: 4px;
+        }
 
-        /* --- ฝั่งควบคุม (เลื่อนได้เฉพาะส่วนนี้) --- */
+        /* ฝั่งควบคุม */
         .control-section {
             flex: 1;
             overflow-y: auto;
             -webkit-overflow-scrolling: touch;
-            padding: 12px 15px;
+            padding: 12px 15px 30px 15px;
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 12px;
             background: var(--bg-color);
         }
 
         .control-card {
             background: var(--panel-bg);
-            padding: 14px;
-            border-radius: 12px;
+            padding: 14px 16px;
+            border-radius: 16px;
             border: 1px solid var(--border-color);
-            box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.02);
             display: flex;
             flex-direction: column;
             gap: 10px;
         }
 
         .card-header {
-            font-size: 1rem;
+            font-size: 1.05rem;
             font-weight: bold;
             color: var(--accent);
             display: flex;
             align-items: center;
-            gap: 5px;
+            gap: 6px;
         }
 
         label {
             font-size: 0.9rem;
+            font-weight: bold;
             color: var(--text-muted);
+        }
+
+        /* แท็บเลือกปุ่ม */
+        .slot-selector-tabs {
+            display: flex;
+            gap: 6px;
+            overflow-x: auto;
+            padding-bottom: 4px;
+        }
+        .slot-selector-tabs::-webkit-scrollbar { height: 3px; }
+        .slot-selector-tabs::-webkit-scrollbar-thumb { background: #E2E8F0; border-radius: 4px; }
+
+        .slot-tab-btn {
+            flex-shrink: 0;
+            min-width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            border: 1.5px solid var(--border-color);
+            background: #F8F9FA;
+            font-family: 'FCCandy', sans-serif;
+            font-weight: bold;
+            font-size: 1.05rem;
+            color: var(--text-main);
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .slot-tab-btn.active {
+            background: var(--accent);
+            color: #FFFFFF;
+            border-color: var(--accent);
+            box-shadow: 0 3px 8px rgba(255, 77, 128, 0.3);
+            transform: scale(1.05);
         }
 
         .color-palette {
             display: flex;
-            gap: 8px;
+            gap: 10px;
             flex-wrap: wrap;
+            padding: 4px 2px;
         }
 
         .color-btn {
-            width: 32px;
-            height: 32px;
+            width: 34px;
+            height: 34px;
             border-radius: 50%;
-            border: 2px solid #DFE6E9;
+            border: 2.5px solid #FFFFFF;
             cursor: pointer;
-            transition: transform 0.1s;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+            transition: transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
         .color-btn.active {
-            transform: scale(1.15);
+            transform: scale(1.2);
             border: 2.5px solid #2D3436;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+            box-shadow: 0 3px 10px rgba(0,0,0,0.25);
         }
 
-        .emoji-grid { display: flex; gap: 6px; }
+        .emoji-grid { display: flex; gap: 8px; }
 
         .emoji-btn {
             background: #F8F9FA;
-            border: 1px solid #DFE6E9;
-            border-radius: 8px;
-            padding: 5px 12px;
-            font-size: 1.2rem;
+            border: 1.5px solid #DFE6E9;
+            border-radius: 10px;
+            padding: 6px 14px;
+            font-size: 1.3rem;
             cursor: pointer;
+            transition: transform 0.1s;
         }
+        .emoji-btn:active { transform: scale(0.92); }
 
         input[type="range"] {
             width: 100%;
             accent-color: var(--accent);
+            height: 6px;
+            background: #E2E8F0;
+            border-radius: 4px;
+            outline: none;
         }
 
         input[type="text"] {
             padding: 6px 10px;
-            border: 1.5px solid #DFE6E9;
-            border-radius: 8px;
+            border: 2px solid #DFE6E9;
+            border-radius: 10px;
             font-family: 'FCCandy', sans-serif;
-            font-size: 1.3rem;
+            font-size: 1.4rem;
+            font-weight: bold;
             color: var(--text-main);
             background: #F8F9FA;
-            width: 55px;
+            width: 58px;
             text-align: center;
             outline: none;
         }
@@ -264,11 +397,8 @@
             background: #FFF;
         }
 
-        /* Responsive Desktop */
         @media (min-width: 768px) {
-            .app-container {
-                flex-direction: row;
-            }
+            .app-container { flex-direction: row; }
             .preview-wrapper {
                 flex: 1;
                 height: 100%;
@@ -276,21 +406,8 @@
                 border-bottom: none;
                 border-right: 2px solid var(--border-color);
             }
-            .preview-section {
-                min-height: 250px;
-                max-height: 100%;
-                padding: 30px;
-            }
-            .keycap { 
-                width: 56px; 
-                height: 56px; 
-                font-size: 32px; 
-            }
-            .control-section {
-                width: 400px;
-                height: 100%;
-                padding: 25px;
-            }
+            .preview-section { min-height: 280px; max-height: 100%; padding: 40px; }
+            .control-section { width: 420px; height: 100%; padding: 30px; }
         }
 
         .toast {
@@ -298,34 +415,49 @@
             background-color: rgba(45, 52, 54, 0.95);
             color: #fff;
             text-align: center;
-            border-radius: 20px;
-            padding: 8px 16px;
+            border-radius: 25px;
+            padding: 10px 20px;
             position: fixed;
-            z-index: 100;
+            z-index: 1000;
             left: 50%;
-            bottom: 20px;
+            bottom: 25px;
             transform: translateX(-50%);
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             opacity: 0;
             transition: all 0.3s;
         }
-        .toast.show { visibility: visible; opacity: 1; bottom: 30px; }
+        .toast.show { visibility: visible; opacity: 1; bottom: 35px; }
     </style>
 </head>
 <body>
 
+    <canvas id="fx-canvas"></canvas>
+
     <div class="app-container">
+        <!-- ฝั่งพรีวิว -->
         <div class="preview-wrapper">
             <div class="header-bar">
-            <div style="display: flex; align-items: center; gap: 8px;">
-                <img src="Logo.png" alt="Logo" style="height: 32px; width: auto; border-radius: 6px; object-fit: contain;">
-                <h2 class="header-title">พวงกุญแจคลิกเกอร์</h2>
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <img src="logo.png" alt="Logo" style="height: 54px; width: auto; border-radius: 8px; object-fit: contain; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.08));">
+                    <div style="display: flex; flex-direction: column; justify-content: center;">
+                        <h1 style="margin: 0; font-size: 1.7rem; font-weight: bold; color: var(--accent); line-height: 1.1;">BunnyMew</h1>
+                        <span style="margin: 0; font-size: 0.95rem; color: var(--text-muted); font-weight: bold; line-height: 1.2;">พวงกุญแจคลิกเกอร์</span>
+                    </div>
+                </div>
+                
+                <div class="header-right">
+                    <button class="btn-bgm" id="bgm-btn" onclick="toggleBGM()">🎵 เพลง</button>
+                    <div class="price-tag">฿<span id="total-price">0</span></div>
+                </div>
             </div>
-            <div class="price-tag">฿<span id="total-price">0</span></div>
-        </div>
             
             <div class="preview-section" id="capture-area">
-                <div id="base-container" class="base-container"></div>
+                <div class="model-wrapper" id="model-3d">
+                    <div class="keychain-ear-loop" id="keychain-ear"></div>
+                    <div id="base-container" class="base-case-frame">
+                        <div class="base-inner-slot" id="base-inner-slot"></div>
+                    </div>
+                </div>
             </div>
 
             <div class="action-buttons">
@@ -333,11 +465,13 @@
                 <button class="btn btn-link" onclick="copyShareLink()">🔗 ลิงก์</button>
                 <button class="btn btn-random" onclick="randomizeAll()">🎲 หลากสี</button>
                 <button class="btn btn-mono" onclick="randomizeSingleColor()">🎨 สีเดียว</button>
+                <!-- ปุ่มสั่งซื้อผ่าน LINE -->
+                <button class="btn btn-order" onclick="orderViaLine()">🛒 สั่งซื้อผ่าน LINE</button>
             </div>
         </div>
 
+        <!-- ฝั่งควบคุม -->
         <div class="control-section">
-            
             <div class="control-card">
                 <div class="card-header">🏷️ 1. ขนาดและสีฐาน</div>
                 <label>จำนวน: <span id="slot-count-display" style="color:var(--accent); font-weight:bold;">5</span> ช่อง</label>
@@ -350,7 +484,10 @@
             <div class="control-card">
                 <div class="card-header">🎨 2. แต่งปุ่มที่ <span id="selected-slot-display">1</span></div>
                 
-                <div style="display: flex; gap: 10px; align-items: flex-end;">
+                <label>เลือกปุ่มที่จะแก้ไข:</label>
+                <div class="slot-selector-tabs" id="slot-selector-tabs"></div>
+
+                <div style="display: flex; gap: 10px; align-items: flex-end; margin-top: 4px;">
                     <div>
                         <label>พิมพ์ตัวอักษร:</label><br>
                         <input type="text" id="keycap-text-input" maxlength="2">
@@ -360,9 +497,6 @@
                         <div class="emoji-grid" id="emoji-picker"></div>
                     </div>
                 </div>
-
-                <label>สีตัวหนังสือ:</label>
-                <div class="color-palette" id="text-color-palette"></div>
 
                 <label>สีคีย์แคป:</label>
                 <div class="color-palette" id="keycap-color-palette"></div>
@@ -374,60 +508,267 @@
 
     <script>
         const COLOR_WHITE = '#FFFFFF';
+        
         const paletteColors = [
-            '#F8C9D5', // ชมพูซากุระ
-            '#F55BA4', // ชมพู
-            '#F9005A', // ชมพูบานเย็น
-            '#E50D11', // แดง
-            '#C7F39F', // เขียวพาสเทล
-            '#FFD800', // เหลืองเลมอน
-            '#FFDB70', // เหลืองกล้วย
-            '#FFD8C2', // ส้มครีม
-            '#FF8300', // ส้มอ่อน
-            '#FF470D', // ส้มเข้ม
-            '#08AA73', // เขียว
-            '#3D9BE2', // ฟ้าน้ำเงิน
-            '#C3EEFA', // ฟ้าพาสเทล
-            '#8EB2F2', // ฟ้าคราม
-            '#9380E8', // ม่วงอ่อน
-            '#FFFFFF', // ขาว
-            '#B7BDCA', // เทา
-            '#B4B2B1', // เทาหม่น
-            '#BD987F', // น้ำตาลอ่อน
-            '#6D4D26', // น้ำตาลเข้ม
-            '#000000' // ดำ
+            '#FFFFFF', '#FFB6C1', '#FF4D80', '#E71D36', '#FF6B35', 
+            '#FEE440', '#B5EAD7', '#52B788', '#007F5F', '#A0C4FF', 
+            '#4CC9F0', '#5E60CE', '#9B5DE5', '#2B2D42'
         ];
 
         const baseColors = paletteColors;
         const keycapColors = paletteColors;
-        const textColors = ['#FFFFFF'];
         const emojis = ['❤️', '🐾'];
 
         const meaningfulWords = {
             1: ["❤️"], 2: ["H", "I"], 3: ["Y", "O", "U"], 4: ["L", "O", "V", "E"],
-            5: ["M", "U", "S", "I", "C"], 6: ["F", "R", "I", "E", "N", "D"],
+            5: ["N", "❤️", "O", "❤️", "Y"], 6: ["E", "❤️", "M", "I", "R", "O"],
             7: ["F", "O", "R", "E", "V", "E", "R"], 8: ["S", "U", "N", "S", "H", "I", "N", "E"],
             9: ["B", "E", "A", "U", "T", "I", "F", "U", "L"], 10: ["E", "V", "E", "R", "Y", "T", "H", "I", "N", "G"]
         };
 
         let state = {
             baseColor: '',
-            slots: 5,
+            slots: 6,
             selectedSlotIndex: 0,
             keycaps: []
         };
 
         const elements = {
             baseContainer: document.getElementById('base-container'),
+            baseInnerSlot: document.getElementById('base-inner-slot'),
+            keychainEar: document.getElementById('keychain-ear'),
             slotSlider: document.getElementById('slot-slider'),
             slotCountDisplay: document.getElementById('slot-count-display'),
             selectedSlotDisplay: document.getElementById('selected-slot-display'),
+            slotSelectorTabs: document.getElementById('slot-selector-tabs'),
             textInput: document.getElementById('keycap-text-input'),
             priceDisplay: document.getElementById('total-price'),
             emojiPicker: document.getElementById('emoji-picker'),
+            captureArea: document.getElementById('capture-area'),
+            bgmBtn: document.getElementById('bgm-btn'),
             toast: document.getElementById('toast')
         };
 
+        // --- ตัวแปรสำหรับปุ่ม "สีเดียว" ---
+        let currentMonoIndex = 0; // ตัวแปรเก็บตำแหน่งสีปัจจุบัน
+
+        // --- PARTICLE EFFECT ---
+        const canvas = document.getElementById('fx-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        class Particle {
+            constructor(x, y, type = 'star', color = null) {
+                this.x = x;
+                this.y = y;
+                this.type = type;
+                this.size = Math.random() * 8 + 4;
+                this.speedX = (Math.random() - 0.5) * 4;
+                this.speedY = (Math.random() - 0.5) * 4 - (type === 'pop' ? 2 : 0);
+                this.color = color || ['#FF85A1', '#FFD166', '#4CC9F0', '#B5EAD7', '#FF9F1C'][Math.floor(Math.random() * 5)];
+                this.alpha = 1;
+                this.decay = Math.random() * 0.02 + 0.02;
+                this.rotation = Math.random() * Math.PI * 2;
+                this.rotSpeed = (Math.random() - 0.5) * 0.1;
+            }
+
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                this.alpha -= this.decay;
+                this.rotation += this.rotSpeed;
+            }
+
+            draw() {
+                ctx.save();
+                ctx.globalAlpha = Math.max(0, this.alpha);
+                ctx.translate(this.x, this.y);
+                ctx.rotate(this.rotation);
+                ctx.fillStyle = this.color;
+
+                if (this.type === 'heart') {
+                    ctx.font = `${this.size * 2}px sans-serif`;
+                    ctx.fillText('❤️', -this.size, this.size);
+                } else {
+                    ctx.beginPath();
+                    for (let i = 0; i < 4; i++) {
+                        ctx.lineTo(Math.cos(i * Math.PI / 2) * this.size, Math.sin(i * Math.PI / 2) * this.size);
+                        ctx.lineTo(Math.cos((i + 0.5) * Math.PI / 2) * (this.size * 0.3), Math.sin((i + 0.5) * Math.PI / 2) * (this.size * 0.3));
+                    }
+                    ctx.closePath();
+                    ctx.fill();
+                }
+                ctx.restore();
+            }
+        }
+
+        function createParticles(x, y, count = 6, type = 'star') {
+            for (let i = 0; i < count; i++) {
+                particles.push(new Particle(x, y, type));
+            }
+        }
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (let i = particles.length - 1; i >= 0; i--) {
+                particles[i].update();
+                particles[i].draw();
+                if (particles[i].alpha <= 0) particles.splice(i, 1);
+            }
+            requestAnimationFrame(animateParticles);
+        }
+        animateParticles();
+
+        window.addEventListener('mousemove', (e) => {
+            if (Math.random() < 0.25) createParticles(e.clientX, e.clientY, 1, 'star');
+        });
+        window.addEventListener('touchmove', (e) => {
+            if (e.touches.length === 1 && Math.random() < 0.35) {
+                createParticles(e.touches[0].clientX, e.touches[0].clientY, 1, 'star');
+            }
+        }, { passive: true });
+
+        // --- AUDIO ENGINE ---
+        let audioCtx = null;
+        let isBgmPlaying = false;
+        let bgmTimer = null;
+        let noteIndex = 0;
+        let currentMelody = [];
+
+        const melodies = [
+            [ // 1. Cute Lo-Fi
+                523.25, 659.25, 783.99, 1046.50, 783.99, 659.25,
+                587.33, 698.46, 880.00, 1174.66, 880.00, 698.46,
+                493.88, 659.25, 783.99, 987.77, 783.99, 659.25,
+                523.25, 659.25, 783.99, 880.00, 1046.50, 0
+            ],
+            [ // 2. Happy Pop
+                523.25, 523.25, 783.99, 783.99, 880.00, 880.00, 783.99, 0,
+                698.46, 698.46, 659.25, 659.25, 587.33, 587.33, 523.25, 0
+            ],
+            [ // 3. Dreamy Chill
+                659.25, 783.99, 1046.50, 880.00, 0, 783.99, 659.25, 0,
+                587.33, 698.46, 880.00, 783.99, 0, 659.25, 523.25, 0
+            ]
+        ];
+
+        function getAudioContext() {
+            if (!audioCtx) {
+                const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+                if (AudioContextClass) {
+                    audioCtx = new AudioContextClass();
+                }
+            }
+            if (audioCtx && audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+            return audioCtx;
+        }
+
+        function playMusicNote(freq) {
+            if (!isBgmPlaying || freq === 0) return;
+            const ctxInst = getAudioContext();
+            if (!ctxInst) return;
+            try {
+                const now = ctxInst.currentTime;
+                const osc = ctxInst.createOscillator();
+                const gain = ctxInst.createGain();
+
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(freq, now);
+
+                gain.gain.setValueAtTime(0.04, now);
+                gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.35);
+
+                osc.connect(gain);
+                gain.connect(ctxInst.destination);
+
+                osc.start(now);
+                osc.stop(now + 0.35);
+            } catch(e) {}
+        }
+
+        function startBGM() {
+            getAudioContext();
+            if (bgmTimer) clearInterval(bgmTimer);
+            isBgmPlaying = true;
+            elements.bgmBtn.classList.add('playing');
+            elements.bgmBtn.innerHTML = '⏸️ ปิดเพลง';
+            
+            currentMelody = melodies[Math.floor(Math.random() * melodies.length)];
+            noteIndex = 0;
+
+            bgmTimer = setInterval(() => {
+                playMusicNote(currentMelody[noteIndex]);
+                noteIndex = (noteIndex + 1) % currentMelody.length;
+            }, 280);
+        }
+
+        function stopBGM() {
+            isBgmPlaying = false;
+            elements.bgmBtn.classList.remove('playing');
+            elements.bgmBtn.innerHTML = '🎵 เปิดเพลง';
+            if (bgmTimer) {
+                clearInterval(bgmTimer);
+                bgmTimer = null;
+            }
+        }
+
+        function toggleBGM() {
+            if (isBgmPlaying) {
+                stopBGM();
+            } else {
+                startBGM();
+            }
+        }
+
+        function playClickSound() {
+            const ctxInst = getAudioContext();
+            if (!ctxInst) return;
+            try {
+                const now = ctxInst.currentTime;
+
+                const osc = ctxInst.createOscillator();
+                const gain = ctxInst.createGain();
+                
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(800, now);
+                osc.frequency.exponentialRampToValueAtTime(150, now + 0.05);
+                
+                gain.gain.setValueAtTime(0.5, now);
+                gain.gain.exponentialRampToValueAtTime(0.01, now + 0.05);
+                
+                osc.connect(gain);
+                gain.connect(ctxInst.destination);
+                
+                osc.start(now);
+                osc.stop(now + 0.05);
+
+                if (navigator.vibrate) navigator.vibrate(10);
+            } catch (e) {}
+        }
+
+        function initAutoAudioOnFirstInteraction() {
+            const unlock = () => {
+                getAudioContext();
+                if (!isBgmPlaying) {
+                    startBGM();
+                }
+                window.removeEventListener('click', unlock);
+                window.removeEventListener('touchstart', unlock);
+            };
+            window.addEventListener('click', unlock, { once: true });
+            window.addEventListener('touchstart', unlock, { once: true });
+        }
+
+        // --- APP LOGIC ---
         function calculatePrice(slots) {
             return 29 + (slots * 20);
         }
@@ -445,7 +786,7 @@
             for (let i = 0; i < state.slots; i++) {
                 const randomKeyBg = availableKeycapColors[Math.floor(Math.random() * availableKeycapColors.length)];
                 state.keycaps.push({
-                    text: wordArr[i] || 'A',
+                    text: wordArr[i] !== undefined ? wordArr[i] : 'A',
                     bgColor: randomKeyBg,
                     textColor: COLOR_WHITE
                 });
@@ -456,6 +797,7 @@
                 renderPreview(); 
             }, state.baseColor);
 
+            renderSlotSelectorTabs();
             updateControlsToMatchSelected();
             renderPreview();
         }
@@ -465,39 +807,93 @@
                 state.baseColor = baseColors[Math.floor(Math.random() * baseColors.length)];
             }
 
-            let availableKeycapColors = keycapColors.filter(c => c !== state.baseColor);
-            if (state.baseColor === COLOR_WHITE) {
-                availableKeycapColors = availableKeycapColors.filter(c => c !== COLOR_WHITE);
+            // เลือกสีปัจจุบันตามลำดับ (วนลูป)
+            const singleKeyBg = keycapColors[currentMonoIndex];
+            
+            // ขยับลำดับสีต่อไป ถ้าสุดแล้วให้กลับไปสีแรก (0)
+            currentMonoIndex++;
+            if (currentMonoIndex >= keycapColors.length) {
+                currentMonoIndex = 0;
             }
-
-            const singleKeyBg = availableKeycapColors[Math.floor(Math.random() * availableKeycapColors.length)];
 
             state.keycaps.forEach(cap => {
                 cap.bgColor = singleKeyBg;
-                cap.textColor = COLOR_WHITE;
+                // ถ้าสุ่มเจอสีขาว ให้ปรับตัวหนังสือเป็นสีดำ จะได้มองเห็นชัด
+                cap.textColor = (singleKeyBg === COLOR_WHITE) ? '#2B2D42' : COLOR_WHITE;
             });
 
             updateControlsToMatchSelected();
             renderPreview();
         }
 
+        function getDynamicDimensions(slots) {
+            if (slots <= 3) return { keySize: 46, fontSize: 26, gap: 6, rad: 10 };
+            if (slots <= 5) return { keySize: 40, fontSize: 23, gap: 5, rad: 9 };
+            if (slots <= 7) return { keySize: 34, fontSize: 19, gap: 4, rad: 8 };
+            return { keySize: 28, fontSize: 16, gap: 3.5, rad: 7 };
+        }
+
+        function renderSlotSelectorTabs() {
+            elements.slotSelectorTabs.innerHTML = '';
+            for (let i = 0; i < state.slots; i++) {
+                const tab = document.createElement('button');
+                tab.className = `slot-tab-btn ${i === state.selectedSlotIndex ? 'active' : ''}`;
+                const capText = state.keycaps[i] ? state.keycaps[i].text : (i + 1);
+                tab.textContent = `${i + 1}:${capText}`;
+                tab.onclick = () => {
+                    playClickSound();
+                    state.selectedSlotIndex = i;
+                    renderSlotSelectorTabs();
+                    updateControlsToMatchSelected();
+                    renderPreview();
+                    
+                    // ดึงให้ช่องข้อความพร้อมพิมพ์แก้ไขได้ทันที
+                    elements.textInput.focus();
+                    elements.textInput.select();
+                };
+                elements.slotSelectorTabs.appendChild(tab);
+            }
+        }
+
         function renderPreview() {
             elements.baseContainer.style.backgroundColor = state.baseColor;
-            elements.baseContainer.innerHTML = '';
+            elements.keychainEar.style.color = state.baseColor;
+            elements.baseInnerSlot.innerHTML = '';
+
+            const dim = getDynamicDimensions(state.slots);
+            elements.baseInnerSlot.style.gap = `${dim.gap}px`;
 
             state.keycaps.forEach((cap, index) => {
                 const capDiv = document.createElement('div');
                 capDiv.className = `keycap ${index === state.selectedSlotIndex ? 'selected' : ''}`;
                 capDiv.style.backgroundColor = cap.bgColor;
-                capDiv.style.color = cap.textColor;
-                capDiv.textContent = cap.text;
+                capDiv.style.color = cap.textColor; 
+                capDiv.style.width = `${dim.keySize}px`;
+                capDiv.style.height = `${dim.keySize}px`;
+                capDiv.style.fontSize = `${dim.fontSize}px`;
+                capDiv.style.borderRadius = `${dim.rad}px`;
+
+                capDiv.innerHTML = `<span class="keycap-content">${cap.text || ''}</span>`;
                 
-                capDiv.addEventListener('click', () => {
+                const handleKeyClick = (e) => {
+                    e.stopPropagation();
+                    playClickSound();
+
+                    const rect = capDiv.getBoundingClientRect();
+                    createParticles(rect.left + rect.width / 2, rect.top + rect.height / 2, 8, cap.text === '❤️' ? 'heart' : 'star');
+
                     state.selectedSlotIndex = index;
+                    renderSlotSelectorTabs();
                     updateControlsToMatchSelected();
                     renderPreview();
-                });
-                elements.baseContainer.appendChild(capDiv);
+                    
+                    // ดึงให้ช่องข้อความพร้อมพิมพ์แก้ไขได้ทันทีเมื่อกดปุ่ม
+                    elements.textInput.focus();
+                    elements.textInput.select();
+                };
+
+                capDiv.addEventListener('click', handleKeyClick);
+                elements.baseInnerSlot.appendChild(capDiv);
             });
             
             elements.priceDisplay.textContent = calculatePrice(state.slots);
@@ -510,7 +906,10 @@
                 const btn = document.createElement('button');
                 btn.className = `color-btn ${color === currentSelectedColor ? 'active' : ''}`;
                 btn.style.backgroundColor = color;
-                btn.onclick = () => {
+                btn.onclick = (e) => {
+                    playClickSound();
+                    const rect = btn.getBoundingClientRect();
+                    createParticles(rect.left + rect.width / 2, rect.top + rect.height / 2, 5, 'star');
                     onClickCallback(color);
                     createColorPalette(containerId, colors, onClickCallback, color); 
                 };
@@ -524,26 +923,34 @@
                 const btn = document.createElement('button');
                 btn.className = 'emoji-btn';
                 btn.textContent = emoji;
-                btn.onclick = () => {
-                    state.keycaps[state.selectedSlotIndex].text = emoji;
-                    elements.textInput.value = emoji;
-                    renderPreview();
+                btn.onclick = (e) => {
+                    playClickSound();
+                    const rect = btn.getBoundingClientRect();
+                    createParticles(rect.left + rect.width / 2, rect.top + rect.height / 2, 6, 'heart');
+                    if (state.keycaps[state.selectedSlotIndex]) {
+                        state.keycaps[state.selectedSlotIndex].text = emoji;
+                        elements.textInput.value = emoji;
+                        renderSlotSelectorTabs();
+                        renderPreview();
+                    }
                 };
                 elements.emojiPicker.appendChild(btn);
             });
         }
 
         function updateControlsToMatchSelected() {
+            if (state.selectedSlotIndex >= state.slots) {
+                state.selectedSlotIndex = state.slots - 1;
+            }
+            if (state.selectedSlotIndex < 0) {
+                state.selectedSlotIndex = 0;
+            }
+
             const currentCap = state.keycaps[state.selectedSlotIndex];
             elements.selectedSlotDisplay.textContent = state.selectedSlotIndex + 1;
             elements.textInput.value = currentCap ? currentCap.text : '';
             
             if (!currentCap) return;
-
-            createColorPalette('text-color-palette', textColors, (color) => {
-                state.keycaps[state.selectedSlotIndex].textColor = color;
-                renderPreview();
-            }, currentCap.textColor);
 
             createColorPalette('keycap-color-palette', keycapColors, (color) => {
                 state.keycaps[state.selectedSlotIndex].bgColor = color;
@@ -553,19 +960,25 @@
 
         function saveImage() {
             const oldIndex = state.selectedSlotIndex;
+
             state.selectedSlotIndex = -1; 
             renderPreview();
 
-            const captureArea = document.getElementById('capture-area');
-            html2canvas(captureArea, { backgroundColor: '#FFFFFF', scale: 3 }).then(canvas => {
-                const link = document.createElement('a');
-                link.download = `clicker-${state.slots}slots.png`;
-                link.href = canvas.toDataURL();
-                link.click();
-                
-                state.selectedSlotIndex = oldIndex;
-                renderPreview();
-            });
+            setTimeout(() => {
+                html2canvas(elements.captureArea, { 
+                    backgroundColor: '#FFFFFF', 
+                    scale: 3,
+                    useCORS: true
+                }).then(canvas => {
+                    const link = document.createElement('a');
+                    link.download = `clicker-${state.slots}slots.png`;
+                    link.href = canvas.toDataURL();
+                    link.click();
+                    
+                    state.selectedSlotIndex = oldIndex;
+                    renderPreview();
+                });
+            }, 80);
         }
 
         function showToast(msg) {
@@ -584,6 +997,26 @@
                 .catch(() => showToast('ไม่สามารถคัดลอกได้ ❌'));
         }
 
+        function orderViaLine() {
+            const jsonString = JSON.stringify(state);
+            const encoded = btoa(unescape(encodeURIComponent(jsonString)));
+            const designUrl = window.location.origin + window.location.pathname + '?design=' + encoded;
+            
+            const price = calculatePrice(state.slots);
+            const message = `สวัสดีครับ/ค่ะ สนใจสั่งทำพวงกุญแจคลิกเกอร์ 💖\n\n- จำนวนช่อง: ${state.slots} ช่อง\n- ราคาประเมิน: ${price} บาท\n\n📌 แบบที่จัดไว้ครับ:\n${designUrl}`;
+            
+            const lineID = "dew.111";
+            const lineUrl = `https://line.me/ti/p/~${lineID}`;
+
+            navigator.clipboard.writeText(message).then(() => {
+                alert("✅ ระบบได้คัดลอกรายละเอียดสั่งซื้อให้แล้ว!\n\nเดี๋ยวระบบจะเปิดแอป LINE ให้ รบกวนคุณลูกค้ากดเพิ่มเพื่อน แล้วกด 'วาง' (Paste) ข้อความลงในช่องแชทได้เลยนะครับ");
+                window.open(lineUrl, '_blank');
+            }).catch(() => {
+                alert(`กรุณาแอดไลน์ไอดี: ${lineID} เพื่อส่งรูปดีไซน์นี้ไปสั่งซื้อครับ`);
+                window.open(lineUrl, '_blank');
+            });
+        }
+
         elements.slotSlider.addEventListener('input', (e) => {
             const newSlots = parseInt(e.target.value);
             elements.slotCountDisplay.textContent = newSlots;
@@ -593,11 +1026,13 @@
         });
 
         elements.textInput.addEventListener('input', (e) => {
-            state.keycaps[state.selectedSlotIndex].text = e.target.value;
-            renderPreview();
+            if (state.keycaps[state.selectedSlotIndex]) {
+                state.keycaps[state.selectedSlotIndex].text = e.target.value;
+                renderSlotSelectorTabs();
+                renderPreview();
+            }
         });
 
-        // ตรวจสอบและดึงข้อมูลจากลิงก์แชร์
         function loadFromURL() {
             const params = new URLSearchParams(window.location.search);
             const designData = params.get('design');
@@ -607,28 +1042,28 @@
                     state = { ...state, ...decoded };
                     elements.slotSlider.value = state.slots;
                     elements.slotCountDisplay.textContent = state.slots;
-                    return true; // พบลำดับข้อมูลที่แชร์มา
-                } catch (e) {
-                    console.error("Invalid link data", e);
-                }
+                    return true;
+                } catch (e) {}
             }
             return false;
         }
 
         function initApp() {
             buildEmojiPicker();
-            const hasSharedData = loadFromURL();
+            initAutoAudioOnFirstInteraction();
+            elements.slotSlider.value = state.slots;
+            elements.slotCountDisplay.textContent = state.slots;
             
+            const hasSharedData = loadFromURL();
             if (hasSharedData) {
-                // ถ้าเปิดมาจากลิงก์แชร์ ให้แสดงผลตามที่แชร์มาเป๊ะๆ ไม่สุ่มทับ
                 createColorPalette('base-color-palette', baseColors, (c) => { 
                     state.baseColor = c; 
                     renderPreview(); 
                 }, state.baseColor);
+                renderSlotSelectorTabs();
                 updateControlsToMatchSelected();
                 renderPreview();
             } else {
-                // ถ้าเปิดหน้าเว็บปกติ ให้สุ่มตามค่าเริ่มต้น
                 randomizeAll();
             }
         }
