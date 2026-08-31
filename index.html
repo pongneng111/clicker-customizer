@@ -65,7 +65,7 @@
             flex: none;
             display: flex;
             flex-direction: column;
-            padding: 6px 12px 8px 12px;
+            padding: 8px 12px;
             background: #FFFFFF;
             border-bottom: 2px solid var(--border-color);
             box-shadow: 0 4px 16px rgba(0,0,0,0.03);
@@ -76,7 +76,14 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 4px;
+            margin-bottom: 6px;
+        }
+
+        .header-right {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 2px;
         }
 
         .price-tag {
@@ -89,6 +96,13 @@
             border: 1.5px solid #FFE0B2;
             display: flex;
             align-items: center;
+            line-height: 1.1;
+        }
+
+        .lead-time-tag {
+            font-size: 0.75rem;
+            color: #FF4D80;
+            font-weight: bold;
         }
 
         /* กล่องพรีวิว 2.5D */
@@ -98,9 +112,9 @@
             align-items: center;
             background: radial-gradient(circle at 50% 30%, #FFFFFF 0%, #EDF2F7 100%);
             border-radius: 14px;
-            padding: 10px 16px;
-            min-height: 100px;
-            max-height: 125px;
+            padding: 12px 18px;
+            min-height: 110px;
+            max-height: 135px;
             border: 1.5px solid #E2E8F0;
             position: relative;
             overflow: hidden;
@@ -113,22 +127,18 @@
         }
 
         .keychain-ear-loop {
-            width: 12px;
-            height: 28px;
             border-radius: 10px 0 0 10px;
-            border: 4px solid currentColor;
+            border-style: solid;
+            border-color: currentColor;
             border-right: none;
-            margin-right: -2px;
             position: relative;
             background: transparent;
             box-shadow: -3px 3px 6px rgba(0,0,0,0.12), inset 0 2px 2px rgba(255,255,255,0.7);
         }
 
-        /* ฐานถาดมนนุ่มนวลแบบ Linear Gradient */
         .base-case-frame {
             display: flex;
             align-items: center;
-            padding: 7px;
             border-radius: 18px;
             position: relative;
             background-image: linear-gradient(180deg, rgba(255,255,255,0.35) 0%, rgba(0,0,0,0.1) 100%);
@@ -137,13 +147,10 @@
 
         .base-inner-slot {
             display: flex;
-            gap: 6px;
-            padding: 5px;
             background: rgba(0, 0, 0, 0.15);
             border-radius: 13px;
         }
 
-        /* ปุ่มคีย์แคปนูน 3D */
         .keycap {
             flex-shrink: 0;
             display: flex;
@@ -179,12 +186,19 @@
             z-index: 5;
         }
 
+        .color-disclaimer {
+            font-size: 0.75rem;
+            color: #95A5A6;
+            text-align: center;
+            margin-top: 4px;
+        }
+
         /* ปุ่ม Action */
         .action-buttons {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
             gap: 5px;
-            margin-top: 6px;
+            margin-top: 4px;
         }
 
         .btn {
@@ -223,7 +237,7 @@
             flex: 1;
             overflow-y: auto;
             -webkit-overflow-scrolling: touch;
-            padding: 8px 12px 25px 12px;
+            padding: 8px 12px 30px 12px;
             display: flex;
             flex-direction: column;
             gap: 10px;
@@ -255,6 +269,26 @@
             font-weight: bold;
             color: var(--text-muted);
         }
+
+        .preset-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 6px;
+        }
+
+        .btn-preset {
+            background: #FFF0F5;
+            border: 1px solid #FFD1DC;
+            color: var(--text-main);
+            border-radius: 8px;
+            padding: 6px 2px;
+            font-size: 0.8rem;
+            font-family: 'FCCandy', sans-serif;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.15s ease;
+        }
+        .btn-preset:active { transform: scale(0.95); background: #FFD1DC; }
 
         .slot-selector-tabs {
             display: flex;
@@ -290,14 +324,14 @@
 
         .color-palette {
             display: flex;
-            gap: 8px;
+            gap: 6px;
             flex-wrap: wrap;
             padding: 2px;
         }
 
         .color-btn {
-            width: 30px;
-            height: 30px;
+            width: 28px;
+            height: 28px;
             border-radius: 50%;
             border: 2px solid #FFFFFF;
             cursor: pointer;
@@ -311,14 +345,18 @@
             box-shadow: 0 3px 8px rgba(0,0,0,0.25);
         }
 
-        .emoji-grid { display: flex; gap: 6px; }
+        .emoji-grid { 
+            display: flex; 
+            gap: 6px; 
+            flex-wrap: wrap; 
+        }
 
         .emoji-btn {
             background: #F8F9FA;
             border: 1.5px solid #DFE6E9;
             border-radius: 8px;
-            padding: 5px 12px;
-            font-size: 1.2rem;
+            padding: 4px 8px;
+            font-size: 1.15rem;
             cursor: pointer;
             transition: transform 0.1s;
         }
@@ -352,6 +390,7 @@
             background: #FFF;
         }
 
+        /* สำหรับจอ Desktop ขยายพรีวิวใหญ่เต็มตา */
         @media (min-width: 768px) {
             .app-container { flex-direction: row; }
             .preview-wrapper {
@@ -361,8 +400,14 @@
                 border-bottom: none;
                 border-right: 2px solid var(--border-color);
             }
-            .preview-section { min-height: 250px; max-height: 100%; padding: 30px; }
-            .control-section { width: 420px; height: 100%; padding: 24px; }
+            .preview-section { 
+                min-height: 380px; 
+                max-height: 100%; 
+                padding: 40px; 
+                flex: 1;
+            }
+            .control-section { width: 440px; height: 100%; padding: 24px; }
+            .color-btn { width: 32px; height: 32px; }
         }
 
         .toast {
@@ -400,7 +445,10 @@
                     </div>
                 </div>
                 
-                <div class="price-tag">฿<span id="total-price">0</span></div>
+                <div class="header-right">
+                    <div class="price-tag">฿<span id="total-price">0</span></div>
+                    <span class="lead-time-tag">⏳ พรีออเดอร์ 1-2 วัน</span>
+                </div>
             </div>
             
             <div class="preview-section" id="capture-area">
@@ -411,6 +459,8 @@
                     </div>
                 </div>
             </div>
+
+            <div class="color-disclaimer">⚠️ สีสินค้าจริงอาจแตกต่างจากหน้าจอเล็กน้อยตามแสงและการแสดงผล</div>
 
             <div class="action-buttons">
                 <button class="btn btn-save" onclick="saveImage()">📷 เซฟรูป</button>
@@ -423,6 +473,17 @@
 
         <!-- ฝั่งควบคุม -->
         <div class="control-section">
+            <!-- หมวดไอเดียสำเร็จรูป -->
+            <div class="control-card">
+                <div class="card-header">💡 ไอเดียสำเร็จรูป</div>
+                <div class="preset-grid">
+                    <button class="btn-preset" onclick="applyPreset('LOVE')">💖 คู่รัก</button>
+                    <button class="btn-preset" onclick="applyPreset('SWEET')">🌸 พาสเทล</button>
+                    <button class="btn-preset" onclick="applyPreset('LUCKY')">🍀 นำโชค</button>
+                    <button class="btn-preset" onclick="applyPreset('HAPPY')">✨ สดใส</button>
+                </div>
+            </div>
+
             <div class="control-card">
                 <div class="card-header">🏷️ 1. ขนาดและสีฐาน</div>
                 <label>จำนวน: <span id="slot-count-display" style="color:var(--accent); font-weight:bold;">5</span> ช่อง</label>
@@ -458,17 +519,19 @@
     <div id="toast" class="toast">คัดลอกลิงก์เรียบร้อยแล้ว ✨</div>
 
     <script>
-        const COLOR_WHITE = '#FFFFFF';
+        const COLOR_WHITE = '#ffffff';
         
+        // รายการสีใหม่ 21 สี
         const paletteColors = [
-            '#FFFFFF', '#FFB6C1', '#FF4D80', '#E71D36', '#FF6B35', '#fffd2e', '#ffe9db',
-            '#FEE440', '#B5EAD7', '#52B788', '#007F5F', '#A0C4FF', '#d9d9d9', '#cccccc',
-            '#4CC9F0', '#5E60CE', '#bca9ef', '#2B2D42', '#000000', '#deb991'
+            '#ffd5df', '#ff67b5', '#ff0063', '#dd1515', '#cbf7be', 
+            '#ffe955', '#ffd65c', '#ffd9c1', '#ff7a00', '#ff4b08', 
+            '#06a869', '#3d9ceb', '#cde4ff', '#768cff', '#9e8bf8', 
+            '#ffffff', '#bdc1cb', '#b0adaa', '#bc927b', '#604623', '#000000'
         ];
 
         const baseColors = paletteColors;
         const keycapColors = paletteColors;
-        const emojis = ['❤️', '🐾'];
+        const emojis = ['❤️', '🐾', '⭐', '🌸', '🍀', '🎀'];
 
         const meaningfulWords = {
             1: ["❤️"], 2: ["H", "I"], 3: ["Y", "O", "U"], 4: ["L", "O", "V", "E"],
@@ -478,7 +541,7 @@
         };
 
         let state = {
-            baseColor: '',
+            baseColor: '#ff67b5',
             slots: 6,
             selectedSlotIndex: 0,
             keycaps: []
@@ -584,7 +647,7 @@
             }
         }, { passive: true });
 
-        // --- AUDIO ENGINE (POP SOUND) ---
+        // --- AUDIO ENGINE (POP SOUND ONLY) ---
         let audioCtx = null;
 
         function getAudioContext() {
@@ -625,6 +688,65 @@
             } catch (e) {}
         }
 
+        // --- PRESET IDEAS ---
+        function applyPreset(type) {
+            playClickSound();
+            if (type === 'LOVE') {
+                state.slots = 5;
+                state.baseColor = '#ffd5df';
+                state.keycaps = [
+                    { text: 'L', bgColor: '#ff67b5', textColor: COLOR_WHITE },
+                    { text: 'O', bgColor: '#ff0063', textColor: COLOR_WHITE },
+                    { text: '❤️', bgColor: '#dd1515', textColor: COLOR_WHITE },
+                    { text: 'V', bgColor: '#ff0063', textColor: COLOR_WHITE },
+                    { text: 'E', bgColor: '#ff67b5', textColor: COLOR_WHITE }
+                ];
+            } else if (type === 'SWEET') {
+                state.slots = 5;
+                state.baseColor = '#cde4ff';
+                state.keycaps = [
+                    { text: 'S', bgColor: '#ffd5df', textColor: COLOR_WHITE },
+                    { text: 'W', bgColor: '#cbf7be', textColor: COLOR_WHITE },
+                    { text: 'E', bgColor: '#ffe955', textColor: COLOR_WHITE },
+                    { text: 'E', bgColor: '#cde4ff', textColor: COLOR_WHITE },
+                    { text: 'T', bgColor: '#9e8bf8', textColor: COLOR_WHITE }
+                ];
+            } else if (type === 'LUCKY') {
+                state.slots = 5;
+                state.baseColor = '#06a869';
+                state.keycaps = [
+                    { text: '🍀', bgColor: '#cbf7be', textColor: COLOR_WHITE },
+                    { text: 'L', bgColor: '#ffffff', textColor: '#2D3436' },
+                    { text: 'U', bgColor: '#ffffff', textColor: '#2D3436' },
+                    { text: 'C', bgColor: '#ffffff', textColor: '#2D3436' },
+                    { text: 'K', bgColor: '#cbf7be', textColor: COLOR_WHITE }
+                ];
+            } else if (type === 'HAPPY') {
+                state.slots = 5;
+                state.baseColor = '#ff7a00';
+                state.keycaps = [
+                    { text: '⭐', bgColor: '#ffe955', textColor: COLOR_WHITE },
+                    { text: 'S', bgColor: '#ffd65c', textColor: COLOR_WHITE },
+                    { text: 'U', bgColor: '#ff7a00', textColor: COLOR_WHITE },
+                    { text: 'N', bgColor: '#ff4b08', textColor: COLOR_WHITE },
+                    { text: '✨', bgColor: '#ffe955', textColor: COLOR_WHITE }
+                ];
+            }
+            
+            elements.slotSlider.value = state.slots;
+            elements.slotCountDisplay.textContent = state.slots;
+            state.selectedSlotIndex = 0;
+            
+            createColorPalette('base-color-palette', baseColors, (c) => { 
+                state.baseColor = c; 
+                renderPreview(); 
+            }, state.baseColor);
+
+            renderSlotSelectorTabs();
+            updateControlsToMatchSelected();
+            renderPreview();
+        }
+
         // --- APP LOGIC ---
         function calculatePrice(slots) {
             return 29 + (slots * 20);
@@ -645,7 +767,7 @@
                 state.keycaps.push({
                     text: wordArr[i] !== undefined ? wordArr[i] : 'A',
                     bgColor: randomKeyBg,
-                    textColor: COLOR_WHITE
+                    textColor: (randomKeyBg === COLOR_WHITE || randomKeyBg === '#cbf7be' || randomKeyBg === '#ffe955') ? '#2D3436' : COLOR_WHITE
                 });
             }
 
@@ -673,18 +795,27 @@
 
             state.keycaps.forEach(cap => {
                 cap.bgColor = singleKeyBg;
-                cap.textColor = (singleKeyBg === COLOR_WHITE) ? '#2B2D42' : COLOR_WHITE;
+                cap.textColor = (singleKeyBg === COLOR_WHITE || singleKeyBg === '#cbf7be' || singleKeyBg === '#ffe955') ? '#2D3436' : COLOR_WHITE;
             });
 
             updateControlsToMatchSelected();
             renderPreview();
         }
 
+        // คำนวณขนาด Responsive (รองรับ Desktop และ Mobile)
         function getDynamicDimensions(slots) {
-            if (slots <= 3) return { keySize: 48, fontSize: 34, gap: 6, rad: 10 };
-            if (slots <= 5) return { keySize: 42, fontSize: 30, gap: 5, rad: 9 };
-            if (slots <= 7) return { keySize: 36, fontSize: 25, gap: 4, rad: 8 };
-            return { keySize: 30, fontSize: 21, gap: 3.5, rad: 7 };
+            const isDesktop = window.innerWidth >= 768;
+            if (isDesktop) {
+                if (slots <= 3) return { keySize: 80, fontSize: 54, gap: 10, rad: 18, pad: 12, earW: 20, earH: 50, border: 6 };
+                if (slots <= 5) return { keySize: 68, fontSize: 46, gap: 8, rad: 16, pad: 10, earW: 18, earH: 44, border: 5 };
+                if (slots <= 7) return { keySize: 58, fontSize: 38, gap: 7, rad: 14, pad: 9, earW: 16, earH: 38, border: 5 };
+                return { keySize: 48, fontSize: 32, gap: 6, rad: 12, pad: 8, earW: 14, earH: 32, border: 4 };
+            } else {
+                if (slots <= 3) return { keySize: 48, fontSize: 34, gap: 6, rad: 10, pad: 6, earW: 12, earH: 28, border: 4 };
+                if (slots <= 5) return { keySize: 42, fontSize: 30, gap: 5, rad: 9, pad: 5, earW: 11, earH: 26, border: 3.5 };
+                if (slots <= 7) return { keySize: 36, fontSize: 25, gap: 4, rad: 8, pad: 5, earW: 10, earH: 24, border: 3 };
+                return { keySize: 30, fontSize: 21, gap: 3.5, rad: 7, pad: 4, earW: 9, earH: 22, border: 2.5 };
+            }
         }
 
         function renderSlotSelectorTabs() {
@@ -711,7 +842,16 @@
             elements.baseInnerSlot.innerHTML = '';
 
             const dim = getDynamicDimensions(state.slots);
+            
+            // ปรับขนาดสัดส่วนเคสฐาน
+            elements.baseContainer.style.padding = `${dim.pad}px`;
             elements.baseInnerSlot.style.gap = `${dim.gap}px`;
+            elements.baseInnerSlot.style.padding = `${dim.pad - 2}px`;
+            
+            // ปรับขนาดหูพวงกุญแจ
+            elements.keychainEar.style.width = `${dim.earW}px`;
+            elements.keychainEar.style.height = `${dim.earH}px`;
+            elements.keychainEar.style.borderWidth = `${dim.border}px`;
 
             state.keycaps.forEach((cap, index) => {
                 const capDiv = document.createElement('div');
@@ -800,6 +940,7 @@
 
             createColorPalette('keycap-color-palette', keycapColors, (color) => {
                 state.keycaps[state.selectedSlotIndex].bgColor = color;
+                state.keycaps[state.selectedSlotIndex].textColor = (color === COLOR_WHITE || color === '#cbf7be' || color === '#ffe955') ? '#2D3436' : COLOR_WHITE;
                 renderPreview();
             }, currentCap.bgColor);
         }
@@ -858,7 +999,7 @@
             const designUrl = window.location.origin + window.location.pathname + '?design=' + encoded;
             
             const price = calculatePrice(state.slots);
-            const message = `สวัสดีครับ/ค่ะ สนใจสั่งทำพวงกุญแจคลิกเกอร์ 💖\n\n- จำนวนช่อง: ${state.slots} ช่อง\n- ราคาประเมิน: ${price} บาท\n\n📌 แบบที่จัดไว้ครับ:\n${designUrl}`;
+            const message = `สวัสดีครับ/ค่ะ สนใจสั่งทำพวงกุญแจคลิกเกอร์ 💖\n\n- จำนวนช่อง: ${state.slots} ช่อง\n- ราคาประเมิน: ${price} บาท\n- ระยะเวลา: พรีออเดอร์ 1-2 วัน\n\n📌 แบบที่จัดไว้ครับ:\n${designUrl}`;
             
             const lineID = "dew.111";
             const lineUrl = `https://line.me/ti/p/~${lineID}`;
@@ -886,6 +1027,10 @@
                 renderSlotSelectorTabs();
                 renderPreview();
             }
+        });
+
+        window.addEventListener('resize', () => {
+            renderPreview();
         });
 
         function loadFromURL() {
