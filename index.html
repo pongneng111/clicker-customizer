@@ -2,7 +2,7 @@
 <html lang="th">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, interactive-widget=resizes-content">
     <title>BunnyMew - Clicker Keychain</title>
     
     <link rel="icon" type="image/png" href="logo.png">
@@ -60,12 +60,12 @@
             height: 100dvh;
         }
 
-        /* --- ฝั่งพรีวิว --- */
+        /* --- พรีวิว (ล็อกไว้ด้านบน) --- */
         .preview-wrapper {
             flex: none;
             display: flex;
             flex-direction: column;
-            padding: 10px 14px 12px 14px;
+            padding: 6px 12px 8px 12px;
             background: #FFFFFF;
             border-bottom: 2px solid var(--border-color);
             box-shadow: 0 4px 16px rgba(0,0,0,0.03);
@@ -76,66 +76,31 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 8px;
+            margin-bottom: 4px;
         }
 
-        .header-right {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .btn-bgm {
-            background: #FFF0F5;
-            color: #FF4D80;
-            border: 1.5px solid #FFD1DC;
-            border-radius: 20px;
-            padding: 4px 10px;
-            font-size: 0.85rem;
-            font-weight: bold;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            font-family: 'FCCandy', sans-serif;
-            transition: all 0.2s ease;
-        }
-
-        .btn-bgm.playing {
-            background: #FF4D80;
-            color: #FFF;
-            box-shadow: 0 0 10px rgba(255, 77, 128, 0.4);
-            animation: pulse-music 1.5s infinite;
-        }
-
-        @keyframes pulse-music {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
-
-        /* ป้ายราคา ปรับให้ใหญ่ขึ้น */
         .price-tag {
             background: #FFF3E0;
             color: #E65100;
-            padding: 4px 16px;
+            padding: 2px 14px;
             border-radius: 20px;
             font-weight: bold;
-            font-size: 1.6rem; /* ขยายขนาดใหญ่ขึ้น */
+            font-size: 1.5rem;
             border: 1.5px solid #FFE0B2;
             display: flex;
             align-items: center;
         }
 
-        /* กล่องพรีวิว 2.5D */
+        /* กล่องพรีวิว 2.5D แบบกะทัดรัด */
         .preview-section {
             display: flex;
             justify-content: center;
             align-items: center;
             background: radial-gradient(circle at 50% 30%, #FFFFFF 0%, #EDF2F7 100%);
-            border-radius: 18px;
-            padding: 22px 12px;
-            min-height: 150px;
-            max-height: 170px;
+            border-radius: 14px;
+            padding: 10px 8px;
+            min-height: 100px;
+            max-height: 125px;
             border: 1.5px solid #E2E8F0;
             position: relative;
             overflow: hidden;
@@ -148,10 +113,10 @@
         }
 
         .keychain-ear-loop {
-            width: 14px;
-            height: 32px;
-            border-radius: 12px 0 0 12px;
-            border: 4.5px solid currentColor;
+            width: 12px;
+            height: 28px;
+            border-radius: 10px 0 0 10px;
+            border: 4px solid currentColor;
             border-right: none;
             margin-right: -2px;
             position: relative;
@@ -162,20 +127,20 @@
         .base-case-frame {
             display: flex;
             align-items: center;
-            padding: 7px;
+            padding: 6px;
             border-radius: 14px;
             position: relative;
             box-shadow: 
                 0 8px 16px rgba(0,0,0,0.15),
                 inset 0 2.5px 3px rgba(255,255,255,0.9),
                 inset 0 -3px 5px rgba(0,0,0,0.18);
-            border: 4px solid rgba(255,255,255,0.4);
+            border: 3.5px solid rgba(255,255,255,0.4);
         }
 
         .base-inner-slot {
             display: flex;
             gap: 5px;
-            padding: 4px;
+            padding: 3px;
             background: rgba(0, 0, 0, 0.12);
             border-radius: 10px;
             box-shadow: inset 0 3px 6px rgba(0,0,0,0.35);
@@ -205,6 +170,7 @@
             filter: drop-shadow(0 2px 1px rgba(0, 0, 0, 0.25)) 
                     drop-shadow(0 -1px 1px rgba(255, 255, 255, 0.7));
             pointer-events: none;
+            transform: translateY(-1px);
         }
 
         .keycap:active {
@@ -227,21 +193,21 @@
         .action-buttons {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 6px;
-            margin-top: 8px;
+            gap: 5px;
+            margin-top: 6px;
         }
 
         .btn {
-            padding: 8px 4px;
+            padding: 6px 3px;
             border: none;
-            border-radius: 10px;
+            border-radius: 8px;
             font-family: 'FCCandy', sans-serif;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             cursor: pointer;
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 3px;
+            gap: 2px;
             transition: transform 0.1s;
             white-space: nowrap;
         }
@@ -256,10 +222,10 @@
             grid-column: span 4; 
             background: #06C755; 
             color: #FFF; 
-            font-size: 1.1rem; 
-            padding: 10px; 
+            font-size: 1.05rem; 
+            padding: 8px; 
             box-shadow: 0 4px 10px rgba(6, 199, 85, 0.25);
-            margin-top: 4px;
+            margin-top: 2px;
         }
 
         /* ฝั่งควบคุม */
@@ -267,59 +233,58 @@
             flex: 1;
             overflow-y: auto;
             -webkit-overflow-scrolling: touch;
-            padding: 12px 15px 30px 15px;
+            padding: 8px 12px 25px 12px;
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 10px;
             background: var(--bg-color);
         }
 
         .control-card {
             background: var(--panel-bg);
-            padding: 14px 16px;
-            border-radius: 16px;
+            padding: 12px 14px;
+            border-radius: 14px;
             border: 1px solid var(--border-color);
             box-shadow: 0 2px 8px rgba(0,0,0,0.02);
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 8px;
         }
 
         .card-header {
-            font-size: 1.05rem;
+            font-size: 1rem;
             font-weight: bold;
             color: var(--accent);
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 5px;
         }
 
         label {
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             font-weight: bold;
             color: var(--text-muted);
         }
 
-        /* แท็บเลือกปุ่ม */
         .slot-selector-tabs {
             display: flex;
-            gap: 6px;
+            gap: 5px;
             overflow-x: auto;
-            padding-bottom: 4px;
+            padding-bottom: 2px;
         }
         .slot-selector-tabs::-webkit-scrollbar { height: 3px; }
         .slot-selector-tabs::-webkit-scrollbar-thumb { background: #E2E8F0; border-radius: 4px; }
 
         .slot-tab-btn {
             flex-shrink: 0;
-            min-width: 38px;
-            height: 38px;
-            border-radius: 10px;
+            min-width: 36px;
+            height: 36px;
+            border-radius: 8px;
             border: 1.5px solid var(--border-color);
             background: #F8F9FA;
             font-family: 'FCCandy', sans-serif;
             font-weight: bold;
-            font-size: 1.05rem;
+            font-size: 1rem;
             color: var(--text-main);
             cursor: pointer;
             transition: all 0.15s ease;
@@ -335,35 +300,35 @@
 
         .color-palette {
             display: flex;
-            gap: 10px;
+            gap: 8px;
             flex-wrap: wrap;
-            padding: 4px 2px;
+            padding: 2px;
         }
 
         .color-btn {
-            width: 34px;
-            height: 34px;
+            width: 30px;
+            height: 30px;
             border-radius: 50%;
-            border: 2.5px solid #FFFFFF;
+            border: 2px solid #FFFFFF;
             cursor: pointer;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.12);
             transition: transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
         .color-btn.active {
             transform: scale(1.2);
-            border: 2.5px solid #2D3436;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.25);
+            border: 2px solid #2D3436;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.25);
         }
 
-        .emoji-grid { display: flex; gap: 8px; }
+        .emoji-grid { display: flex; gap: 6px; }
 
         .emoji-btn {
             background: #F8F9FA;
             border: 1.5px solid #DFE6E9;
-            border-radius: 10px;
-            padding: 6px 14px;
-            font-size: 1.3rem;
+            border-radius: 8px;
+            padding: 5px 12px;
+            font-size: 1.2rem;
             cursor: pointer;
             transition: transform 0.1s;
         }
@@ -372,22 +337,22 @@
         input[type="range"] {
             width: 100%;
             accent-color: var(--accent);
-            height: 6px;
+            height: 5px;
             background: #E2E8F0;
             border-radius: 4px;
             outline: none;
         }
 
         input[type="text"] {
-            padding: 6px 10px;
+            padding: 4px 8px;
             border: 2px solid #DFE6E9;
-            border-radius: 10px;
+            border-radius: 8px;
             font-family: 'FCCandy', sans-serif;
-            font-size: 1.4rem;
+            font-size: 1.3rem;
             font-weight: bold;
             color: var(--text-main);
             background: #F8F9FA;
-            width: 58px;
+            width: 52px;
             text-align: center;
             outline: none;
         }
@@ -402,12 +367,12 @@
             .preview-wrapper {
                 flex: 1;
                 height: 100%;
-                padding: 30px;
+                padding: 24px;
                 border-bottom: none;
                 border-right: 2px solid var(--border-color);
             }
-            .preview-section { min-height: 280px; max-height: 100%; padding: 40px; }
-            .control-section { width: 420px; height: 100%; padding: 30px; }
+            .preview-section { min-height: 250px; max-height: 100%; padding: 30px; }
+            .control-section { width: 420px; height: 100%; padding: 24px; }
         }
 
         .toast {
@@ -416,17 +381,17 @@
             color: #fff;
             text-align: center;
             border-radius: 25px;
-            padding: 10px 20px;
+            padding: 8px 18px;
             position: fixed;
             z-index: 1000;
             left: 50%;
-            bottom: 25px;
+            bottom: 20px;
             transform: translateX(-50%);
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             opacity: 0;
             transition: all 0.3s;
         }
-        .toast.show { visibility: visible; opacity: 1; bottom: 35px; }
+        .toast.show { visibility: visible; opacity: 1; bottom: 30px; }
     </style>
 </head>
 <body>
@@ -437,18 +402,15 @@
         <!-- ฝั่งพรีวิว -->
         <div class="preview-wrapper">
             <div class="header-bar">
-                <div style="display: flex; align-items: center; gap: 12px;">
-                    <img src="logo.png" alt="Logo" style="height: 54px; width: auto; border-radius: 8px; object-fit: contain; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.08));">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <img src="logo.png" alt="Logo" style="height: 44px; width: auto; border-radius: 6px; object-fit: contain; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.08));">
                     <div style="display: flex; flex-direction: column; justify-content: center;">
-                        <h1 style="margin: 0; font-size: 1.7rem; font-weight: bold; color: var(--accent); line-height: 1.1;">BunnyMew</h1>
-                        <span style="margin: 0; font-size: 0.95rem; color: var(--text-muted); font-weight: bold; line-height: 1.2;">พวงกุญแจคลิกเกอร์</span>
+                        <h1 style="margin: 0; font-size: 1.5rem; font-weight: bold; color: var(--accent); line-height: 1.1;">BunnyMew</h1>
+                        <span style="margin: 0; font-size: 0.85rem; color: var(--text-muted); font-weight: bold; line-height: 1.1;">พวงกุญแจคลิกเกอร์</span>
                     </div>
                 </div>
                 
-                <div class="header-right">
-                    <button class="btn-bgm" id="bgm-btn" onclick="toggleBGM()">🎵 เพลง</button>
-                    <div class="price-tag">฿<span id="total-price">0</span></div>
-                </div>
+                <div class="price-tag">฿<span id="total-price">0</span></div>
             </div>
             
             <div class="preview-section" id="capture-area">
@@ -465,7 +427,6 @@
                 <button class="btn btn-link" onclick="copyShareLink()">🔗 ลิงก์</button>
                 <button class="btn btn-random" onclick="randomizeAll()">🎲 หลากสี</button>
                 <button class="btn btn-mono" onclick="randomizeSingleColor()">🎨 สีเดียว</button>
-                <!-- ปุ่มสั่งซื้อผ่าน LINE -->
                 <button class="btn btn-order" onclick="orderViaLine()">🛒 สั่งซื้อผ่าน LINE</button>
             </div>
         </div>
@@ -487,7 +448,7 @@
                 <label>เลือกปุ่มที่จะแก้ไข:</label>
                 <div class="slot-selector-tabs" id="slot-selector-tabs"></div>
 
-                <div style="display: flex; gap: 10px; align-items: flex-end; margin-top: 4px;">
+                <div style="display: flex; gap: 10px; align-items: flex-end; margin-top: 2px;">
                     <div>
                         <label>พิมพ์ตัวอักษร:</label><br>
                         <input type="text" id="keycap-text-input" maxlength="2">
@@ -545,12 +506,10 @@
             priceDisplay: document.getElementById('total-price'),
             emojiPicker: document.getElementById('emoji-picker'),
             captureArea: document.getElementById('capture-area'),
-            bgmBtn: document.getElementById('bgm-btn'),
             toast: document.getElementById('toast')
         };
 
-        // --- ตัวแปรสำหรับปุ่ม "สีเดียว" ---
-        let currentMonoIndex = 0; // ตัวแปรเก็บตำแหน่งสีปัจจุบัน
+        let currentMonoIndex = 0;
 
         // --- PARTICLE EFFECT ---
         const canvas = document.getElementById('fx-canvas');
@@ -635,29 +594,8 @@
             }
         }, { passive: true });
 
-        // --- AUDIO ENGINE ---
+        // --- AUDIO ENGINE (POP SOUND ONLY) ---
         let audioCtx = null;
-        let isBgmPlaying = false;
-        let bgmTimer = null;
-        let noteIndex = 0;
-        let currentMelody = [];
-
-        const melodies = [
-            [ // 1. Cute Lo-Fi
-                523.25, 659.25, 783.99, 1046.50, 783.99, 659.25,
-                587.33, 698.46, 880.00, 1174.66, 880.00, 698.46,
-                493.88, 659.25, 783.99, 987.77, 783.99, 659.25,
-                523.25, 659.25, 783.99, 880.00, 1046.50, 0
-            ],
-            [ // 2. Happy Pop
-                523.25, 523.25, 783.99, 783.99, 880.00, 880.00, 783.99, 0,
-                698.46, 698.46, 659.25, 659.25, 587.33, 587.33, 523.25, 0
-            ],
-            [ // 3. Dreamy Chill
-                659.25, 783.99, 1046.50, 880.00, 0, 783.99, 659.25, 0,
-                587.33, 698.46, 880.00, 783.99, 0, 659.25, 523.25, 0
-            ]
-        ];
 
         function getAudioContext() {
             if (!audioCtx) {
@@ -672,69 +610,11 @@
             return audioCtx;
         }
 
-        function playMusicNote(freq) {
-            if (!isBgmPlaying || freq === 0) return;
-            const ctxInst = getAudioContext();
-            if (!ctxInst) return;
-            try {
-                const now = ctxInst.currentTime;
-                const osc = ctxInst.createOscillator();
-                const gain = ctxInst.createGain();
-
-                osc.type = 'sine';
-                osc.frequency.setValueAtTime(freq, now);
-
-                gain.gain.setValueAtTime(0.04, now);
-                gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.35);
-
-                osc.connect(gain);
-                gain.connect(ctxInst.destination);
-
-                osc.start(now);
-                osc.stop(now + 0.35);
-            } catch(e) {}
-        }
-
-        function startBGM() {
-            getAudioContext();
-            if (bgmTimer) clearInterval(bgmTimer);
-            isBgmPlaying = true;
-            elements.bgmBtn.classList.add('playing');
-            elements.bgmBtn.innerHTML = '⏸️ ปิดเพลง';
-            
-            currentMelody = melodies[Math.floor(Math.random() * melodies.length)];
-            noteIndex = 0;
-
-            bgmTimer = setInterval(() => {
-                playMusicNote(currentMelody[noteIndex]);
-                noteIndex = (noteIndex + 1) % currentMelody.length;
-            }, 280);
-        }
-
-        function stopBGM() {
-            isBgmPlaying = false;
-            elements.bgmBtn.classList.remove('playing');
-            elements.bgmBtn.innerHTML = '🎵 เปิดเพลง';
-            if (bgmTimer) {
-                clearInterval(bgmTimer);
-                bgmTimer = null;
-            }
-        }
-
-        function toggleBGM() {
-            if (isBgmPlaying) {
-                stopBGM();
-            } else {
-                startBGM();
-            }
-        }
-
         function playClickSound() {
             const ctxInst = getAudioContext();
             if (!ctxInst) return;
             try {
                 const now = ctxInst.currentTime;
-
                 const osc = ctxInst.createOscillator();
                 const gain = ctxInst.createGain();
                 
@@ -753,19 +633,6 @@
 
                 if (navigator.vibrate) navigator.vibrate(10);
             } catch (e) {}
-        }
-
-        function initAutoAudioOnFirstInteraction() {
-            const unlock = () => {
-                getAudioContext();
-                if (!isBgmPlaying) {
-                    startBGM();
-                }
-                window.removeEventListener('click', unlock);
-                window.removeEventListener('touchstart', unlock);
-            };
-            window.addEventListener('click', unlock, { once: true });
-            window.addEventListener('touchstart', unlock, { once: true });
         }
 
         // --- APP LOGIC ---
@@ -807,10 +674,8 @@
                 state.baseColor = baseColors[Math.floor(Math.random() * baseColors.length)];
             }
 
-            // เลือกสีปัจจุบันตามลำดับ (วนลูป)
             const singleKeyBg = keycapColors[currentMonoIndex];
             
-            // ขยับลำดับสีต่อไป ถ้าสุดแล้วให้กลับไปสีแรก (0)
             currentMonoIndex++;
             if (currentMonoIndex >= keycapColors.length) {
                 currentMonoIndex = 0;
@@ -818,7 +683,6 @@
 
             state.keycaps.forEach(cap => {
                 cap.bgColor = singleKeyBg;
-                // ถ้าสุ่มเจอสีขาว ให้ปรับตัวหนังสือเป็นสีดำ จะได้มองเห็นชัด
                 cap.textColor = (singleKeyBg === COLOR_WHITE) ? '#2B2D42' : COLOR_WHITE;
             });
 
@@ -826,11 +690,12 @@
             renderPreview();
         }
 
+        // ปรับขนาดตัวอักษรให้ใหญ่ขึ้นเต็มปุ่ม
         function getDynamicDimensions(slots) {
-            if (slots <= 3) return { keySize: 46, fontSize: 26, gap: 6, rad: 10 };
-            if (slots <= 5) return { keySize: 40, fontSize: 23, gap: 5, rad: 9 };
-            if (slots <= 7) return { keySize: 34, fontSize: 19, gap: 4, rad: 8 };
-            return { keySize: 28, fontSize: 16, gap: 3.5, rad: 7 };
+            if (slots <= 3) return { keySize: 48, fontSize: 34, gap: 6, rad: 10 };
+            if (slots <= 5) return { keySize: 42, fontSize: 30, gap: 5, rad: 9 };
+            if (slots <= 7) return { keySize: 36, fontSize: 25, gap: 4, rad: 8 };
+            return { keySize: 30, fontSize: 21, gap: 3.5, rad: 7 };
         }
 
         function renderSlotSelectorTabs() {
@@ -846,10 +711,6 @@
                     renderSlotSelectorTabs();
                     updateControlsToMatchSelected();
                     renderPreview();
-                    
-                    // ดึงให้ช่องข้อความพร้อมพิมพ์แก้ไขได้ทันที
-                    elements.textInput.focus();
-                    elements.textInput.select();
                 };
                 elements.slotSelectorTabs.appendChild(tab);
             }
@@ -886,10 +747,6 @@
                     renderSlotSelectorTabs();
                     updateControlsToMatchSelected();
                     renderPreview();
-                    
-                    // ดึงให้ช่องข้อความพร้อมพิมพ์แก้ไขได้ทันทีเมื่อกดปุ่ม
-                    elements.textInput.focus();
-                    elements.textInput.select();
                 };
 
                 capDiv.addEventListener('click', handleKeyClick);
@@ -1050,7 +907,6 @@
 
         function initApp() {
             buildEmojiPicker();
-            initAutoAudioOnFirstInteraction();
             elements.slotSlider.value = state.slots;
             elements.slotCountDisplay.textContent = state.slots;
             
