@@ -4,14 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Clicker Keychain Customizer</title>
+    <link rel="icon" type="image/png" href="Logo.png">
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
     <style>
-        /* โหลดไฟล์ฟอนต์ FCCandy.ttf */
         @font-face {
             font-family: 'FCCandy';
-            src: url('./FCCandy.ttf') format('truetype');
+            src: url('FCCandy.ttf') format('truetype');
             font-weight: normal;
             font-style: normal;
             font-display: swap;
@@ -38,7 +38,7 @@
             font-family: 'FCCandy', -apple-system, BlinkMacSystemFont, "Sukhumvit Set", sans-serif;
             background-color: var(--bg-color);
             color: var(--text-main);
-            overflow: hidden; /* ล็อกหน้าจอหลักไม่ให้เลื่อนหลุด */
+            overflow: hidden;
         }
 
         .app-container {
@@ -49,7 +49,7 @@
             height: 100dvh;
         }
 
-        /* --- ฝั่งพรีวิว (Sticky ด้านบน ไม่เลื่อนตาม) --- */
+        /* --- พรีวิว (ล็อกไว้ด้านบน ไม่เลื่อนหลุด) --- */
         .preview-wrapper {
             flex: none;
             display: flex;
@@ -85,45 +85,47 @@
             border: 1.5px solid #FFE0B2;
         }
 
+        /* ช่องพรีวิว ปรับขนาดตามหน้าจอ ไม่ต้องเลื่อน */
         .preview-section {
-            display: flex;
-            align-items: center;
-            background: #F1F3F5;
-            border-radius: 14px;
-            padding: 20px 15px;
-            min-height: 130px;
-            max-height: 150px;
-            overflow-x: auto;
-            border: 1.5px solid #E9ECEF;
-        }
-
-        .preview-section::-webkit-scrollbar { height: 4px; }
-        .preview-section::-webkit-scrollbar-thumb { background: #CED4DA; border-radius: 10px; }
-
-        .base-container {
-            display: flex;
-            gap: 6px;
-            padding: 8px;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08), inset 0 2px 3px rgba(255,255,255,0.7);
-            transition: background-color 0.2s ease;
-            border: 2.5px solid rgba(255,255,255,0.6);
-            margin: auto;
-            flex-wrap: nowrap;
-        }
-
-        .keycap {
-            width: 48px;
-            height: 48px;
-            flex-shrink: 0;
-            border-radius: 8px;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 28px; /* ขยายตัวอักษรให้ใหญ่เต็มปุ่ม */
+            background: #F1F3F5;
+            border-radius: 14px;
+            padding: 15px 8px;
+            min-height: 120px;
+            max-height: 145px;
+            border: 1.5px solid #E9ECEF;
+            overflow: hidden; /* ไม่ต้องมี Scrollbar */
+        }
+
+        .base-container {
+            display: flex;
+            gap: 4px;
+            padding: 6px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08), inset 0 2px 3px rgba(255,255,255,0.7);
+            transition: background-color 0.2s ease;
+            border: 2px solid rgba(255,255,255,0.6);
+            margin: auto;
+            max-width: 100%;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Keycap ปรับขนาดตามจำนวนช่องอัตโนมัติ */
+        .keycap {
+            width: clamp(28px, 8vw, 48px);
+            height: clamp(28px, 8vw, 48px);
+            flex-shrink: 0;
+            border-radius: 6px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: clamp(16px, 4.8vw, 28px);
             font-family: 'FCCandy', sans-serif;
             cursor: pointer;
-            box-shadow: 0 4px 0px rgba(0,0,0,0.18), inset 0 2px 3px rgba(255,255,255,0.7);
+            box-shadow: 0 3px 0px rgba(0,0,0,0.18), inset 0 1px 2px rgba(255,255,255,0.7);
             transition: transform 0.05s, box-shadow 0.05s;
             user-select: none;
             border: 2px solid transparent;
@@ -131,16 +133,17 @@
         }
 
         .keycap:active {
-            transform: translateY(4px);
+            transform: translateY(3px);
             box-shadow: 0 0px 0px rgba(0,0,0,0.18);
         }
 
         .keycap.selected {
-            border: 2.5px solid #0984E3;
-            transform: scale(1.05);
+            border: 2px solid #0984E3;
+            transform: scale(1.08);
+            z-index: 5;
         }
 
-        /* --- ปุ่ม Action --- */
+        /* --- แถบปุ่ม Action --- */
         .action-buttons {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -169,7 +172,7 @@
         .btn-random { background: #6C5CE7; color: #FFF; }
         .btn-mono { background: #E17055; color: #FFF; }
 
-        /* --- ฝั่งควบคุม (เลื่อนขึ้น-ลงได้เฉพาะส่วนนี้) --- */
+        /* --- ฝั่งควบคุม (เลื่อนได้เฉพาะส่วนนี้) --- */
         .control-section {
             flex: 1;
             overflow-y: auto;
@@ -261,7 +264,7 @@
             background: #FFF;
         }
 
-        /* Desktop Mode */
+        /* Responsive Desktop */
         @media (min-width: 768px) {
             .app-container {
                 flex-direction: row;
@@ -276,8 +279,13 @@
             .preview-section {
                 min-height: 250px;
                 max-height: 100%;
+                padding: 30px;
             }
-            .keycap { width: 56px; height: 56px; font-size: 32px; }
+            .keycap { 
+                width: 56px; 
+                height: 56px; 
+                font-size: 32px; 
+            }
             .control-section {
                 width: 400px;
                 height: 100%;
@@ -309,9 +317,12 @@
     <div class="app-container">
         <div class="preview-wrapper">
             <div class="header-bar">
-                <h2 class="header-title">✨ พวงกุญแจคลิกเกอร์</h2>
-                <div class="price-tag">฿<span id="total-price">0</span></div>
+            <div style="display: flex; align-items: center; gap: 8px;">
+                <img src="Logo.png" alt="Logo" style="height: 32px; width: auto; border-radius: 6px; object-fit: contain;">
+                <h2 class="header-title">พวงกุญแจคลิกเกอร์</h2>
             </div>
+            <div class="price-tag">฿<span id="total-price">0</span></div>
+        </div>
             
             <div class="preview-section" id="capture-area">
                 <div id="base-container" class="base-container"></div>
@@ -326,8 +337,9 @@
         </div>
 
         <div class="control-section">
+            
             <div class="control-card">
-                <div class="card-header">🏷️ 1. เลือกขนาดและสีฐาน</div>
+                <div class="card-header">🏷️ 1. ขนาดและสีฐาน</div>
                 <label>จำนวน: <span id="slot-count-display" style="color:var(--accent); font-weight:bold;">5</span> ช่อง</label>
                 <input type="range" id="slot-slider" min="1" max="10" value="5">
                 
@@ -349,11 +361,11 @@
                     </div>
                 </div>
 
-                <label>สีปุ่ม (Keycap):</label>
-                <div class="color-palette" id="keycap-color-palette"></div>
-
-                <label>สีตัวอักษร:</label>
+                <label>สีตัวหนังสือ:</label>
                 <div class="color-palette" id="text-color-palette"></div>
+
+                <label>สีคีย์แคป:</label>
+                <div class="color-palette" id="keycap-color-palette"></div>
             </div>
         </div>
     </div>
@@ -363,24 +375,32 @@
     <script>
         const COLOR_WHITE = '#FFFFFF';
         const paletteColors = [
+            '#F8C9D5', // ชมพูซากุระ
+            '#F55BA4', // ชมพู
+            '#F9005A', // ชมพูบานเย็น
+            '#E50D11', // แดง
+            '#C7F39F', // เขียวพาสเทล
+            '#FFD800', // เหลืองเลมอน
+            '#FFDB70', // เหลืองกล้วย
+            '#FFD8C2', // ส้มครีม
+            '#FF8300', // ส้มอ่อน
+            '#FF470D', // ส้มเข้ม
+            '#08AA73', // เขียว
+            '#3D9BE2', // ฟ้าน้ำเงิน
+            '#C3EEFA', // ฟ้าพาสเทล
+            '#8EB2F2', // ฟ้าคราม
+            '#9380E8', // ม่วงอ่อน
             '#FFFFFF', // ขาว
-            '#E71D36', // แดงทับทิม
-            '#FF4D80', // ชมพูสด
-            '#FF85A1', // ชมพูนม
-            '#FF6B35', // ส้มอิฐ
-            '#FFD166', // เหลืองสด
-            '#95D5B2', // มิ้นต์พาสเทล
-            '#52B788', // เขียวตอง
-            '#007F5F', // เขียวเข้ม
-            '#4CC9F0', // ฟ้าสว่าง
-            '#4361EE', // น้ำเงิน
-            '#7209B7', // ม่วง
-            '#2B2D42'  // ดำ
+            '#B7BDCA', // เทา
+            '#B4B2B1', // เทาหม่น
+            '#BD987F', // น้ำตาลอ่อน
+            '#6D4D26', // น้ำตาลเข้ม
+            '#000000' // ดำ
         ];
 
         const baseColors = paletteColors;
         const keycapColors = paletteColors;
-        const textColors = ['#FFFFFF', '#2B2D42', '#E71D36', '#FFD166'];
+        const textColors = ['#FFFFFF'];
         const emojis = ['❤️', '🐾'];
 
         const meaningfulWords = {
@@ -520,15 +540,15 @@
             
             if (!currentCap) return;
 
-            createColorPalette('keycap-color-palette', keycapColors, (color) => {
-                state.keycaps[state.selectedSlotIndex].bgColor = color;
-                renderPreview();
-            }, currentCap.bgColor);
-
             createColorPalette('text-color-palette', textColors, (color) => {
                 state.keycaps[state.selectedSlotIndex].textColor = color;
                 renderPreview();
             }, currentCap.textColor);
+
+            createColorPalette('keycap-color-palette', keycapColors, (color) => {
+                state.keycaps[state.selectedSlotIndex].bgColor = color;
+                renderPreview();
+            }, currentCap.bgColor);
         }
 
         function saveImage() {
@@ -577,9 +597,40 @@
             renderPreview();
         });
 
+        // ตรวจสอบและดึงข้อมูลจากลิงก์แชร์
+        function loadFromURL() {
+            const params = new URLSearchParams(window.location.search);
+            const designData = params.get('design');
+            if (designData) {
+                try {
+                    const decoded = JSON.parse(decodeURIComponent(escape(atob(designData))));
+                    state = { ...state, ...decoded };
+                    elements.slotSlider.value = state.slots;
+                    elements.slotCountDisplay.textContent = state.slots;
+                    return true; // พบลำดับข้อมูลที่แชร์มา
+                } catch (e) {
+                    console.error("Invalid link data", e);
+                }
+            }
+            return false;
+        }
+
         function initApp() {
             buildEmojiPicker();
-            randomizeAll();
+            const hasSharedData = loadFromURL();
+            
+            if (hasSharedData) {
+                // ถ้าเปิดมาจากลิงก์แชร์ ให้แสดงผลตามที่แชร์มาเป๊ะๆ ไม่สุ่มทับ
+                createColorPalette('base-color-palette', baseColors, (c) => { 
+                    state.baseColor = c; 
+                    renderPreview(); 
+                }, state.baseColor);
+                updateControlsToMatchSelected();
+                renderPreview();
+            } else {
+                // ถ้าเปิดหน้าเว็บปกติ ให้สุ่มตามค่าเริ่มต้น
+                randomizeAll();
+            }
         }
 
         initApp();
