@@ -60,7 +60,6 @@
             height: 100dvh;
         }
 
-        /* --- พรีวิว --- */
         .preview-wrapper {
             flex: none;
             display: flex;
@@ -105,7 +104,6 @@
             font-weight: bold;
         }
 
-        /* กล่องพรีวิว 2.5D */
         .preview-section {
             display: flex;
             justify-content: center;
@@ -193,7 +191,6 @@
             margin-top: 4px;
         }
 
-        /* ปุ่ม Action */
         .action-buttons {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -232,7 +229,6 @@
             margin-top: 2px;
         }
 
-        /* ฝั่งควบคุม */
         .control-section {
             flex: 1;
             overflow-y: auto;
@@ -272,8 +268,8 @@
 
         .preset-grid {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 6px;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 5px;
         }
 
         .btn-preset {
@@ -289,6 +285,38 @@
             transition: all 0.15s ease;
         }
         .btn-preset:active { transform: scale(0.95); background: #FFD1DC; }
+
+        .slot-count-grid {
+            display: flex;
+            gap: 5px;
+            overflow-x: auto;
+            padding-bottom: 2px;
+        }
+        .slot-count-grid::-webkit-scrollbar { height: 3px; }
+        .slot-count-grid::-webkit-scrollbar-thumb { background: #E2E8F0; border-radius: 4px; }
+
+        .btn-slot-num {
+            flex-shrink: 0;
+            min-width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            border: 1.5px solid var(--border-color);
+            background: #F8F9FA;
+            font-family: 'FCCandy', sans-serif;
+            font-weight: bold;
+            font-size: 0.95rem;
+            color: var(--text-main);
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .btn-slot-num.active {
+            background: var(--accent);
+            color: #FFFFFF;
+            border-color: var(--accent);
+            box-shadow: 0 3px 8px rgba(255, 77, 128, 0.3);
+            transform: scale(1.05);
+        }
 
         .slot-selector-tabs {
             display: flex;
@@ -347,7 +375,7 @@
 
         .emoji-grid { 
             display: flex; 
-            gap: 6px; 
+            gap: 4px; 
             flex-wrap: wrap; 
         }
 
@@ -355,21 +383,29 @@
             background: #F8F9FA;
             border: 1.5px solid #DFE6E9;
             border-radius: 8px;
-            padding: 4px 8px;
-            font-size: 1.15rem;
+            padding: 4px 6px;
+            font-size: 1.1rem;
             cursor: pointer;
             transition: transform 0.1s;
         }
         .emoji-btn:active { transform: scale(0.92); }
 
-        input[type="range"] {
-            width: 100%;
-            accent-color: var(--accent);
-            height: 5px;
-            background: #E2E8F0;
-            border-radius: 4px;
-            outline: none;
+        .btn-swap {
+            background: #F0F3F6;
+            border: 1.5px solid #CFD9E0;
+            color: #2D3436;
+            border-radius: 8px;
+            padding: 5px 10px;
+            font-family: 'FCCandy', sans-serif;
+            font-size: 0.85rem;
+            font-weight: bold;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            transition: all 0.15s ease;
         }
+        .btn-swap:active { transform: scale(0.95); background: #E2E8F0; }
 
         input[type="text"] {
             padding: 4px 8px;
@@ -390,7 +426,6 @@
             background: #FFF;
         }
 
-        /* สำหรับจอ Desktop ขยายพรีวิวใหญ่เต็มตา */
         @media (min-width: 768px) {
             .app-container { flex-direction: row; }
             .preview-wrapper {
@@ -406,7 +441,7 @@
                 padding: 40px; 
                 flex: 1;
             }
-            .control-section { width: 440px; height: 100%; padding: 24px; }
+            .control-section { width: 450px; height: 100%; padding: 24px; }
             .color-btn { width: 32px; height: 32px; }
         }
 
@@ -434,7 +469,6 @@
     <canvas id="fx-canvas"></canvas>
 
     <div class="app-container">
-        <!-- ฝั่งพรีวิว -->
         <div class="preview-wrapper">
             <div class="header-bar">
                 <div style="display: flex; align-items: center; gap: 10px;">
@@ -471,9 +505,7 @@
             </div>
         </div>
 
-        <!-- ฝั่งควบคุม -->
         <div class="control-section">
-            <!-- หมวดไอเดียสำเร็จรูป -->
             <div class="control-card">
                 <div class="card-header">💡 ไอเดียสำเร็จรูป</div>
                 <div class="preset-grid">
@@ -481,13 +513,14 @@
                     <button class="btn-preset" onclick="applyPreset('SWEET')">🌸 พาสเทล</button>
                     <button class="btn-preset" onclick="applyPreset('LUCKY')">🍀 นำโชค</button>
                     <button class="btn-preset" onclick="applyPreset('HAPPY')">✨ สดใส</button>
+                    <button class="btn-preset" onclick="applyPreset('RAINBOW')">🌈 สีรุ้ง</button>
                 </div>
             </div>
 
             <div class="control-card">
                 <div class="card-header">🏷️ 1. ขนาดและสีฐาน</div>
-                <label>จำนวน: <span id="slot-count-display" style="color:var(--accent); font-weight:bold;">5</span> ช่อง</label>
-                <input type="range" id="slot-slider" min="1" max="10" value="5">
+                <label>จำนวนช่อง: <span id="slot-count-display" style="color:var(--accent); font-weight:bold;">5</span> ช่อง</label>
+                <div class="slot-count-grid" id="slot-count-grid"></div>
                 
                 <label>สีฐาน:</label>
                 <div class="color-palette" id="base-color-palette"></div>
@@ -505,10 +538,16 @@
                         <input type="text" id="keycap-text-input" maxlength="2">
                     </div>
                     <div>
-                        <label>ไอคอน:</label>
+                        <label>ไอคอนหัวใจ:</label>
                         <div class="emoji-grid" id="emoji-picker"></div>
                     </div>
                 </div>
+
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 4px;">
+                    <label>สีตัวอักษร:</label>
+                    <button class="btn-swap" onclick="swapCurrentSlotColors()">🔄 สลับสีปุ่ม ↔ ตัวอักษร</button>
+                </div>
+                <div class="color-palette" id="font-color-palette"></div>
 
                 <label>สีคีย์แคป:</label>
                 <div class="color-palette" id="keycap-color-palette"></div>
@@ -521,7 +560,6 @@
     <script>
         const COLOR_WHITE = '#ffffff';
         
-        // รายการสีใหม่ 21 สี
         const paletteColors = [
             '#ffd5df', '#ff67b5', '#ff0063', '#dd1515', '#cbf7be', 
             '#ffe955', '#ffd65c', '#ffd9c1', '#ff7a00', '#ff4b08', 
@@ -531,7 +569,7 @@
 
         const baseColors = paletteColors;
         const keycapColors = paletteColors;
-        const emojis = ['❤️', '🐾', '⭐', '🌸', '🍀', '🎀'];
+        const heartEmojis = ['❤️', '🩷', '🧡', '💛', '💚', '🩵', '💙', '💜', '🖤', '🤍'];
 
         const meaningfulWords = {
             1: ["❤️"], 2: ["H", "I"], 3: ["Y", "O", "U"], 4: ["L", "O", "V", "E"],
@@ -539,6 +577,36 @@
             7: ["F", "O", "R", "E", "V", "E", "R"], 8: ["S", "U", "N", "S", "H", "I", "N", "E"],
             9: ["B", "E", "A", "U", "T", "I", "F", "U", "L"], 10: ["E", "V", "E", "R", "Y", "T", "H", "I", "N", "G"]
         };
+
+        const presetVariations = {
+            LOVE: [
+                { base: '#ffd5df', caps: [{t:'L', b:'#ff67b5'}, {t:'O', b:'#ff0063'}, {t:'❤️', b:'#dd1515'}, {t:'V', b:'#ff0063'}, {t:'E', b:'#ff67b5'}] },
+                { base: '#ff67b5', caps: [{t:'M', b:'#ffffff'}, {t:'Y', b:'#ffd5df'}, {t:'🩷', b:'#ff0063'}, {t:'L', b:'#ffd5df'}, {t:'U', b:'#ffffff'}, {t:'V', b:'#ffd5df'}] },
+                { base: '#dd1515', caps: [{t:'H', b:'#ffd5df'}, {t:'U', b:'#ff67b5'}, {t:'G', b:'#ffffff'}, {t:'❤️', b:'#ffd5df'}] }
+            ],
+            SWEET: [
+                { base: '#cde4ff', caps: [{t:'S', b:'#ffd5df'}, {t:'W', b:'#cbf7be'}, {t:'E', b:'#ffe955'}, {t:'E', b:'#cde4ff'}, {t:'T', b:'#9e8bf8'}] },
+                { base: '#ffd5df', caps: [{t:'C', b:'#cde4ff'}, {t:'A', b:'#ffd5df'}, {t:'N', b:'#ffe955'}, {t:'D', b:'#cbf7be'}, {t:'Y', b:'#9e8bf8'}] },
+                { base: '#cbf7be', caps: [{t:'M', b:'#ffe955'}, {t:'I', b:'#cde4ff'}, {t:'L', b:'#ffd5df'}, {t:'K', b:'#ffffff'}] }
+            ],
+            LUCKY: [
+                { base: '#06a869', caps: [{t:'💚', b:'#cbf7be'}, {t:'L', b:'#ffffff'}, {t:'U', b:'#ffffff'}, {t:'C', b:'#ffffff'}, {t:'K', b:'#cbf7be'}] },
+                { base: '#cbf7be', caps: [{t:'7', b:'#06a869'}, {t:'7', b:'#06a869'}, {t:'7', b:'#06a869'}, {t:'🤍', b:'#ffffff'}] },
+                { base: '#ffffff', caps: [{t:'W', b:'#06a869'}, {t:'I', b:'#cbf7be'}, {t:'N', b:'#06a869'}, {t:'💚', b:'#cbf7be'}] }
+            ],
+            HAPPY: [
+                { base: '#ff7a00', caps: [{t:'💛', b:'#ffe955'}, {t:'S', b:'#ffd65c'}, {t:'U', b:'#ff7a00'}, {t:'N', b:'#ff4b08'}, {t:'🧡', b:'#ffe955'}] },
+                { base: '#ffe955', caps: [{t:'J', b:'#ff7a00'}, {t:'O', b:'#ff4b08'}, {t:'Y', b:'#ffd65c'}, {t:'💛', b:'#ffffff'}] },
+                { base: '#ffd65c', caps: [{t:'S', b:'#ffffff'}, {t:'M', b:'#ffe955'}, {t:'I', b:'#ff7a00'}, {t:'L', b:'#ff4b08'}, {t:'E', b:'#ffffff'}] }
+            ],
+            RAINBOW: [
+                { base: '#ffffff', caps: [{t:'❤️', b:'#dd1515'}, {t:'🧡', b:'#ff7a00'}, {t:'💛', b:'#ffe955'}, {t:'💚', b:'#06a869'}, {t:'🩵', b:'#3d9ceb'}, {t:'💜', b:'#9e8bf8'}] },
+                { base: '#604623', caps: [{t:'R', b:'#dd1515'}, {t:'A', b:'#ff7a00'}, {t:'I', b:'#ffe955'}, {t:'N', b:'#06a869'}, {t:'B', b:'#3d9ceb'}, {t:'O', b:'#768cff'}, {t:'W', b:'#9e8bf8'}] },
+                { base: '#000000', caps: [{t:'1', b:'#ff0063'}, {t:'2', b:'#ff7a00'}, {t:'3', b:'#ffe955'}, {t:'4', b:'#06a869'}, {t:'5', b:'#3d9ceb'}] }
+            ]
+        };
+
+        const presetIndexes = { LOVE: 0, SWEET: 0, LUCKY: 0, HAPPY: 0, RAINBOW: 0 };
 
         let state = {
             baseColor: '#ff67b5',
@@ -551,7 +619,7 @@
             baseContainer: document.getElementById('base-container'),
             baseInnerSlot: document.getElementById('base-inner-slot'),
             keychainEar: document.getElementById('keychain-ear'),
-            slotSlider: document.getElementById('slot-slider'),
+            slotCountGrid: document.getElementById('slot-count-grid'),
             slotCountDisplay: document.getElementById('slot-count-display'),
             selectedSlotDisplay: document.getElementById('selected-slot-display'),
             slotSelectorTabs: document.getElementById('slot-selector-tabs'),
@@ -564,7 +632,6 @@
 
         let currentMonoIndex = 0;
 
-        // --- PARTICLE EFFECT ---
         const canvas = document.getElementById('fx-canvas');
         const ctx = canvas.getContext('2d');
         let particles = [];
@@ -647,7 +714,6 @@
             }
         }, { passive: true });
 
-        // --- AUDIO ENGINE (POP SOUND ONLY) ---
         let audioCtx = null;
 
         function getAudioContext() {
@@ -688,55 +754,26 @@
             } catch (e) {}
         }
 
-        // --- PRESET IDEAS ---
-        function applyPreset(type) {
+        function applyPreset(theme) {
             playClickSound();
-            if (type === 'LOVE') {
-                state.slots = 5;
-                state.baseColor = '#ffd5df';
-                state.keycaps = [
-                    { text: 'L', bgColor: '#ff67b5', textColor: COLOR_WHITE },
-                    { text: 'O', bgColor: '#ff0063', textColor: COLOR_WHITE },
-                    { text: '❤️', bgColor: '#dd1515', textColor: COLOR_WHITE },
-                    { text: 'V', bgColor: '#ff0063', textColor: COLOR_WHITE },
-                    { text: 'E', bgColor: '#ff67b5', textColor: COLOR_WHITE }
-                ];
-            } else if (type === 'SWEET') {
-                state.slots = 5;
-                state.baseColor = '#cde4ff';
-                state.keycaps = [
-                    { text: 'S', bgColor: '#ffd5df', textColor: COLOR_WHITE },
-                    { text: 'W', bgColor: '#cbf7be', textColor: COLOR_WHITE },
-                    { text: 'E', bgColor: '#ffe955', textColor: COLOR_WHITE },
-                    { text: 'E', bgColor: '#cde4ff', textColor: COLOR_WHITE },
-                    { text: 'T', bgColor: '#9e8bf8', textColor: COLOR_WHITE }
-                ];
-            } else if (type === 'LUCKY') {
-                state.slots = 5;
-                state.baseColor = '#06a869';
-                state.keycaps = [
-                    { text: '🍀', bgColor: '#cbf7be', textColor: COLOR_WHITE },
-                    { text: 'L', bgColor: '#ffffff', textColor: '#2D3436' },
-                    { text: 'U', bgColor: '#ffffff', textColor: '#2D3436' },
-                    { text: 'C', bgColor: '#ffffff', textColor: '#2D3436' },
-                    { text: 'K', bgColor: '#cbf7be', textColor: COLOR_WHITE }
-                ];
-            } else if (type === 'HAPPY') {
-                state.slots = 5;
-                state.baseColor = '#ff7a00';
-                state.keycaps = [
-                    { text: '⭐', bgColor: '#ffe955', textColor: COLOR_WHITE },
-                    { text: 'S', bgColor: '#ffd65c', textColor: COLOR_WHITE },
-                    { text: 'U', bgColor: '#ff7a00', textColor: COLOR_WHITE },
-                    { text: 'N', bgColor: '#ff4b08', textColor: COLOR_WHITE },
-                    { text: '✨', bgColor: '#ffe955', textColor: COLOR_WHITE }
-                ];
-            }
+            const list = presetVariations[theme];
+            if (!list || list.length === 0) return;
+
+            const idx = presetIndexes[theme] % list.length;
+            presetIndexes[theme]++;
             
-            elements.slotSlider.value = state.slots;
-            elements.slotCountDisplay.textContent = state.slots;
+            const variant = list[idx];
+            state.slots = variant.caps.length;
+            state.baseColor = variant.base;
             state.selectedSlotIndex = 0;
-            
+            state.keycaps = variant.caps.map(c => ({
+                text: c.t,
+                bgColor: c.b,
+                textColor: (c.b === COLOR_WHITE || c.b === '#cbf7be' || c.b === '#ffe955') ? '#2D3436' : COLOR_WHITE
+            }));
+
+            elements.slotCountDisplay.textContent = state.slots;
+            renderSlotCountGrid();
             createColorPalette('base-color-palette', baseColors, (c) => { 
                 state.baseColor = c; 
                 renderPreview(); 
@@ -747,7 +784,6 @@
             renderPreview();
         }
 
-        // --- APP LOGIC ---
         function calculatePrice(slots) {
             return 29 + (slots * 20);
         }
@@ -802,7 +838,19 @@
             renderPreview();
         }
 
-        // คำนวณขนาด Responsive (รองรับ Desktop และ Mobile)
+        function swapCurrentSlotColors() {
+            playClickSound();
+            const cap = state.keycaps[state.selectedSlotIndex];
+            if (!cap) return;
+
+            const temp = cap.bgColor;
+            cap.bgColor = cap.textColor;
+            cap.textColor = temp;
+
+            updateControlsToMatchSelected();
+            renderPreview();
+        }
+
         function getDynamicDimensions(slots) {
             const isDesktop = window.innerWidth >= 768;
             if (isDesktop) {
@@ -818,13 +866,30 @@
             }
         }
 
+        function renderSlotCountGrid() {
+            elements.slotCountGrid.innerHTML = '';
+            for (let i = 1; i <= 10; i++) {
+                const btn = document.createElement('button');
+                btn.className = `btn-slot-num ${i === state.slots ? 'active' : ''}`;
+                btn.textContent = i;
+                btn.onclick = () => {
+                    playClickSound();
+                    state.slots = i;
+                    state.selectedSlotIndex = 0;
+                    elements.slotCountDisplay.textContent = state.slots;
+                    renderSlotCountGrid();
+                    randomizeAll();
+                };
+                elements.slotCountGrid.appendChild(btn);
+            }
+        }
+
         function renderSlotSelectorTabs() {
             elements.slotSelectorTabs.innerHTML = '';
             for (let i = 0; i < state.slots; i++) {
                 const tab = document.createElement('button');
                 tab.className = `slot-tab-btn ${i === state.selectedSlotIndex ? 'active' : ''}`;
-                const capText = state.keycaps[i] ? state.keycaps[i].text : (i + 1);
-                tab.textContent = `${i + 1}:${capText}`;
+                tab.textContent = `${i + 1}`;
                 tab.onclick = () => {
                     playClickSound();
                     state.selectedSlotIndex = i;
@@ -843,12 +908,10 @@
 
             const dim = getDynamicDimensions(state.slots);
             
-            // ปรับขนาดสัดส่วนเคสฐาน
             elements.baseContainer.style.padding = `${dim.pad}px`;
             elements.baseInnerSlot.style.gap = `${dim.gap}px`;
             elements.baseInnerSlot.style.padding = `${dim.pad - 2}px`;
             
-            // ปรับขนาดหูพวงกุญแจ
             elements.keychainEar.style.width = `${dim.earW}px`;
             elements.keychainEar.style.height = `${dim.earH}px`;
             elements.keychainEar.style.borderWidth = `${dim.border}px`;
@@ -857,7 +920,7 @@
                 const capDiv = document.createElement('div');
                 capDiv.className = `keycap ${index === state.selectedSlotIndex ? 'selected' : ''}`;
                 capDiv.style.backgroundColor = cap.bgColor;
-                capDiv.style.color = cap.textColor; 
+                capDiv.style.color = cap.textColor || COLOR_WHITE; 
                 capDiv.style.width = `${dim.keySize}px`;
                 capDiv.style.height = `${dim.keySize}px`;
                 capDiv.style.fontSize = `${dim.fontSize}px`;
@@ -870,7 +933,7 @@
                     playClickSound();
 
                     const rect = capDiv.getBoundingClientRect();
-                    createParticles(rect.left + rect.width / 2, rect.top + rect.height / 2, 8, cap.text === '❤️' ? 'heart' : 'star');
+                    createParticles(rect.left + rect.width / 2, rect.top + rect.height / 2, 8, 'heart');
 
                     state.selectedSlotIndex = index;
                     renderSlotSelectorTabs();
@@ -890,7 +953,7 @@
             container.innerHTML = '';
             colors.forEach(color => {
                 const btn = document.createElement('button');
-                btn.className = `color-btn ${color === currentSelectedColor ? 'active' : ''}`;
+                btn.className = `color-btn ${color.toLowerCase() === (currentSelectedColor || '').toLowerCase() ? 'active' : ''}`;
                 btn.style.backgroundColor = color;
                 btn.onclick = (e) => {
                     playClickSound();
@@ -905,7 +968,7 @@
 
         function buildEmojiPicker() {
             elements.emojiPicker.innerHTML = '';
-            emojis.forEach(emoji => {
+            heartEmojis.forEach(emoji => {
                 const btn = document.createElement('button');
                 btn.className = 'emoji-btn';
                 btn.textContent = emoji;
@@ -938,9 +1001,13 @@
             
             if (!currentCap) return;
 
+            createColorPalette('font-color-palette', [COLOR_WHITE], (color) => {
+                state.keycaps[state.selectedSlotIndex].textColor = color;
+                renderPreview();
+            }, currentCap.textColor || COLOR_WHITE);
+
             createColorPalette('keycap-color-palette', keycapColors, (color) => {
                 state.keycaps[state.selectedSlotIndex].bgColor = color;
-                state.keycaps[state.selectedSlotIndex].textColor = (color === COLOR_WHITE || color === '#cbf7be' || color === '#ffe955') ? '#2D3436' : COLOR_WHITE;
                 renderPreview();
             }, currentCap.bgColor);
         }
@@ -983,21 +1050,26 @@
             setTimeout(() => { elements.toast.classList.remove("show"); }, 2000);
         }
 
+        function generateDesignURL() {
+            const cleanState = {
+                b: state.baseColor,
+                s: state.slots,
+                k: state.keycaps.map(c => ({ t: c.text, b: c.bgColor, c: c.textColor }))
+            };
+            const jsonString = JSON.stringify(cleanState);
+            const encoded = encodeURIComponent(btoa(unescape(encodeURIComponent(jsonString))));
+            return `${window.location.origin}${window.location.pathname}?d=${encoded}`;
+        }
+
         function copyShareLink() {
-            const jsonString = JSON.stringify(state);
-            const encoded = btoa(unescape(encodeURIComponent(jsonString)));
-            const url = window.location.origin + window.location.pathname + '?design=' + encoded;
-            
+            const url = generateDesignURL();
             navigator.clipboard.writeText(url)
                 .then(() => showToast('คัดลอกลิงก์สำเร็จ! ✨'))
                 .catch(() => showToast('ไม่สามารถคัดลอกได้ ❌'));
         }
 
         function orderViaLine() {
-            const jsonString = JSON.stringify(state);
-            const encoded = btoa(unescape(encodeURIComponent(jsonString)));
-            const designUrl = window.location.origin + window.location.pathname + '?design=' + encoded;
-            
+            const designUrl = generateDesignURL();
             const price = calculatePrice(state.slots);
             const message = `สวัสดีครับ/ค่ะ สนใจสั่งทำพวงกุญแจคลิกเกอร์ 💖\n\n- จำนวนช่อง: ${state.slots} ช่อง\n- ราคาประเมิน: ${price} บาท\n- ระยะเวลา: พรีออเดอร์ 1-2 วัน\n\n📌 แบบที่จัดไว้ครับ:\n${designUrl}`;
             
@@ -1013,14 +1085,6 @@
             });
         }
 
-        elements.slotSlider.addEventListener('input', (e) => {
-            const newSlots = parseInt(e.target.value);
-            elements.slotCountDisplay.textContent = newSlots;
-            state.slots = newSlots;
-            state.selectedSlotIndex = 0; 
-            randomizeAll();
-        });
-
         elements.textInput.addEventListener('input', (e) => {
             if (state.keycaps[state.selectedSlotIndex]) {
                 state.keycaps[state.selectedSlotIndex].text = e.target.value;
@@ -1035,12 +1099,21 @@
 
         function loadFromURL() {
             const params = new URLSearchParams(window.location.search);
-            const designData = params.get('design');
+            const designData = params.get('d') || params.get('design');
             if (designData) {
                 try {
-                    const decoded = JSON.parse(decodeURIComponent(escape(atob(designData))));
-                    state = { ...state, ...decoded };
-                    elements.slotSlider.value = state.slots;
+                    const decoded = JSON.parse(decodeURIComponent(escape(atob(decodeURIComponent(designData)))));
+                    if (decoded.k) {
+                        state.baseColor = decoded.b || state.baseColor;
+                        state.slots = decoded.s || state.slots;
+                        state.keycaps = decoded.k.map(c => ({
+                            text: c.t || '',
+                            bgColor: c.b || '#ffffff',
+                            textColor: c.c || COLOR_WHITE
+                        }));
+                    } else {
+                        state = { ...state, ...decoded };
+                    }
                     elements.slotCountDisplay.textContent = state.slots;
                     return true;
                 } catch (e) {}
@@ -1050,7 +1123,7 @@
 
         function initApp() {
             buildEmojiPicker();
-            elements.slotSlider.value = state.slots;
+            renderSlotCountGrid();
             elements.slotCountDisplay.textContent = state.slots;
             
             const hasSharedData = loadFromURL();
@@ -1059,6 +1132,7 @@
                     state.baseColor = c; 
                     renderPreview(); 
                 }, state.baseColor);
+                renderSlotCountGrid();
                 renderSlotSelectorTabs();
                 updateControlsToMatchSelected();
                 renderPreview();
