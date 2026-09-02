@@ -560,7 +560,7 @@
     <script>
         const COLOR_WHITE = '#ffffff';
         
-        // ลำดับ 21 สีตามที่ส่งให้เป๊ะๆ
+        // ลำดับ 21 สีตามที่ส่งให้
         const paletteColors = [
             '#ffd5df', '#ff67b5', '#ff0063', '#dd1515', '#cbf7be', 
             '#ffe955', '#ffd65c', '#ffd9c1', '#ff7a00', '#ff4b08', 
@@ -603,10 +603,11 @@
         };
 
         const presetIndexes = { LOVE: 0, SWEET: 0, LUCKY: 0, HAPPY: 0 };
-        let rainbowShiftOffset = 0; // ตัวแปรจำตำแหน่งสีรุ้ง
+        let rainbowShiftOffset = 0; 
 
+        // กำหนดสีฐานเริ่มต้นเป็นสีขาวตามที่ต้องการ
         let state = {
-            baseColor: '#ff67b5',
+            baseColor: '#ffffff',
             slots: 6,
             selectedSlotIndex: 0,
             keycaps: []
@@ -751,32 +752,31 @@
             } catch (e) {}
         }
 
-        // ฟังก์ชัน Preset
+        // --- ระบบพรีเซ็ตสี (เปลี่ยนเฉพาะสี ล็อกตัวอักษรเดิม 100%) ---
         function applyPreset(theme) {
             playClickSound();
-
             const wordArr = meaningfulWords[state.slots] || [];
 
             if (theme === 'RAINBOW') {
-                state.baseColor = '#ffffff';
+                // เอาการบังคับเปลี่ยนสีฐานกลับไปเป็นสีขาวออก 
+                // ให้คงสีฐานล่าสุดที่คุณลูกค้าเลือกไว้แทน
 
                 for (let i = 0; i < state.slots; i++) {
-                    // ขยับสีทีละ 1 ทุกครั้งที่กด
                     const colorIndex = (rainbowShiftOffset + i) % paletteColors.length;
                     const currentColor = paletteColors[colorIndex];
+                    const newTextColor = (currentColor === COLOR_WHITE || currentColor === '#cbf7be' || currentColor === '#ffe955' || currentColor === '#ffd5df' || currentColor === '#cde4ff' || currentColor === '#ffd9c1') ? '#2D3436' : COLOR_WHITE;
                     
-                    const existingText = (state.keycaps[i] && state.keycaps[i].text !== undefined) 
-                                        ? state.keycaps[i].text 
-                                        : (wordArr[i] !== undefined ? wordArr[i] : (i + 1).toString());
-
-                    state.keycaps[i] = {
-                        text: existingText,
-                        bgColor: currentColor,
-                        textColor: (currentColor === COLOR_WHITE || currentColor === '#cbf7be' || currentColor === '#ffe955' || currentColor === '#ffd5df' || currentColor === '#cde4ff' || currentColor === '#ffd9c1') ? '#2D3436' : COLOR_WHITE
-                    };
+                    if (state.keycaps[i]) {
+                        state.keycaps[i].bgColor = currentColor;
+                        state.keycaps[i].textColor = newTextColor;
+                    } else {
+                        state.keycaps.push({
+                            text: wordArr[i] !== undefined ? wordArr[i] : '',
+                            bgColor: currentColor,
+                            textColor: newTextColor
+                        });
+                    }
                 }
-                
-                // อัปเดตจุดเริ่มต้นสีสำหรับการกดครั้งถัดไป
                 rainbowShiftOffset = (rainbowShiftOffset + 1) % paletteColors.length;
 
             } else {
@@ -791,16 +791,18 @@
 
                 for (let i = 0; i < state.slots; i++) {
                     const currentColor = variation.pool[i % variation.pool.length];
+                    const newTextColor = (currentColor === COLOR_WHITE || currentColor === '#cbf7be' || currentColor === '#ffe955' || currentColor === '#ffd5df' || currentColor === '#cde4ff') ? '#2D3436' : COLOR_WHITE;
                     
-                    const existingText = (state.keycaps[i] && state.keycaps[i].text !== undefined) 
-                                        ? state.keycaps[i].text 
-                                        : (wordArr[i] !== undefined ? wordArr[i] : (i + 1).toString());
-
-                    state.keycaps[i] = {
-                        text: existingText,
-                        bgColor: currentColor,
-                        textColor: (currentColor === COLOR_WHITE || currentColor === '#cbf7be' || currentColor === '#ffe955' || currentColor === '#ffd5df' || currentColor === '#cde4ff') ? '#2D3436' : COLOR_WHITE
-                    };
+                    if (state.keycaps[i]) {
+                        state.keycaps[i].bgColor = currentColor;
+                        state.keycaps[i].textColor = newTextColor;
+                    } else {
+                        state.keycaps.push({
+                            text: wordArr[i] !== undefined ? wordArr[i] : '',
+                            bgColor: currentColor,
+                            textColor: newTextColor
+                        });
+                    }
                 }
             }
 
@@ -818,6 +820,7 @@
             return 29 + (slots * 20);
         }
 
+        // --- ระบบสุ่มหลากสี (เปลี่ยนเฉพาะสี ล็อกตัวอักษรเดิม 100%) ---
         function randomizeAll() {
             state.baseColor = baseColors[Math.floor(Math.random() * baseColors.length)];
 
@@ -827,14 +830,21 @@
             }
 
             const wordArr = meaningfulWords[state.slots] || [];
-            state.keycaps = [];
+            
             for (let i = 0; i < state.slots; i++) {
                 const randomKeyBg = availableKeycapColors[Math.floor(Math.random() * availableKeycapColors.length)];
-                state.keycaps.push({
-                    text: wordArr[i] !== undefined ? wordArr[i] : 'A',
-                    bgColor: randomKeyBg,
-                    textColor: (randomKeyBg === COLOR_WHITE || randomKeyBg === '#cbf7be' || randomKeyBg === '#ffe955' || randomKeyBg === '#ffd5df') ? '#2D3436' : COLOR_WHITE
-                });
+                const newTextColor = (randomKeyBg === COLOR_WHITE || randomKeyBg === '#cbf7be' || randomKeyBg === '#ffe955' || randomKeyBg === '#ffd5df') ? '#2D3436' : COLOR_WHITE;
+                
+                if (state.keycaps[i]) {
+                    state.keycaps[i].bgColor = randomKeyBg;
+                    state.keycaps[i].textColor = newTextColor;
+                } else {
+                    state.keycaps.push({
+                        text: wordArr[i] !== undefined ? wordArr[i] : '',
+                        bgColor: randomKeyBg,
+                        textColor: newTextColor
+                    });
+                }
             }
 
             createColorPalette('base-color-palette', baseColors, (c) => { 
@@ -847,6 +857,7 @@
             renderPreview();
         }
 
+        // --- ระบบสุ่มสีเดียว (เปลี่ยนเฉพาะสี ล็อกตัวอักษรเดิม 100%) ---
         function randomizeSingleColor() {
             if (!state.baseColor) {
                 state.baseColor = baseColors[Math.floor(Math.random() * baseColors.length)];
@@ -896,12 +907,14 @@
             }
         }
 
+        // --- ระบบเพิ่มลดจำนวนช่อง (เปลี่ยนข้อความเฉพาะช่องที่งอกใหม่เท่านั้น) ---
         function renderSlotCountGrid() {
             elements.slotCountGrid.innerHTML = '';
             for (let i = 1; i <= 10; i++) {
                 const btn = document.createElement('button');
                 btn.className = `btn-slot-num ${i === state.slots ? 'active' : ''}`;
                 btn.textContent = i;
+                
                 btn.onclick = () => {
                     playClickSound();
                     const prevSlots = state.slots;
@@ -915,9 +928,9 @@
                         for (let k = prevSlots; k < state.slots; k++) {
                             const randColor = keycapColors[Math.floor(Math.random() * keycapColors.length)];
                             state.keycaps.push({
-                                text: wordArr[k] !== undefined ? wordArr[k] : 'A',
+                                text: wordArr[k] !== undefined ? wordArr[k] : '',
                                 bgColor: randColor,
-                                textColor: COLOR_WHITE
+                                textColor: (randColor === COLOR_WHITE || randColor === '#cbf7be' || randColor === '#ffe955' || randColor === '#ffd5df') ? '#2D3436' : COLOR_WHITE
                             });
                         }
                     } else {
@@ -1027,7 +1040,6 @@
                     if (state.keycaps[state.selectedSlotIndex]) {
                         state.keycaps[state.selectedSlotIndex].text = emoji;
                         elements.textInput.value = emoji;
-                        elements.textInput.select();
                         renderSlotSelectorTabs();
                         renderPreview();
                     }
@@ -1047,8 +1059,6 @@
             const currentCap = state.keycaps[state.selectedSlotIndex];
             elements.selectedSlotDisplay.textContent = state.selectedSlotIndex + 1;
             elements.textInput.value = currentCap ? currentCap.text : '';
-            
-            elements.textInput.select();
 
             if (!currentCap) return;
 
@@ -1101,7 +1111,6 @@
             setTimeout(() => { elements.toast.classList.remove("show"); }, 2500);
         }
 
-        // ระบบบีบอัดลิงก์ให้สั้นลง (ลดขนาดตัวอักษรก่อนเข้ารหัส)
         function getColorIndex(hex) {
             const idx = paletteColors.findIndex(c => c.toLowerCase() === hex.toLowerCase());
             return idx !== -1 ? idx : hex;
@@ -1113,7 +1122,6 @@
         }
 
         function generateDesignURL() {
-            // ย่อชุดข้อมูล JSON แทนการใช้ Hex String ยาวๆ ช่วยให้ลิงก์ตั้งต้นสั้นลง
             const minState = {
                 b: getColorIndex(state.baseColor),
                 s: state.slots,
@@ -1124,7 +1132,6 @@
             return `${window.location.origin}${window.location.pathname}?d=${encoded}`;
         }
 
-        // ใช้ API ย่อลิงก์แบบไม่ต้องมี Key ของ is.gd 
         function shortenUrl(longUrl, callback) {
             const script = document.createElement('script');
             const cbName = 'isgdCb_' + Math.floor(Math.random() * 100000);
@@ -1138,7 +1145,7 @@
             script.onerror = function() {
                 delete window[cbName];
                 document.body.removeChild(script);
-                callback(longUrl); // หากย่อไม่ได้ ให้ใช้ลิงก์ยาวแทน
+                callback(longUrl); 
             };
             
             script.src = `https://is.gd/create.php?format=json&url=${encodeURIComponent(longUrl)}&callback=${cbName}`;
@@ -1252,7 +1259,17 @@
                 updateControlsToMatchSelected();
                 renderPreview();
             } else {
-                randomizeAll();
+                const wordArr = meaningfulWords[state.slots] || [];
+                for (let i = 0; i < state.slots; i++) {
+                    const randColor = keycapColors[Math.floor(Math.random() * keycapColors.length)];
+                    state.keycaps.push({
+                        text: wordArr[i] !== undefined ? wordArr[i] : '',
+                        bgColor: randColor,
+                        textColor: (randColor === COLOR_WHITE || randColor === '#cbf7be' || randColor === '#ffe955' || randColor === '#ffd5df') ? '#2D3436' : COLOR_WHITE
+                    });
+                }
+                updateControlsToMatchSelected();
+                renderPreview();
             }
         }
 
