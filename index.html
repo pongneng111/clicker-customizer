@@ -64,7 +64,7 @@
             flex: none;
             display: flex;
             flex-direction: column;
-            padding: 10px 14px;
+            padding: 10px 14px 14px 14px;
             background: #FFFFFF;
             border-bottom: 2px solid var(--border-color);
             box-shadow: 0 4px 16px rgba(0,0,0,0.03);
@@ -75,7 +75,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 6px;
+            margin-bottom: 10px;
         }
 
         .header-right {
@@ -188,14 +188,15 @@
             font-size: 0.95rem;
             color: #95A5A6;
             text-align: center;
-            margin-top: 4px;
+            margin-top: 15px;
+            margin-bottom: 6px;
         }
 
         .action-buttons {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
             gap: 6px;
-            margin-top: 6px;
+            margin-bottom: 20px;
         }
 
         .btn {
@@ -233,7 +234,7 @@
             flex: 1;
             overflow-y: auto;
             -webkit-overflow-scrolling: touch;
-            padding: 10px 14px 35px 14px;
+            padding: 14px 14px 35px 14px;
             display: flex;
             flex-direction: column;
             gap: 12px;
@@ -493,16 +494,6 @@
                     </div>
                 </div>
             </div>
-
-            <div class="color-disclaimer">⚠️ สีสินค้าจริงอาจแตกต่างจากหน้าจอเล็กน้อยตามแสงและการแสดงผล</div>
-
-            <div class="action-buttons">
-                <button class="btn btn-save" onclick="saveImage()">📷 เซฟรูป</button>
-                <button class="btn btn-link" onclick="copyShareLink()">🔗 ลิงก์</button>
-                <button class="btn btn-random" onclick="randomizeAll()">🎲 หลากสี</button>
-                <button class="btn btn-mono" onclick="randomizeSingleColor()">🎨 สีเดียว</button>
-                <button class="btn btn-order" onclick="orderViaLine()">🛒 สั่งซื้อผ่าน LINE</button>
-            </div>
         </div>
 
         <div class="control-section">
@@ -527,10 +518,7 @@
             </div>
 
             <div class="control-card">
-                <div style="display: flex; justify-content: space-between; align-items: center; gap: 8px;">
-                    <div class="card-header" style="white-space: nowrap;">🎨 2. แต่งปุ่มที่ <span id="selected-slot-display">1</span></div>
-                    <div class="slot-selector-tabs" id="slot-selector-tabs"></div>
-                </div>
+                <div class="card-header" style="white-space: nowrap; margin-bottom: 4px;">🎨 2. แต่งปุ่มที่ <span id="selected-slot-display">1</span></div>
 
                 <div style="display: flex; gap: 10px; align-items: flex-end; margin-top: 2px;">
                     <div>
@@ -552,6 +540,16 @@
                 <label>สีคีย์แคป:</label>
                 <div class="color-palette" id="keycap-color-palette"></div>
             </div>
+
+            <div class="color-disclaimer">⚠️ สีสินค้าจริงอาจแตกต่างจากหน้าจอเล็กน้อยตามแสงและการแสดงผล</div>
+            <div class="action-buttons">
+                <button class="btn btn-save" onclick="saveImage()">📷 เซฟรูป</button>
+                <button class="btn btn-link" onclick="copyShareLink()">🔗 ลิงก์</button>
+                <button class="btn btn-random" onclick="randomizeAll()">🎲 หลากสี</button>
+                <button class="btn btn-mono" onclick="randomizeSingleColor()">🎨 สีเดียว</button>
+                <button class="btn btn-order" onclick="orderViaLine()">🛒 สั่งซื้อผ่าน LINE</button>
+            </div>
+            
         </div>
     </div>
 
@@ -560,7 +558,6 @@
     <script>
         const COLOR_WHITE = '#ffffff';
         
-        // ลำดับ 21 สีตามที่ส่งให้
         const paletteColors = [
             '#ffd5df', '#ff67b5', '#ff0063', '#dd1515', '#cbf7be', 
             '#ffe955', '#ffd65c', '#ffd9c1', '#ff7a00', '#ff4b08', 
@@ -605,7 +602,6 @@
         const presetIndexes = { LOVE: 0, SWEET: 0, LUCKY: 0, HAPPY: 0 };
         let rainbowShiftOffset = 0; 
 
-        // กำหนดสีฐานเริ่มต้นเป็นสีขาวตามที่ต้องการ
         let state = {
             baseColor: '#ffffff',
             slots: 6,
@@ -620,7 +616,6 @@
             slotCountGrid: document.getElementById('slot-count-grid'),
             slotCountDisplay: document.getElementById('slot-count-display'),
             selectedSlotDisplay: document.getElementById('selected-slot-display'),
-            slotSelectorTabs: document.getElementById('slot-selector-tabs'),
             textInput: document.getElementById('keycap-text-input'),
             priceDisplay: document.getElementById('total-price'),
             emojiPicker: document.getElementById('emoji-picker'),
@@ -752,15 +747,11 @@
             } catch (e) {}
         }
 
-        // --- ระบบพรีเซ็ตสี (เปลี่ยนเฉพาะสี ล็อกตัวอักษรเดิม 100%) ---
         function applyPreset(theme) {
             playClickSound();
             const wordArr = meaningfulWords[state.slots] || [];
 
             if (theme === 'RAINBOW') {
-                // เอาการบังคับเปลี่ยนสีฐานกลับไปเป็นสีขาวออก 
-                // ให้คงสีฐานล่าสุดที่คุณลูกค้าเลือกไว้แทน
-
                 for (let i = 0; i < state.slots; i++) {
                     const colorIndex = (rainbowShiftOffset + i) % paletteColors.length;
                     const currentColor = paletteColors[colorIndex];
@@ -811,7 +802,6 @@
                 renderPreview(); 
             }, state.baseColor);
 
-            renderSlotSelectorTabs();
             updateControlsToMatchSelected();
             renderPreview();
         }
@@ -820,7 +810,6 @@
             return 29 + (slots * 20);
         }
 
-        // --- ระบบสุ่มหลากสี (เปลี่ยนเฉพาะสี ล็อกตัวอักษรเดิม 100%) ---
         function randomizeAll() {
             state.baseColor = baseColors[Math.floor(Math.random() * baseColors.length)];
 
@@ -852,12 +841,10 @@
                 renderPreview(); 
             }, state.baseColor);
 
-            renderSlotSelectorTabs();
             updateControlsToMatchSelected();
             renderPreview();
         }
 
-        // --- ระบบสุ่มสีเดียว (เปลี่ยนเฉพาะสี ล็อกตัวอักษรเดิม 100%) ---
         function randomizeSingleColor() {
             if (!state.baseColor) {
                 state.baseColor = baseColors[Math.floor(Math.random() * baseColors.length)];
@@ -907,7 +894,6 @@
             }
         }
 
-        // --- ระบบเพิ่มลดจำนวนช่อง (เปลี่ยนข้อความเฉพาะช่องที่งอกใหม่เท่านั้น) ---
         function renderSlotCountGrid() {
             elements.slotCountGrid.innerHTML = '';
             for (let i = 1; i <= 10; i++) {
@@ -937,28 +923,10 @@
                         state.keycaps = state.keycaps.slice(0, state.slots);
                     }
 
-                    renderSlotSelectorTabs();
                     updateControlsToMatchSelected();
                     renderPreview();
                 };
                 elements.slotCountGrid.appendChild(btn);
-            }
-        }
-
-        function renderSlotSelectorTabs() {
-            elements.slotSelectorTabs.innerHTML = '';
-            for (let i = 0; i < state.slots; i++) {
-                const tab = document.createElement('button');
-                tab.className = `slot-tab-btn ${i === state.selectedSlotIndex ? 'active' : ''}`;
-                tab.textContent = `${i + 1}`;
-                tab.onclick = () => {
-                    playClickSound();
-                    state.selectedSlotIndex = i;
-                    renderSlotSelectorTabs();
-                    updateControlsToMatchSelected();
-                    renderPreview();
-                };
-                elements.slotSelectorTabs.appendChild(tab);
             }
         }
 
@@ -997,7 +965,6 @@
                     createParticles(rect.left + rect.width / 2, rect.top + rect.height / 2, 8, 'heart');
 
                     state.selectedSlotIndex = index;
-                    renderSlotSelectorTabs();
                     updateControlsToMatchSelected();
                     renderPreview();
                 };
@@ -1040,7 +1007,6 @@
                     if (state.keycaps[state.selectedSlotIndex]) {
                         state.keycaps[state.selectedSlotIndex].text = emoji;
                         elements.textInput.value = emoji;
-                        renderSlotSelectorTabs();
                         renderPreview();
                     }
                 };
@@ -1121,6 +1087,7 @@
             return val;
         }
 
+        // --- เปลี่ยนให้สร้าง URL โดยตัดพารามิเตอร์เก่าทิ้ง ป้องกันลิงก์ยาวซ้อนกัน ---
         function generateDesignURL() {
             const minState = {
                 b: getColorIndex(state.baseColor),
@@ -1129,73 +1096,78 @@
             };
             const jsonString = JSON.stringify(minState);
             const encoded = encodeURIComponent(btoa(unescape(encodeURIComponent(jsonString))));
-            return `${window.location.origin}${window.location.pathname}?d=${encoded}`;
+            
+            // ดึงเฉพาะ URL หลัก ไม่รวมพารามิเตอร์เก่า (?d=...)
+            const baseUrl = window.location.href.split('?')[0].split('#')[0]; 
+            return `${baseUrl}?d=${encoded}`;
         }
 
-        function shortenUrl(longUrl, callback) {
-            const script = document.createElement('script');
-            const cbName = 'isgdCb_' + Math.floor(Math.random() * 100000);
+        // --- ระบบคัดลอกแบบใหม่ (กันเบราว์เซอร์มือถือบล็อก 100%) ---
+        function copyToClipboardFallback(text, successMsg) {
+            const textArea = document.createElement("textarea");
+            textArea.value = text;
             
-            window[cbName] = function(data) {
-                delete window[cbName];
-                document.body.removeChild(script);
-                callback(data.shorturl ? data.shorturl : longUrl);
-            };
+            // ทำให้มองไม่เห็นแต่ยังอยู่ใน DOM เพื่อให้ copy ได้
+            textArea.style.position = "fixed";
+            textArea.style.top = "-9999px";
+            textArea.style.left = "-9999px";
+            textArea.setAttribute("readonly", "");
             
-            script.onerror = function() {
-                delete window[cbName];
-                document.body.removeChild(script);
-                callback(longUrl); 
-            };
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
             
-            script.src = `https://is.gd/create.php?format=json&url=${encodeURIComponent(longUrl)}&callback=${cbName}`;
-            document.body.appendChild(script);
+            try {
+                const successful = document.execCommand('copy');
+                if (successful) {
+                    showToast(successMsg);
+                } else {
+                    showToast('ไม่สามารถคัดลอกได้ ❌');
+                }
+            } catch (err) {
+                showToast('ไม่สามารถคัดลอกได้ ❌');
+            }
+            
+            document.body.removeChild(textArea);
         }
 
         function copyShareLink() {
-            const btn = document.querySelector('.btn-link');
-            const originalText = btn.innerHTML;
-            btn.innerHTML = '⏳ รอแป๊บ...';
-            
             const url = generateDesignURL();
             
-            shortenUrl(url, (shortUrl) => {
-                navigator.clipboard.writeText(shortUrl)
-                    .then(() => {
-                        showToast('คัดลอกลิงก์สำเร็จ! ✨');
-                        btn.innerHTML = originalText;
-                    })
-                    .catch(() => {
-                        showToast('ไม่สามารถคัดลอกได้ ❌');
-                        btn.innerHTML = originalText;
-                    });
-            });
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(url)
+                    .then(() => showToast('คัดลอกลิงก์สำเร็จ! ✨'))
+                    .catch(() => copyToClipboardFallback(url, 'คัดลอกลิงก์สำเร็จ! ✨'));
+            } else {
+                copyToClipboardFallback(url, 'คัดลอกลิงก์สำเร็จ! ✨');
+            }
         }
 
         function orderViaLine() {
-            const btn = document.querySelector('.btn-order');
-            const originalText = btn.innerHTML;
-            btn.innerHTML = '⏳ กำลังเตรียมลิงก์...';
-
             const url = generateDesignURL();
+            const price = calculatePrice(state.slots);
+            const message = `สวัสดีครับ/ค่ะ สนใจสั่งทำพวงกุญแจคลิกเกอร์ 💖\n\n- จำนวนช่อง: ${state.slots} ช่อง\n- ราคาประเมิน: ${price} บาท\n- ระยะเวลา: พรีออเดอร์ 1-2 วัน\n\n📌 แบบที่จัดไว้ครับ:\n${url}`;
             
-            shortenUrl(url, (shortUrl) => {
-                const price = calculatePrice(state.slots);
-                const message = `สวัสดีครับ/ค่ะ สนใจสั่งทำพวงกุญแจคลิกเกอร์ 💖\n\n- จำนวนช่อง: ${state.slots} ช่อง\n- ราคาประเมิน: ${price} บาท\n- ระยะเวลา: พรีออเดอร์ 1-2 วัน\n\n📌 แบบที่จัดไว้ครับ:\n${shortUrl}`;
-                
-                const lineID = "dew.111";
-                const lineUrl = `https://line.me/ti/p/~${lineID}`;
+            const lineID = "dew.111";
+            const lineUrl = `https://line.me/ti/p/~${lineID}`;
 
-                navigator.clipboard.writeText(message).then(() => {
-                    alert("✅ ระบบได้คัดลอกรายละเอียดสั่งซื้อให้แล้ว!\n\nเดี๋ยวระบบจะเปิดแอป LINE ให้ รบกวนคุณลูกค้ากดเพิ่มเพื่อน แล้วกด 'วาง' (Paste) ข้อความลงในช่องแชทได้เลยนะครับ");
-                    window.open(lineUrl, '_blank');
-                    btn.innerHTML = originalText;
-                }).catch(() => {
-                    alert(`กรุณาแอดไลน์ไอดี: ${lineID} เพื่อส่งรูปดีไซน์นี้ไปสั่งซื้อครับ`);
-                    window.open(lineUrl, '_blank');
-                    btn.innerHTML = originalText;
-                });
-            });
+            // คัดลอกข้อความ
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(message)
+                    .then(() => {
+                        alert("✅ คัดลอกรายละเอียดสั่งซื้อให้แล้ว!\n\nเดี๋ยวระบบจะเปิด LINE ให้ รบกวนกดเพิ่มเพื่อน แล้ว 'วาง' ข้อความส่งได้เลยครับ");
+                        window.location.href = lineUrl; // ใช้ location.href ป้องกัน Popup Blocker
+                    })
+                    .catch(() => {
+                        copyToClipboardFallback(message, 'เตรียมข้อมูลสั่งซื้อสำเร็จ! ✨');
+                        alert("✅ คัดลอกรายละเอียดสั่งซื้อให้แล้ว!\n\nเดี๋ยวระบบจะเปิด LINE ให้ รบกวนกดเพิ่มเพื่อน แล้ว 'วาง' ข้อความส่งได้เลยครับ");
+                        window.location.href = lineUrl;
+                    });
+            } else {
+                copyToClipboardFallback(message, 'เตรียมข้อมูลสั่งซื้อสำเร็จ! ✨');
+                alert("✅ คัดลอกรายละเอียดสั่งซื้อให้แล้ว!\n\nเดี๋ยวระบบจะเปิด LINE ให้ รบกวนกดเพิ่มเพื่อน แล้ว 'วาง' ข้อความส่งได้เลยครับ");
+                window.location.href = lineUrl;
+            }
         }
 
         elements.textInput.addEventListener('focus', (e) => {
@@ -1208,7 +1180,6 @@
         elements.textInput.addEventListener('input', (e) => {
             if (state.keycaps[state.selectedSlotIndex]) {
                 state.keycaps[state.selectedSlotIndex].text = e.target.value;
-                renderSlotSelectorTabs();
                 renderPreview();
             }
         });
@@ -1255,7 +1226,6 @@
                     renderPreview(); 
                 }, state.baseColor);
                 renderSlotCountGrid();
-                renderSlotSelectorTabs();
                 updateControlsToMatchSelected();
                 renderPreview();
             } else {
