@@ -60,46 +60,11 @@
             height: 100dvh;
         }
 
-        .product-nav-bar {
-            display: flex;
-            gap: 8px;
-            padding: 8px 12px;
-            background: #FFF0F5;
-            border-bottom: 1.5px solid #FFD1DC;
-            overflow-x: auto;
-            align-items: center;
-        }
-        .product-nav-bar::-webkit-scrollbar { display: none; }
-
-        .product-chip {
-            flex-shrink: 0;
-            padding: 5px 14px;
-            border-radius: 20px;
-            font-size: 0.95rem;
-            font-weight: bold;
-            background: #FFFFFF;
-            color: var(--text-main);
-            border: 1.5px solid #FFD1DC;
-            cursor: pointer;
-            transition: all 0.2s;
-            font-family: 'FCCandy', sans-serif;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-        .product-chip.active {
-            background: var(--accent);
-            color: #FFFFFF;
-            border-color: var(--accent);
-            box-shadow: 0 3px 8px rgba(255, 77, 128, 0.3);
-            transform: scale(1.02);
-        }
-
         .preview-wrapper {
             flex: none;
             display: flex;
             flex-direction: column;
-            padding: 8px 14px 10px 14px;
+            padding: 10px 14px 10px 14px;
             background: #FFFFFF;
             border-bottom: 2px solid var(--border-color);
             box-shadow: 0 4px 16px rgba(0,0,0,0.03);
@@ -576,20 +541,18 @@
     <div class="app-container">
         <!-- PREVIEW SECTION -->
         <div class="preview-wrapper">
-            <div class="product-nav-bar" id="product-nav-bar"></div>
-
             <div class="header-bar">
                 <div style="display: flex; align-items: center; gap: 10px;">
                     <img src="logo.png" alt="Logo" style="height: 44px; width: auto; border-radius: 6px; object-fit: contain; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.08));">
                     <div style="display: flex; flex-direction: column; justify-content: center;">
-                        <h1 id="product-name-display" style="margin: 0; font-size: 1.6rem; font-weight: bold; color: var(--accent); line-height: 1.1;">BunnyMew</h1>
-                        <span id="product-subtitle-display" style="margin: 0; font-size: 0.95rem; color: var(--text-muted); font-weight: bold; line-height: 1.1;">พวงกุญแจคลิกเกอร์</span>
+                        <h1 style="margin: 0; font-size: 1.6rem; font-weight: bold; color: var(--accent); line-height: 1.1;">BunnyMew</h1>
+                        <span style="margin: 0; font-size: 0.95rem; color: var(--text-muted); font-weight: bold; line-height: 1.1;">พวงกุญแจคลิกเกอร์</span>
                     </div>
                 </div>
                 
                 <div class="header-right">
                     <div class="price-tag">฿<span id="total-price">0</span></div>
-                    <span class="lead-time-tag" id="lead-time-display">⏳ พรีออเดอร์ 1-2 วัน</span>
+                    <span class="lead-time-tag">⏳ พรีออเดอร์ 1-2 วัน</span>
                 </div>
             </div>
             
@@ -691,34 +654,12 @@
     <script>
         const COLOR_WHITE = '#ffffff';
 
-        const PRODUCTS = {
-            'clicker': {
-                id: 'clicker',
-                name: 'BunnyMew',
-                subtitle: 'พวงกุญแจคลิกเกอร์',
-                leadTime: '⏳ พรีออเดอร์ 1-2 วัน',
-                calcPrice: (slots) => 29 + (slots * 20),
-                minSlots: 1,
-                maxSlots: 10,
-                defaultSlots: 5
-            },
-            'pet_tag': {
-                id: 'pet_tag',
-                name: 'BunnyMew Pet',
-                subtitle: 'ป้ายชื่อสัตว์เลี้ยง Custom',
-                leadTime: '⏳ พรีออเดอร์ 2-3 วัน',
-                calcPrice: () => 139,
-                minSlots: 1,
-                maxSlots: 1,
-                defaultSlots: 1
-            }
-        };
-        
+        // 19 สี (ตัดสีเทาทั้งหมดออกแล้ว)
         const paletteColors = [
             '#ffd5df', '#ff67b5', '#ff0063', '#dd1515', '#cbf7be', 
             '#ffe955', '#ffd65c', '#ffd9c1', '#ff7a00', '#ff4b08', 
             '#06a869', '#3d9ceb', '#cde4ff', '#768cff', '#9e8bf8', 
-            '#ffffff', '#bdc1cb', '#b0adaa', '#bc927b', '#604623', '#000000'
+            '#ffffff', '#bc927b', '#604623', '#000000'
         ];
 
         const baseColors = paletteColors;
@@ -752,7 +693,6 @@
         let rainbowShiftOffset = 0; 
 
         let state = {
-            productId: 'clicker',
             baseColor: '#ffffff',
             slots: 5,
             selectedSlotIndex: 0,
@@ -760,10 +700,6 @@
         };
 
         const elements = {
-            productNavBar: document.getElementById('product-nav-bar'),
-            productNameDisplay: document.getElementById('product-name-display'),
-            productSubtitleDisplay: document.getElementById('product-subtitle-display'),
-            leadTimeDisplay: document.getElementById('lead-time-display'),
             baseContainer: document.getElementById('base-container'),
             baseInnerSlot: document.getElementById('base-inner-slot'),
             keychainEar: document.getElementById('keychain-ear'),
@@ -892,31 +828,6 @@
             } catch (e) {}
         }
 
-        function renderProductNavBar() {
-            elements.productNavBar.innerHTML = '';
-            Object.values(PRODUCTS).forEach(prod => {
-                const chip = document.createElement('button');
-                chip.className = `product-chip ${prod.id === state.productId ? 'active' : ''}`;
-                chip.innerHTML = `${prod.id === 'clicker' ? '⌨️' : '🐾'} ${prod.subtitle}`;
-                chip.onclick = () => switchProduct(prod.id);
-                elements.productNavBar.appendChild(chip);
-            });
-        }
-
-        function switchProduct(id) {
-            playClickSound();
-            if(!PRODUCTS[id]) return;
-            state.productId = id;
-            const currentProd = PRODUCTS[id];
-            
-            elements.productNameDisplay.textContent = currentProd.name;
-            elements.productSubtitleDisplay.textContent = currentProd.subtitle;
-            elements.leadTimeDisplay.textContent = currentProd.leadTime;
-
-            renderProductNavBar();
-            resetDesign();
-        }
-
         function setPreviewBg(mode) {
             playClickSound();
             const section = elements.captureArea;
@@ -927,8 +838,7 @@
 
         function resetDesign() {
             playClickSound();
-            const currentProd = PRODUCTS[state.productId];
-            state.slots = currentProd.defaultSlots;
+            state.slots = 5;
             state.baseColor = '#ffffff';
             state.selectedSlotIndex = 0;
             state.keycaps = [];
@@ -1031,8 +941,7 @@
         }
 
         function calculatePrice(slots) {
-            const currentProd = PRODUCTS[state.productId];
-            return currentProd ? currentProd.calcPrice(slots) : 0;
+            return 29 + (slots * 20);
         }
 
         function randomizeAll() {
@@ -1118,10 +1027,7 @@
 
         function renderSlotCountGrid() {
             elements.slotCountGrid.innerHTML = '';
-            const currentProd = PRODUCTS[state.productId];
-            const max = currentProd.maxSlots;
-
-            for (let i = 1; i <= max; i++) {
+            for (let i = 1; i <= 10; i++) {
                 const btn = document.createElement('button');
                 btn.className = `btn-slot-num ${i === state.slots ? 'active' : ''}`;
                 btn.textContent = i;
@@ -1293,7 +1199,7 @@
                     }
                 }).then(canvas => {
                     const link = document.createElement('a');
-                    link.download = `bunnymew-${state.productId}-${state.slots}slots.png`;
+                    link.download = `bunnymew-${state.slots}slots.png`;
                     link.href = canvas.toDataURL('image/png');
                     link.click();
                     
@@ -1322,7 +1228,6 @@
 
         function generateDesignURL() {
             const minState = {
-                p: state.productId,
                 b: getColorIndex(state.baseColor),
                 s: state.slots,
                 k: state.keycaps.map(c => [c.text, getColorIndex(c.bgColor), getColorIndex(c.textColor)])
@@ -1364,19 +1269,17 @@
             }
         }
 
-        // --- 🛒 สั่งซื้อ LINE ส่งตรงเข้าโปรไฟล์ dew.111 ---
         function orderViaLine() {
             const url = generateDesignURL();
-            const currentProd = PRODUCTS[state.productId];
             const price = calculatePrice(state.slots);
             const textSummary = state.keycaps.map(c => c.text).join('') || '(ไม่มีตัวอักษร)';
             
             const message = `สวัสดีครับ/ค่ะ สนใจสั่งทำสินค้า 💖\n\n` +
-                            `- สินค้า: ${currentProd.subtitle}\n` +
+                            `- สินค้า: พวงกุญแจคลิกเกอร์\n` +
                             `- ข้อความ/ชื่อ: ${textSummary}\n` +
                             `- จำนวนช่อง: ${state.slots} ช่อง\n` +
                             `- ราคาประเมิน: ${price} บาท\n` +
-                            `- ระยะเวลา: ${currentProd.leadTime.replace('⏳ ', '')}\n\n` +
+                            `- ระยะเวลา: 1-2 วัน\n\n` +
                             `📌 ลิงก์ดีไซน์:\n${url}`;
 
             const lineID = "dew.111";
@@ -1425,7 +1328,6 @@
                 try {
                     const decoded = JSON.parse(decodeURIComponent(escape(atob(decodeURIComponent(designData)))));
                     if (decoded.k) {
-                        state.productId = decoded.p || 'clicker';
                         state.baseColor = getColorFromIndex(decoded.b) || state.baseColor;
                         state.slots = decoded.s || state.slots;
                         state.keycaps = decoded.k.map(c => {
@@ -1444,19 +1346,12 @@
         }
 
         function initApp() {
-            renderProductNavBar();
             buildEmojiPicker();
             renderSlotCountGrid();
             elements.slotCountDisplay.textContent = state.slots;
             
             const hasSharedData = loadFromURL();
             if (hasSharedData) {
-                const currentProd = PRODUCTS[state.productId];
-                elements.productNameDisplay.textContent = currentProd.name;
-                elements.productSubtitleDisplay.textContent = currentProd.subtitle;
-                elements.leadTimeDisplay.textContent = currentProd.leadTime;
-                renderProductNavBar();
-                
                 createColorPalette('base-color-palette', baseColors, (c) => { 
                     state.baseColor = c; renderPreview(); 
                 }, state.baseColor);
