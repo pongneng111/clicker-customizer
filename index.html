@@ -180,6 +180,7 @@
             position: relative;
             user-select: none;
             line-height: 1;
+            color: #ffffff !important;
             background-image: linear-gradient(180deg, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0) 50%, rgba(0,0,0,0.15) 100%);
             box-shadow: 0 5px 0px rgba(0,0,0,0.18), 0 8px 10px rgba(0,0,0,0.12);
             transition: all 0.15s ease;
@@ -187,13 +188,14 @@
 
         .keycap-content {
             display: inline-block;
-            text-shadow: 0 -1px 1px rgba(255, 255, 255, 0.8), 0 2px 3px rgba(0, 0, 0, 0.35);
+            color: #ffffff !important;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5), 0 2px 4px rgba(0, 0, 0, 0.3);
             pointer-events: none;
             transform: translateY(-1px);
         }
 
         .keycap-content.placeholder {
-            opacity: 0.35;
+            opacity: 0.5;
             font-size: 0.8em;
             text-shadow: none;
         }
@@ -451,23 +453,6 @@
         }
         .emoji-btn:active { transform: scale(0.92); }
 
-        .btn-swap {
-            background: #F0F3F6;
-            border: 1.5px solid #CFD9E0;
-            color: #2D3436;
-            border-radius: 10px;
-            padding: 6px 12px;
-            font-family: 'FCCandy', sans-serif;
-            font-size: 1rem;
-            font-weight: bold;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            transition: all 0.15s ease;
-        }
-        .btn-swap:active { transform: scale(0.95); background: #E2E8F0; }
-
         input.single-char {
             padding: 6px 10px;
             border: 2px solid #DFE6E9;
@@ -625,13 +610,7 @@
                     </div>
                 </div>
 
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 4px;">
-                    <label>สีตัวอักษร:</label>
-                    <button class="btn-swap" onclick="swapCurrentSlotColors()">🔄 สลับสีปุ่ม ↔ ตัวอักษร</button>
-                </div>
-                <div class="color-palette" id="font-color-palette"></div>
-
-                <label>สีคีย์แคป:</label>
+                <label style="margin-top: 6px;">สีคีย์แคป:</label>
                 <div class="color-palette" id="keycap-color-palette"></div>
             </div>
         </div>
@@ -654,7 +633,7 @@
     <script>
         const COLOR_WHITE = '#ffffff';
 
-        // 19 สี (ตัดสีเทาทั้งหมดออกแล้ว)
+        // 19 สี (ไม่มีเฉดสีเทา)
         const paletteColors = [
             '#ffd5df', '#ff67b5', '#ff0063', '#dd1515', '#cbf7be', 
             '#ffe955', '#ffd65c', '#ffd9c1', '#ff7a00', '#ff4b08', 
@@ -843,7 +822,7 @@
             state.selectedSlotIndex = 0;
             state.keycaps = [];
             for (let i = 0; i < state.slots; i++) {
-                state.keycaps.push({ text: '', bgColor: '#ffd5df', textColor: '#2D3436' });
+                state.keycaps.push({ text: '', bgColor: '#ffd5df', textColor: COLOR_WHITE });
             }
             
             elements.quickInput.value = '';
@@ -879,13 +858,15 @@
                         state.keycaps.push({ text: chars[i], bgColor: randColor, textColor: COLOR_WHITE });
                     } else {
                         state.keycaps[i].text = chars[i];
+                        state.keycaps[i].textColor = COLOR_WHITE;
                     }
-                    const bg = state.keycaps[i].bgColor;
-                    state.keycaps[i].textColor = (bg === COLOR_WHITE || bg === '#cbf7be' || bg === '#ffe955' || bg === '#ffd5df' || bg === '#cde4ff' || bg === '#ffd9c1') ? '#2D3436' : COLOR_WHITE;
                 }
                 state.keycaps = state.keycaps.slice(0, state.slots);
             } else {
-                state.keycaps.forEach(c => c.text = '');
+                state.keycaps.forEach(c => {
+                    c.text = '';
+                    c.textColor = COLOR_WHITE;
+                });
             }
             
             elements.slotCountDisplay.textContent = state.slots;
@@ -900,13 +881,12 @@
                 for (let i = 0; i < state.slots; i++) {
                     const colorIndex = (rainbowShiftOffset + i) % paletteColors.length;
                     const currentColor = paletteColors[colorIndex];
-                    const newTextColor = (currentColor === COLOR_WHITE || currentColor === '#cbf7be' || currentColor === '#ffe955' || currentColor === '#ffd5df' || currentColor === '#cde4ff' || currentColor === '#ffd9c1') ? '#2D3436' : COLOR_WHITE;
                     
                     if (state.keycaps[i]) {
                         state.keycaps[i].bgColor = currentColor;
-                        state.keycaps[i].textColor = newTextColor;
+                        state.keycaps[i].textColor = COLOR_WHITE;
                     } else {
-                        state.keycaps.push({ text: '', bgColor: currentColor, textColor: newTextColor });
+                        state.keycaps.push({ text: '', bgColor: currentColor, textColor: COLOR_WHITE });
                     }
                 }
                 rainbowShiftOffset = (rainbowShiftOffset + 1) % paletteColors.length;
@@ -920,13 +900,12 @@
 
                 for (let i = 0; i < state.slots; i++) {
                     const currentColor = variation.pool[i % variation.pool.length];
-                    const newTextColor = (currentColor === COLOR_WHITE || currentColor === '#cbf7be' || currentColor === '#ffe955' || currentColor === '#ffd5df' || currentColor === '#cde4ff') ? '#2D3436' : COLOR_WHITE;
                     
                     if (state.keycaps[i]) {
                         state.keycaps[i].bgColor = currentColor;
-                        state.keycaps[i].textColor = newTextColor;
+                        state.keycaps[i].textColor = COLOR_WHITE;
                     } else {
-                        state.keycaps.push({ text: '', bgColor: currentColor, textColor: newTextColor });
+                        state.keycaps.push({ text: '', bgColor: currentColor, textColor: COLOR_WHITE });
                     }
                 }
             }
@@ -951,13 +930,12 @@
             
             for (let i = 0; i < state.slots; i++) {
                 const randomKeyBg = availableKeycapColors[Math.floor(Math.random() * availableKeycapColors.length)];
-                const newTextColor = (randomKeyBg === COLOR_WHITE || randomKeyBg === '#cbf7be' || randomKeyBg === '#ffe955' || randomKeyBg === '#ffd5df' || randomKeyBg === '#cde4ff' || randomKeyBg === '#ffd9c1') ? '#2D3436' : COLOR_WHITE;
                 
                 if (state.keycaps[i]) {
                     state.keycaps[i].bgColor = randomKeyBg;
-                    state.keycaps[i].textColor = newTextColor;
+                    state.keycaps[i].textColor = COLOR_WHITE;
                 } else {
-                    state.keycaps.push({ text: '', bgColor: randomKeyBg, textColor: newTextColor });
+                    state.keycaps.push({ text: '', bgColor: randomKeyBg, textColor: COLOR_WHITE });
                 }
             }
 
@@ -978,20 +956,9 @@
 
             state.keycaps.forEach(cap => {
                 cap.bgColor = singleKeyBg;
-                cap.textColor = (singleKeyBg === COLOR_WHITE || singleKeyBg === '#cbf7be' || singleKeyBg === '#ffe955' || singleKeyBg === '#ffd5df' || singleKeyBg === '#cde4ff' || singleKeyBg === '#ffd9c1') ? '#2D3436' : COLOR_WHITE;
+                cap.textColor = COLOR_WHITE;
             });
 
-            updateControlsToMatchSelected();
-            renderPreview();
-        }
-
-        function swapCurrentSlotColors() {
-            playClickSound();
-            const cap = state.keycaps[state.selectedSlotIndex];
-            if (!cap) return;
-            const temp = cap.bgColor;
-            cap.bgColor = cap.textColor;
-            cap.textColor = temp;
             updateControlsToMatchSelected();
             renderPreview();
         }
@@ -1046,7 +1013,7 @@
                             state.keycaps.push({
                                 text: '',
                                 bgColor: randColor,
-                                textColor: (randColor === COLOR_WHITE || randColor === '#cbf7be' || randColor === '#ffe955' || randColor === '#ffd5df') ? '#2D3436' : COLOR_WHITE
+                                textColor: COLOR_WHITE
                             });
                         }
                     } else {
@@ -1080,7 +1047,7 @@
                 const capDiv = document.createElement('div');
                 capDiv.className = `keycap ${index === state.selectedSlotIndex ? 'selected' : ''}`;
                 capDiv.style.backgroundColor = cap.bgColor;
-                capDiv.style.color = cap.textColor || COLOR_WHITE; 
+                capDiv.style.color = COLOR_WHITE; 
                 capDiv.style.width = `${dim.keySize}px`;
                 capDiv.style.height = `${dim.keySize}px`;
                 capDiv.style.fontSize = `${dim.fontSize}px`;
@@ -1142,6 +1109,7 @@
                     createParticles(rect.left + rect.width / 2, rect.top + rect.height / 2, 6, 'heart');
                     if (state.keycaps[state.selectedSlotIndex]) {
                         state.keycaps[state.selectedSlotIndex].text = emoji;
+                        state.keycaps[state.selectedSlotIndex].textColor = COLOR_WHITE;
                         elements.textInput.value = emoji;
                         syncQuickInputDisplay();
                         renderPreview();
@@ -1165,13 +1133,9 @@
 
             if (!currentCap) return;
 
-            createColorPalette('font-color-palette', [COLOR_WHITE], (color) => {
-                state.keycaps[state.selectedSlotIndex].textColor = color;
-                renderPreview();
-            }, currentCap.textColor || COLOR_WHITE);
-
             createColorPalette('keycap-color-palette', keycapColors, (color) => {
                 state.keycaps[state.selectedSlotIndex].bgColor = color;
+                state.keycaps[state.selectedSlotIndex].textColor = COLOR_WHITE;
                 renderPreview();
             }, currentCap.bgColor);
         }
@@ -1230,7 +1194,7 @@
             const minState = {
                 b: getColorIndex(state.baseColor),
                 s: state.slots,
-                k: state.keycaps.map(c => [c.text, getColorIndex(c.bgColor), getColorIndex(c.textColor)])
+                k: state.keycaps.map(c => [c.text, getColorIndex(c.bgColor)])
             };
             const jsonString = JSON.stringify(minState);
             const encoded = encodeURIComponent(btoa(unescape(encodeURIComponent(jsonString))));
@@ -1312,6 +1276,7 @@
             e.target.value = val;
             if (state.keycaps[state.selectedSlotIndex]) {
                 state.keycaps[state.selectedSlotIndex].text = val;
+                state.keycaps[state.selectedSlotIndex].textColor = COLOR_WHITE;
                 syncQuickInputDisplay();
                 renderPreview();
             }
@@ -1332,9 +1297,9 @@
                         state.slots = decoded.s || state.slots;
                         state.keycaps = decoded.k.map(c => {
                             if (Array.isArray(c)) {
-                                return { text: c[0] || '', bgColor: getColorFromIndex(c[1]) || '#ffffff', textColor: getColorFromIndex(c[2]) || COLOR_WHITE };
+                                return { text: c[0] || '', bgColor: getColorFromIndex(c[1]) || '#ffffff', textColor: COLOR_WHITE };
                             } else {
-                                return { text: c.t || '', bgColor: c.b || '#ffffff', textColor: c.c || COLOR_WHITE };
+                                return { text: c.t || '', bgColor: c.b || '#ffffff', textColor: COLOR_WHITE };
                             }
                         });
                     }
@@ -1361,7 +1326,7 @@
                 renderPreview();
             } else {
                 for (let i = 0; i < state.slots; i++) {
-                    state.keycaps.push({ text: '', bgColor: '#ffd5df', textColor: '#2D3436' });
+                    state.keycaps.push({ text: '', bgColor: '#ffd5df', textColor: COLOR_WHITE });
                 }
                 createColorPalette('base-color-palette', baseColors, (c) => { 
                     state.baseColor = c; renderPreview(); 
