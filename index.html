@@ -64,7 +64,7 @@
             flex: none;
             display: flex;
             flex-direction: column;
-            padding: 10px 14px 14px 14px;
+            padding: 10px 14px 10px 14px;
             background: #FFFFFF;
             border-bottom: 2px solid var(--border-color);
             box-shadow: 0 4px 16px rgba(0,0,0,0.03);
@@ -112,11 +112,31 @@
             border-radius: 14px;
             padding: 12px 18px;
             min-height: 110px;
-            max-height: 135px;
+            max-height: 140px;
             border: 1.5px solid #E2E8F0;
             position: relative;
             overflow: hidden;
+            transition: background 0.3s ease;
         }
+
+        .bg-toggles {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            display: flex;
+            gap: 6px;
+            z-index: 10;
+        }
+
+        .bg-toggle-btn {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            transition: transform 0.1s;
+        }
+        .bg-toggle-btn:active { transform: scale(0.9); }
 
         .model-wrapper {
             display: flex;
@@ -162,7 +182,7 @@
             line-height: 1;
             background-image: linear-gradient(180deg, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0) 50%, rgba(0,0,0,0.15) 100%);
             box-shadow: 0 5px 0px rgba(0,0,0,0.18), 0 8px 10px rgba(0,0,0,0.12);
-            transition: transform 0.08s ease, box-shadow 0.08s ease;
+            transition: all 0.15s ease;
         }
 
         .keycap-content {
@@ -172,31 +192,67 @@
             transform: translateY(-1px);
         }
 
+        .keycap-content.placeholder {
+            opacity: 0.35;
+            font-size: 0.8em;
+            text-shadow: none;
+        }
+
         .keycap:active {
-            transform: translateY(3px);
-            box-shadow: 0 1px 0px rgba(0,0,0,0.18), 0 2px 4px rgba(0,0,0,0.1);
+            transform: translateY(3px) !important;
+            box-shadow: 0 1px 0px rgba(0,0,0,0.18), 0 2px 4px rgba(0,0,0,0.1) !important;
         }
 
         .keycap.selected {
-            outline: 2.5px solid #0984E3;
-            outline-offset: 1px;
-            transform: scale(1.06);
+            outline: 3px solid #0984E3;
+            outline-offset: 2px;
+            transform: scale(1.1);
             z-index: 5;
+            box-shadow: 0 10px 20px rgba(9, 132, 227, 0.35);
+        }
+
+        .visual-hint {
+            text-align: center;
+            color: var(--accent);
+            font-size: 0.95rem;
+            font-weight: bold;
+            margin-top: 10px;
+            animation: pulseHint 1.5s infinite;
+        }
+
+        @keyframes pulseHint {
+            0% { opacity: 0.7; transform: scale(0.98); }
+            50% { opacity: 1; transform: scale(1.02); }
+            100% { opacity: 0.7; transform: scale(0.98); }
+        }
+
+        /* --- STICKY BOTTOM BAR --- */
+        .sticky-bottom-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            padding: 8px 14px 20px 14px;
+            box-shadow: 0 -5px 25px rgba(0,0,0,0.08);
+            z-index: 100;
+            border-top: 1px solid var(--border-color);
         }
 
         .color-disclaimer {
-            font-size: 0.95rem;
+            font-size: 0.85rem;
             color: #95A5A6;
             text-align: center;
-            margin-top: 15px;
-            margin-bottom: 6px;
+            margin-bottom: 8px;
+            font-weight: bold;
         }
 
         .action-buttons {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
             gap: 6px;
-            margin-bottom: 20px;
         }
 
         .btn {
@@ -224,17 +280,24 @@
             grid-column: span 4; 
             background: #06C755; 
             color: #FFF; 
-            font-size: 1.35rem; 
+            font-size: 1.4rem; 
             padding: 10px; 
-            box-shadow: 0 4px 10px rgba(6, 199, 85, 0.25);
-            margin-top: 4px;
+            box-shadow: 0 4px 15px rgba(6, 199, 85, 0.35);
+            margin-top: 2px;
+            animation: bounceOrder 3s infinite;
+        }
+
+        @keyframes bounceOrder {
+            0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+            40% {transform: translateY(-4px);}
+            60% {transform: translateY(-2px);}
         }
 
         .control-section {
             flex: 1;
             overflow-y: auto;
             -webkit-overflow-scrolling: touch;
-            padding: 14px 14px 35px 14px;
+            padding: 14px 14px 160px 14px; /* เผื่อพื้นที่ให้ Sticky Bar */
             display: flex;
             flex-direction: column;
             gap: 12px;
@@ -265,6 +328,30 @@
             font-size: 1.05rem;
             font-weight: bold;
             color: var(--text-muted);
+        }
+
+        /* Input สำหรับพิมพ์ชื่อแบบยาว (Feature 1) */
+        input.quick-input {
+            width: 100%;
+            padding: 12px 14px;
+            border: 2.5px solid #DFE6E9;
+            border-radius: 12px;
+            font-family: 'FCCandy', sans-serif;
+            font-size: 1.4rem;
+            color: var(--text-main);
+            background: #F8F9FA;
+            outline: none;
+            transition: all 0.2s;
+            text-align: center;
+        }
+        input.quick-input:focus {
+            border-color: var(--accent);
+            background: #FFFFFF;
+            box-shadow: 0 0 0 4px rgba(255, 77, 128, 0.1);
+        }
+        input.quick-input::placeholder {
+            color: #B2BEC3;
+            font-size: 1.1rem;
         }
 
         .preset-grid {
@@ -319,37 +406,19 @@
             transform: scale(1.05);
         }
 
-        .slot-selector-tabs {
-            display: flex;
-            gap: 6px;
-            overflow-x: auto;
-            padding-bottom: 2px;
-        }
-        .slot-selector-tabs::-webkit-scrollbar { height: 3px; }
-        .slot-selector-tabs::-webkit-scrollbar-thumb { background: #E2E8F0; border-radius: 4px; }
-
-        .slot-tab-btn {
-            flex-shrink: 0;
-            min-width: 38px;
-            height: 38px;
-            border-radius: 10px;
-            border: 1.5px solid var(--border-color);
-            background: #F8F9FA;
+        .btn-nav {
+            background: #F0F3F6;
+            border: 1.5px solid #DFE6E9;
+            border-radius: 8px;
+            padding: 4px 12px;
             font-family: 'FCCandy', sans-serif;
-            font-weight: bold;
-            font-size: 1.15rem;
-            color: var(--text-main);
+            font-size: 1rem;
+            color: #0984E3;
             cursor: pointer;
-            transition: all 0.15s ease;
+            font-weight: bold;
+            transition: all 0.1s;
         }
-
-        .slot-tab-btn.active {
-            background: var(--accent);
-            color: #FFFFFF;
-            border-color: var(--accent);
-            box-shadow: 0 3px 8px rgba(255, 77, 128, 0.3);
-            transform: scale(1.05);
-        }
+        .btn-nav:active { background: #E2E8F0; transform: scale(0.95); }
 
         .color-palette {
             display: flex;
@@ -408,7 +477,7 @@
         }
         .btn-swap:active { transform: scale(0.95); background: #E2E8F0; }
 
-        input[type="text"] {
+        input.single-char {
             padding: 6px 10px;
             border: 2px solid #DFE6E9;
             border-radius: 10px;
@@ -422,7 +491,7 @@
             outline: none;
         }
 
-        input[type="text"]:focus {
+        input.single-char:focus {
             border-color: var(--accent);
             background: #FFF;
         }
@@ -442,7 +511,17 @@
                 padding: 40px; 
                 flex: 1;
             }
-            .control-section { width: 450px; height: 100%; padding: 24px; }
+            .control-section { 
+                width: 450px; 
+                height: 100%; 
+                padding: 24px 24px 170px 24px; 
+            }
+            .sticky-bottom-bar {
+                width: 450px;
+                left: auto;
+                right: 0;
+                padding-bottom: 24px;
+            }
             .color-btn { width: 32px; height: 32px; }
         }
 
@@ -462,7 +541,7 @@
             opacity: 0;
             transition: all 0.3s;
         }
-        .toast.show { visibility: visible; opacity: 1; bottom: 30px; }
+        .toast.show { visibility: visible; opacity: 1; bottom: 100px; }
     </style>
 </head>
 <body>
@@ -470,6 +549,7 @@
     <canvas id="fx-canvas"></canvas>
 
     <div class="app-container">
+        <!-- PREVIEW SECTION -->
         <div class="preview-wrapper">
             <div class="header-bar">
                 <div style="display: flex; align-items: center; gap: 10px;">
@@ -487,6 +567,13 @@
             </div>
             
             <div class="preview-section" id="capture-area">
+                <!-- 🎒 ปุ่มจำลองสลับสีพื้นหลัง -->
+                <div class="bg-toggles" id="bg-toggles">
+                    <div class="bg-toggle-btn" style="background: #FFFFFF; border: 1.5px solid #DFE6E9;" onclick="setPreviewBg('light')"></div>
+                    <div class="bg-toggle-btn" style="background: #FDF1D6; border: 1.5px solid #E6DDC4;" onclick="setPreviewBg('cream')"></div>
+                    <div class="bg-toggle-btn" style="background: #2D3436; border: 1.5px solid #1E272E;" onclick="setPreviewBg('dark')"></div>
+                </div>
+
                 <div class="model-wrapper" id="model-3d">
                     <div class="keychain-ear-loop" id="keychain-ear"></div>
                     <div id="base-container" class="base-case-frame">
@@ -494,9 +581,21 @@
                     </div>
                 </div>
             </div>
+            <div class="visual-hint" id="visual-hint">👆 แตะที่ปุ่มบนรูป เพื่อเลือกแต่งทีละช่อง</div>
         </div>
 
+        <!-- CONTROLS SECTION -->
         <div class="control-section">
+            
+            <!-- ⚡ พิมพ์ชื่อทีเดียวจบ -->
+            <div class="control-card" style="border: 2px solid var(--accent); box-shadow: 0 4px 12px rgba(255,77,128,0.1);">
+                <div class="card-header" style="justify-content: space-between;">
+                    <span>⚡ พิมพ์ชื่ออัตโนมัติ</span>
+                    <button style="background:none; border:none; color:var(--text-muted); font-size:0.9rem; font-weight:bold; cursor:pointer; font-family:'FCCandy';" onclick="resetDesign()">🗑️ เริ่มใหม่</button>
+                </div>
+                <input type="text" id="quick-name-input" class="quick-input" placeholder="พิมพ์ชื่อที่นี่... (สูงสุด 10 ช่อง)" maxlength="10">
+            </div>
+
             <div class="control-card">
                 <div class="card-header">💡 ไอเดียสำเร็จรูป</div>
                 <div class="preset-grid">
@@ -518,12 +617,20 @@
             </div>
 
             <div class="control-card">
-                <div class="card-header" style="white-space: nowrap; margin-bottom: 4px;">🎨 2. แต่งปุ่มที่ <span id="selected-slot-display">1</span></div>
+                <div style="display: flex; justify-content: space-between; align-items: center; gap: 8px;">
+                    <div class="card-header" style="white-space: nowrap; margin-bottom: 4px;">
+                        🎨 2. แต่งปุ่มที่ <span id="selected-slot-display" style="color: #0984E3; font-size: 1.4rem; margin-left: 6px;">1</span>
+                    </div>
+                    <div style="display: flex; gap: 6px;">
+                        <button class="btn-nav" onclick="prevSlot()">◀ ก่อนหน้า</button>
+                        <button class="btn-nav" onclick="nextSlot()">ถัดไป ▶</button>
+                    </div>
+                </div>
 
                 <div style="display: flex; gap: 10px; align-items: flex-end; margin-top: 2px;">
                     <div>
                         <label>พิมพ์ตัวอักษร:</label><br>
-                        <input type="text" id="keycap-text-input" maxlength="2">
+                        <input type="text" id="keycap-text-input" class="single-char" maxlength="2">
                     </div>
                     <div>
                         <label>ไอคอนหัวใจ:</label>
@@ -540,8 +647,11 @@
                 <label>สีคีย์แคป:</label>
                 <div class="color-palette" id="keycap-color-palette"></div>
             </div>
+        </div>
 
-            <div class="color-disclaimer">⚠️ สีสินค้าจริงอาจแตกต่างจากหน้าจอเล็กน้อยตามแสงและการแสดงผล</div>
+        <!-- 📌 แถบสั่งซื้อติดหนึบ (Sticky Bottom Bar) -->
+        <div class="sticky-bottom-bar">
+            <div class="color-disclaimer">⚠️ สีจริงอาจต่างจากหน้าจอเล็กน้อยตามแสงและการแสดงผล</div>
             <div class="action-buttons">
                 <button class="btn btn-save" onclick="saveImage()">📷 เซฟรูป</button>
                 <button class="btn btn-link" onclick="copyShareLink()">🔗 ลิงก์</button>
@@ -549,7 +659,6 @@
                 <button class="btn btn-mono" onclick="randomizeSingleColor()">🎨 สีเดียว</button>
                 <button class="btn btn-order" onclick="orderViaLine()">🛒 สั่งซื้อผ่าน LINE</button>
             </div>
-            
         </div>
     </div>
 
@@ -568,13 +677,6 @@
         const baseColors = paletteColors;
         const keycapColors = paletteColors;
         const heartEmojis = ['❤️', '🩷', '🧡', '💛', '💚', '🩵', '💙', '💜', '🖤', '🤍'];
-
-        const meaningfulWords = {
-            1: ["❤️"], 2: ["H", "I"], 3: ["Y", "O", "U"], 4: ["L", "O", "V", "E"],
-            5: ["N", "❤️", "O", "❤️", "Y"], 6: ["E", "❤️", "M", "I", "R", "O"],
-            7: ["F", "O", "R", "E", "V", "E", "R"], 8: ["S", "U", "N", "S", "H", "I", "N", "E"],
-            9: ["B", "E", "A", "U", "T", "I", "F", "U", "L"], 10: ["E", "V", "E", "R", "Y", "T", "H", "I", "N", "G"]
-        };
 
         const presetPalettes = {
             LOVE: [
@@ -604,7 +706,7 @@
 
         let state = {
             baseColor: '#ffffff',
-            slots: 6,
+            slots: 5,
             selectedSlotIndex: 0,
             keycaps: []
         };
@@ -617,10 +719,13 @@
             slotCountDisplay: document.getElementById('slot-count-display'),
             selectedSlotDisplay: document.getElementById('selected-slot-display'),
             textInput: document.getElementById('keycap-text-input'),
+            quickInput: document.getElementById('quick-name-input'),
             priceDisplay: document.getElementById('total-price'),
             emojiPicker: document.getElementById('emoji-picker'),
             captureArea: document.getElementById('capture-area'),
-            toast: document.getElementById('toast')
+            toast: document.getElementById('toast'),
+            bgToggles: document.getElementById('bg-toggles'),
+            visualHint: document.getElementById('visual-hint')
         };
 
         let currentMonoIndex = 0;
@@ -708,17 +813,12 @@
         }, { passive: true });
 
         let audioCtx = null;
-
         function getAudioContext() {
             if (!audioCtx) {
                 const AudioContextClass = window.AudioContext || window.webkitAudioContext;
-                if (AudioContextClass) {
-                    audioCtx = new AudioContextClass();
-                }
+                if (AudioContextClass) audioCtx = new AudioContextClass();
             }
-            if (audioCtx && audioCtx.state === 'suspended') {
-                audioCtx.resume();
-            }
+            if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
             return audioCtx;
         }
 
@@ -747,9 +847,88 @@
             } catch (e) {}
         }
 
+        // --- 🎒 ปุ่มจำลองสลับสีพื้นหลัง ---
+        function setPreviewBg(mode) {
+            playClickSound();
+            const section = elements.captureArea;
+            if(mode === 'light') section.style.background = 'radial-gradient(circle at 50% 30%, #FFFFFF 0%, #EDF2F7 100%)';
+            else if(mode === 'cream') section.style.background = 'radial-gradient(circle at 50% 30%, #FFFDF9 0%, #E6DDC4 100%)';
+            else if(mode === 'dark') section.style.background = 'radial-gradient(circle at 50% 30%, #4B6584 0%, #2D3436 100%)';
+        }
+
+        // --- 🗑️ ปุ่มล้างข้อมูล เริ่มใหม่ ---
+        function resetDesign() {
+            playClickSound();
+            state.slots = 5;
+            state.baseColor = '#ffffff';
+            state.selectedSlotIndex = 0;
+            state.keycaps = [];
+            for (let i = 0; i < state.slots; i++) {
+                state.keycaps.push({ text: '', bgColor: '#ffd5df', textColor: '#2D3436' });
+            }
+            
+            elements.quickInput.value = '';
+            setPreviewBg('light');
+            
+            createColorPalette('base-color-palette', baseColors, (c) => { 
+                state.baseColor = c; renderPreview(); 
+            }, state.baseColor);
+            
+            elements.slotCountDisplay.textContent = state.slots;
+            renderSlotCountGrid();
+            updateControlsToMatchSelected();
+            renderPreview();
+        }
+
+        // --- ซิงค์ข้อความ Quick Input ให้ตรงกับ Keycaps เสมอ ---
+        function syncQuickInputDisplay() {
+            const fullText = state.keycaps.map(c => c.text).join('');
+            elements.quickInput.value = fullText;
+        }
+
+        // --- ⚡ ระบบพิมพ์ชื่อด่วน (Auto-fill) ---
+        elements.quickInput.addEventListener('input', (e) => {
+            // บังคับตัวพิมพ์ใหญ่
+            let val = e.target.value.toUpperCase();
+            e.target.value = val;
+            
+            // ใช้ Array.from เพื่อรองรับ Emoji ที่ยาวกว่า 1 char
+            let chars = Array.from(val); 
+            if(chars.length > 10) chars = chars.slice(0, 10);
+            
+            if(chars.length > 0) {
+                const prevSlots = state.slots;
+                state.slots = chars.length;
+                
+                for(let i=0; i<state.slots; i++) {
+                    if(!state.keycaps[i]) {
+                        // ช่องงอกใหม่ ให้สุ่มสี
+                        const randColor = keycapColors[Math.floor(Math.random() * keycapColors.length)];
+                        state.keycaps.push({ text: chars[i], bgColor: randColor, textColor: COLOR_WHITE });
+                    } else {
+                        // ช่องเดิม เปลี่ยนแค่ข้อความ
+                        state.keycaps[i].text = chars[i];
+                    }
+                    // ปรับสีตัวอักษรให้อ่านง่าย
+                    const bg = state.keycaps[i].bgColor;
+                    state.keycaps[i].textColor = (bg === COLOR_WHITE || bg === '#cbf7be' || bg === '#ffe955' || bg === '#ffd5df' || bg === '#cde4ff' || bg === '#ffd9c1') ? '#2D3436' : COLOR_WHITE;
+                }
+                // ตัดช่องเกินทิ้ง
+                state.keycaps = state.keycaps.slice(0, state.slots);
+            } else {
+                // ถ้าลบหมด ก็เคลียร์ข้อความ แต่เก็บจำนวนช่องและสีเดิมไว้
+                state.keycaps.forEach(c => c.text = '');
+            }
+            
+            elements.slotCountDisplay.textContent = state.slots;
+            renderSlotCountGrid();
+            updateControlsToMatchSelected();
+            renderPreview();
+        });
+
+        // --- ระบบพรีเซ็ตสี (เปลี่ยนเฉพาะสี ล็อกตัวอักษรเดิม 100%) ---
         function applyPreset(theme) {
             playClickSound();
-            const wordArr = meaningfulWords[state.slots] || [];
 
             if (theme === 'RAINBOW') {
                 for (let i = 0; i < state.slots; i++) {
@@ -761,11 +940,7 @@
                         state.keycaps[i].bgColor = currentColor;
                         state.keycaps[i].textColor = newTextColor;
                     } else {
-                        state.keycaps.push({
-                            text: wordArr[i] !== undefined ? wordArr[i] : '',
-                            bgColor: currentColor,
-                            textColor: newTextColor
-                        });
+                        state.keycaps.push({ text: '', bgColor: currentColor, textColor: newTextColor });
                     }
                 }
                 rainbowShiftOffset = (rainbowShiftOffset + 1) % paletteColors.length;
@@ -788,11 +963,7 @@
                         state.keycaps[i].bgColor = currentColor;
                         state.keycaps[i].textColor = newTextColor;
                     } else {
-                        state.keycaps.push({
-                            text: wordArr[i] !== undefined ? wordArr[i] : '',
-                            bgColor: currentColor,
-                            textColor: newTextColor
-                        });
+                        state.keycaps.push({ text: '', bgColor: currentColor, textColor: newTextColor });
                     }
                 }
             }
@@ -810,29 +981,22 @@
             return 29 + (slots * 20);
         }
 
+        // --- 🎨 Smart Shuffle สุ่มหลากสี (ล็อกตัวอักษรเดิม 100%) ---
         function randomizeAll() {
+            playClickSound();
             state.baseColor = baseColors[Math.floor(Math.random() * baseColors.length)];
 
-            let availableKeycapColors = keycapColors;
-            if (state.baseColor === COLOR_WHITE) {
-                availableKeycapColors = keycapColors.filter(c => c !== COLOR_WHITE);
-            }
-
-            const wordArr = meaningfulWords[state.slots] || [];
+            let availableKeycapColors = keycapColors.filter(c => c !== state.baseColor);
             
             for (let i = 0; i < state.slots; i++) {
                 const randomKeyBg = availableKeycapColors[Math.floor(Math.random() * availableKeycapColors.length)];
-                const newTextColor = (randomKeyBg === COLOR_WHITE || randomKeyBg === '#cbf7be' || randomKeyBg === '#ffe955' || randomKeyBg === '#ffd5df') ? '#2D3436' : COLOR_WHITE;
+                const newTextColor = (randomKeyBg === COLOR_WHITE || randomKeyBg === '#cbf7be' || randomKeyBg === '#ffe955' || randomKeyBg === '#ffd5df' || randomKeyBg === '#cde4ff' || randomKeyBg === '#ffd9c1') ? '#2D3436' : COLOR_WHITE;
                 
                 if (state.keycaps[i]) {
                     state.keycaps[i].bgColor = randomKeyBg;
                     state.keycaps[i].textColor = newTextColor;
                 } else {
-                    state.keycaps.push({
-                        text: wordArr[i] !== undefined ? wordArr[i] : '',
-                        bgColor: randomKeyBg,
-                        textColor: newTextColor
-                    });
+                    state.keycaps.push({ text: '', bgColor: randomKeyBg, textColor: newTextColor });
                 }
             }
 
@@ -845,21 +1009,19 @@
             renderPreview();
         }
 
+        // --- สุ่มสีเดียว (ล็อกตัวอักษรเดิม 100%) ---
         function randomizeSingleColor() {
+            playClickSound();
             if (!state.baseColor) {
                 state.baseColor = baseColors[Math.floor(Math.random() * baseColors.length)];
             }
 
             const singleKeyBg = keycapColors[currentMonoIndex];
-            
-            currentMonoIndex++;
-            if (currentMonoIndex >= keycapColors.length) {
-                currentMonoIndex = 0;
-            }
+            currentMonoIndex = (currentMonoIndex + 1) % keycapColors.length;
 
             state.keycaps.forEach(cap => {
                 cap.bgColor = singleKeyBg;
-                cap.textColor = (singleKeyBg === COLOR_WHITE || singleKeyBg === '#cbf7be' || singleKeyBg === '#ffe955' || singleKeyBg === '#ffd5df') ? '#2D3436' : COLOR_WHITE;
+                cap.textColor = (singleKeyBg === COLOR_WHITE || singleKeyBg === '#cbf7be' || singleKeyBg === '#ffe955' || singleKeyBg === '#ffd5df' || singleKeyBg === '#cde4ff' || singleKeyBg === '#ffd9c1') ? '#2D3436' : COLOR_WHITE;
             });
 
             updateControlsToMatchSelected();
@@ -875,6 +1037,21 @@
             cap.bgColor = cap.textColor;
             cap.textColor = temp;
 
+            updateControlsToMatchSelected();
+            renderPreview();
+        }
+
+        // --- ปุ่มนำทาง ซ้าย ขวา ---
+        function nextSlot() {
+            playClickSound();
+            state.selectedSlotIndex = (state.selectedSlotIndex + 1) % state.slots;
+            updateControlsToMatchSelected();
+            renderPreview();
+        }
+
+        function prevSlot() {
+            playClickSound();
+            state.selectedSlotIndex = (state.selectedSlotIndex - 1 + state.slots) % state.slots;
             updateControlsToMatchSelected();
             renderPreview();
         }
@@ -910,11 +1087,10 @@
                     renderSlotCountGrid();
 
                     if (state.slots > prevSlots) {
-                        const wordArr = meaningfulWords[state.slots] || [];
                         for (let k = prevSlots; k < state.slots; k++) {
                             const randColor = keycapColors[Math.floor(Math.random() * keycapColors.length)];
                             state.keycaps.push({
-                                text: wordArr[k] !== undefined ? wordArr[k] : '',
+                                text: '',
                                 bgColor: randColor,
                                 textColor: (randColor === COLOR_WHITE || randColor === '#cbf7be' || randColor === '#ffe955' || randColor === '#ffd5df') ? '#2D3436' : COLOR_WHITE
                             });
@@ -923,6 +1099,7 @@
                         state.keycaps = state.keycaps.slice(0, state.slots);
                     }
 
+                    syncQuickInputDisplay();
                     updateControlsToMatchSelected();
                     renderPreview();
                 };
@@ -955,7 +1132,15 @@
                 capDiv.style.fontSize = `${dim.fontSize}px`;
                 capDiv.style.borderRadius = `${dim.rad}px`;
 
-                capDiv.innerHTML = `<span class="keycap-content">${cap.text || ''}</span>`;
+                // --- 🔤 ลายน้ำบนปุ่มเปล่า (Visual Hint) ---
+                let displayText = cap.text;
+                let isPlaceholder = false;
+                if (!displayText || displayText.trim() === '') {
+                    displayText = '+';
+                    isPlaceholder = true;
+                }
+
+                capDiv.innerHTML = `<span class="keycap-content ${isPlaceholder ? 'placeholder' : ''}">${displayText}</span>`;
                 
                 const handleKeyClick = (e) => {
                     e.stopPropagation();
@@ -1007,6 +1192,7 @@
                     if (state.keycaps[state.selectedSlotIndex]) {
                         state.keycaps[state.selectedSlotIndex].text = emoji;
                         elements.textInput.value = emoji;
+                        syncQuickInputDisplay();
                         renderPreview();
                     }
                 };
@@ -1045,6 +1231,9 @@
             renderPreview();
 
             const target = document.getElementById('capture-area');
+            
+            // ซ่อนปุ่มจำลองพื้นหลังชั่วคราวตอนถ่ายรูป
+            elements.bgToggles.style.display = 'none';
 
             setTimeout(() => {
                 html2canvas(target, { 
@@ -1066,6 +1255,7 @@
                     link.click();
                     
                     state.selectedSlotIndex = oldIndex;
+                    elements.bgToggles.style.display = 'flex'; // แสดงกลับ
                     renderPreview();
                 });
             }, 80);
@@ -1081,13 +1271,11 @@
             const idx = paletteColors.findIndex(c => c.toLowerCase() === hex.toLowerCase());
             return idx !== -1 ? idx : hex;
         }
-
         function getColorFromIndex(val) {
             if (typeof val === 'number' && paletteColors[val]) return paletteColors[val];
             return val;
         }
 
-        // --- เปลี่ยนให้สร้าง URL โดยตัดพารามิเตอร์เก่าทิ้ง ป้องกันลิงก์ยาวซ้อนกัน ---
         function generateDesignURL() {
             const minState = {
                 b: getColorIndex(state.baseColor),
@@ -1096,18 +1284,13 @@
             };
             const jsonString = JSON.stringify(minState);
             const encoded = encodeURIComponent(btoa(unescape(encodeURIComponent(jsonString))));
-            
-            // ดึงเฉพาะ URL หลัก ไม่รวมพารามิเตอร์เก่า (?d=...)
             const baseUrl = window.location.href.split('?')[0].split('#')[0]; 
             return `${baseUrl}?d=${encoded}`;
         }
 
-        // --- ระบบคัดลอกแบบใหม่ (กันเบราว์เซอร์มือถือบล็อก 100%) ---
         function copyToClipboardFallback(text, successMsg) {
             const textArea = document.createElement("textarea");
             textArea.value = text;
-            
-            // ทำให้มองไม่เห็นแต่ยังอยู่ใน DOM เพื่อให้ copy ได้
             textArea.style.position = "fixed";
             textArea.style.top = "-9999px";
             textArea.style.left = "-9999px";
@@ -1119,21 +1302,16 @@
             
             try {
                 const successful = document.execCommand('copy');
-                if (successful) {
-                    showToast(successMsg);
-                } else {
-                    showToast('ไม่สามารถคัดลอกได้ ❌');
-                }
+                if (successful) showToast(successMsg);
+                else showToast('ไม่สามารถคัดลอกได้ ❌');
             } catch (err) {
                 showToast('ไม่สามารถคัดลอกได้ ❌');
             }
-            
             document.body.removeChild(textArea);
         }
 
         function copyShareLink() {
             const url = generateDesignURL();
-            
             if (navigator.clipboard && window.isSecureContext) {
                 navigator.clipboard.writeText(url)
                     .then(() => showToast('คัดลอกลิงก์สำเร็จ! ✨'))
@@ -1151,12 +1329,11 @@
             const lineID = "dew.111";
             const lineUrl = `https://line.me/ti/p/~${lineID}`;
 
-            // คัดลอกข้อความ
             if (navigator.clipboard && window.isSecureContext) {
                 navigator.clipboard.writeText(message)
                     .then(() => {
                         alert("✅ คัดลอกรายละเอียดสั่งซื้อให้แล้ว!\n\nเดี๋ยวระบบจะเปิด LINE ให้ รบกวนกดเพิ่มเพื่อน แล้ว 'วาง' ข้อความส่งได้เลยครับ");
-                        window.location.href = lineUrl; // ใช้ location.href ป้องกัน Popup Blocker
+                        window.location.href = lineUrl;
                     })
                     .catch(() => {
                         copyToClipboardFallback(message, 'เตรียมข้อมูลสั่งซื้อสำเร็จ! ✨');
@@ -1170,16 +1347,16 @@
             }
         }
 
-        elements.textInput.addEventListener('focus', (e) => {
-            e.target.select();
-        });
-        elements.textInput.addEventListener('click', (e) => {
-            e.target.select();
-        });
+        // --- 🔠 บังคับพิมพ์ใหญ่อัตโนมัติ (ช่องแต่งเดี่ยว) ---
+        elements.textInput.addEventListener('focus', (e) => { e.target.select(); });
+        elements.textInput.addEventListener('click', (e) => { e.target.select(); });
 
         elements.textInput.addEventListener('input', (e) => {
+            let val = e.target.value.toUpperCase();
+            e.target.value = val;
             if (state.keycaps[state.selectedSlotIndex]) {
-                state.keycaps[state.selectedSlotIndex].text = e.target.value;
+                state.keycaps[state.selectedSlotIndex].text = val;
+                syncQuickInputDisplay();
                 renderPreview();
             }
         });
@@ -1226,21 +1403,27 @@
                     renderPreview(); 
                 }, state.baseColor);
                 renderSlotCountGrid();
+                syncQuickInputDisplay();
                 updateControlsToMatchSelected();
                 renderPreview();
             } else {
-                const wordArr = meaningfulWords[state.slots] || [];
                 for (let i = 0; i < state.slots; i++) {
-                    const randColor = keycapColors[Math.floor(Math.random() * keycapColors.length)];
-                    state.keycaps.push({
-                        text: wordArr[i] !== undefined ? wordArr[i] : '',
-                        bgColor: randColor,
-                        textColor: (randColor === COLOR_WHITE || randColor === '#cbf7be' || randColor === '#ffe955' || randColor === '#ffd5df') ? '#2D3436' : COLOR_WHITE
-                    });
+                    state.keycaps.push({ text: '', bgColor: '#ffd5df', textColor: '#2D3436' });
                 }
+                createColorPalette('base-color-palette', baseColors, (c) => { 
+                    state.baseColor = c; 
+                    renderPreview(); 
+                }, state.baseColor);
+                syncQuickInputDisplay();
                 updateControlsToMatchSelected();
                 renderPreview();
             }
+            
+            // ซ่อนข้อความใบ้หลังจาก 4 วินาที
+            setTimeout(() => {
+                elements.visualHint.style.opacity = '0';
+                setTimeout(() => elements.visualHint.style.display = 'none', 500);
+            }, 4000);
         }
 
         initApp();
