@@ -60,11 +60,46 @@
             height: 100dvh;
         }
 
+        .product-nav-bar {
+            display: flex;
+            gap: 8px;
+            padding: 8px 12px;
+            background: #FFF0F5;
+            border-bottom: 1.5px solid #FFD1DC;
+            overflow-x: auto;
+            align-items: center;
+        }
+        .product-nav-bar::-webkit-scrollbar { display: none; }
+
+        .product-chip {
+            flex-shrink: 0;
+            padding: 5px 14px;
+            border-radius: 20px;
+            font-size: 0.95rem;
+            font-weight: bold;
+            background: #FFFFFF;
+            color: var(--text-main);
+            border: 1.5px solid #FFD1DC;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: 'FCCandy', sans-serif;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .product-chip.active {
+            background: var(--accent);
+            color: #FFFFFF;
+            border-color: var(--accent);
+            box-shadow: 0 3px 8px rgba(255, 77, 128, 0.3);
+            transform: scale(1.02);
+        }
+
         .preview-wrapper {
             flex: none;
             display: flex;
             flex-direction: column;
-            padding: 10px 14px 10px 14px;
+            padding: 8px 14px 10px 14px;
             background: #FFFFFF;
             border-bottom: 2px solid var(--border-color);
             box-shadow: 0 4px 16px rgba(0,0,0,0.03);
@@ -75,7 +110,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
 
         .header-right {
@@ -88,7 +123,7 @@
         .price-tag {
             background: #FFF3E0;
             color: #E65100;
-            padding: 4px 16px;
+            padding: 3px 16px;
             border-radius: 20px;
             font-weight: bold;
             font-size: 1.75rem;
@@ -99,7 +134,7 @@
         }
 
         .lead-time-tag {
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             color: #FF4D80;
             font-weight: bold;
         }
@@ -214,9 +249,9 @@
         .visual-hint {
             text-align: center;
             color: var(--accent);
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             font-weight: bold;
-            margin-top: 10px;
+            margin-top: 8px;
             animation: pulseHint 1.5s infinite;
         }
 
@@ -226,7 +261,6 @@
             100% { opacity: 0.7; transform: scale(0.98); }
         }
 
-        /* --- STICKY BOTTOM BAR --- */
         .sticky-bottom-bar {
             position: fixed;
             bottom: 0;
@@ -245,7 +279,7 @@
             font-size: 0.85rem;
             color: #95A5A6;
             text-align: center;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
             font-weight: bold;
         }
 
@@ -284,20 +318,13 @@
             padding: 10px; 
             box-shadow: 0 4px 15px rgba(6, 199, 85, 0.35);
             margin-top: 2px;
-            animation: bounceOrder 3s infinite;
-        }
-
-        @keyframes bounceOrder {
-            0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
-            40% {transform: translateY(-4px);}
-            60% {transform: translateY(-2px);}
         }
 
         .control-section {
             flex: 1;
             overflow-y: auto;
             -webkit-overflow-scrolling: touch;
-            padding: 14px 14px 160px 14px; /* เผื่อพื้นที่ให้ Sticky Bar */
+            padding: 14px 14px 160px 14px;
             display: flex;
             flex-direction: column;
             gap: 12px;
@@ -330,7 +357,6 @@
             color: var(--text-muted);
         }
 
-        /* Input สำหรับพิมพ์ชื่อแบบยาว (Feature 1) */
         input.quick-input {
             width: 100%;
             padding: 12px 14px;
@@ -490,7 +516,6 @@
             text-align: center;
             outline: none;
         }
-
         input.single-char:focus {
             border-color: var(--accent);
             background: #FFF;
@@ -551,23 +576,24 @@
     <div class="app-container">
         <!-- PREVIEW SECTION -->
         <div class="preview-wrapper">
+            <div class="product-nav-bar" id="product-nav-bar"></div>
+
             <div class="header-bar">
                 <div style="display: flex; align-items: center; gap: 10px;">
-                    <img src="logo.png" alt="Logo" style="height: 48px; width: auto; border-radius: 6px; object-fit: contain; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.08));">
+                    <img src="logo.png" alt="Logo" style="height: 44px; width: auto; border-radius: 6px; object-fit: contain; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.08));">
                     <div style="display: flex; flex-direction: column; justify-content: center;">
-                        <h1 style="margin: 0; font-size: 1.75rem; font-weight: bold; color: var(--accent); line-height: 1.1;">BunnyMew</h1>
-                        <span style="margin: 0; font-size: 1rem; color: var(--text-muted); font-weight: bold; line-height: 1.1;">พวงกุญแจคลิกเกอร์</span>
+                        <h1 id="product-name-display" style="margin: 0; font-size: 1.6rem; font-weight: bold; color: var(--accent); line-height: 1.1;">BunnyMew</h1>
+                        <span id="product-subtitle-display" style="margin: 0; font-size: 0.95rem; color: var(--text-muted); font-weight: bold; line-height: 1.1;">พวงกุญแจคลิกเกอร์</span>
                     </div>
                 </div>
                 
                 <div class="header-right">
                     <div class="price-tag">฿<span id="total-price">0</span></div>
-                    <span class="lead-time-tag">⏳ พรีออเดอร์ 1-2 วัน</span>
+                    <span class="lead-time-tag" id="lead-time-display">⏳ พรีออเดอร์ 1-2 วัน</span>
                 </div>
             </div>
             
             <div class="preview-section" id="capture-area">
-                <!-- 🎒 ปุ่มจำลองสลับสีพื้นหลัง -->
                 <div class="bg-toggles" id="bg-toggles">
                     <div class="bg-toggle-btn" style="background: #FFFFFF; border: 1.5px solid #DFE6E9;" onclick="setPreviewBg('light')"></div>
                     <div class="bg-toggle-btn" style="background: #FDF1D6; border: 1.5px solid #E6DDC4;" onclick="setPreviewBg('cream')"></div>
@@ -586,8 +612,6 @@
 
         <!-- CONTROLS SECTION -->
         <div class="control-section">
-            
-            <!-- ⚡ พิมพ์ชื่อทีเดียวจบ -->
             <div class="control-card" style="border: 2px solid var(--accent); box-shadow: 0 4px 12px rgba(255,77,128,0.1);">
                 <div class="card-header" style="justify-content: space-between;">
                     <span>⚡ พิมพ์ชื่ออัตโนมัติ</span>
@@ -649,7 +673,7 @@
             </div>
         </div>
 
-        <!-- 📌 แถบสั่งซื้อติดหนึบ (Sticky Bottom Bar) -->
+        <!-- STICKY BOTTOM BAR -->
         <div class="sticky-bottom-bar">
             <div class="color-disclaimer">⚠️ สีจริงอาจต่างจากหน้าจอเล็กน้อยตามแสงและการแสดงผล</div>
             <div class="action-buttons">
@@ -666,6 +690,29 @@
 
     <script>
         const COLOR_WHITE = '#ffffff';
+
+        const PRODUCTS = {
+            'clicker': {
+                id: 'clicker',
+                name: 'BunnyMew',
+                subtitle: 'พวงกุญแจคลิกเกอร์',
+                leadTime: '⏳ พรีออเดอร์ 1-2 วัน',
+                calcPrice: (slots) => 29 + (slots * 20),
+                minSlots: 1,
+                maxSlots: 10,
+                defaultSlots: 5
+            },
+            'pet_tag': {
+                id: 'pet_tag',
+                name: 'BunnyMew Pet',
+                subtitle: 'ป้ายชื่อสัตว์เลี้ยง Custom',
+                leadTime: '⏳ พรีออเดอร์ 2-3 วัน',
+                calcPrice: () => 139,
+                minSlots: 1,
+                maxSlots: 1,
+                defaultSlots: 1
+            }
+        };
         
         const paletteColors = [
             '#ffd5df', '#ff67b5', '#ff0063', '#dd1515', '#cbf7be', 
@@ -705,6 +752,7 @@
         let rainbowShiftOffset = 0; 
 
         let state = {
+            productId: 'clicker',
             baseColor: '#ffffff',
             slots: 5,
             selectedSlotIndex: 0,
@@ -712,6 +760,10 @@
         };
 
         const elements = {
+            productNavBar: document.getElementById('product-nav-bar'),
+            productNameDisplay: document.getElementById('product-name-display'),
+            productSubtitleDisplay: document.getElementById('product-subtitle-display'),
+            leadTimeDisplay: document.getElementById('lead-time-display'),
             baseContainer: document.getElementById('base-container'),
             baseInnerSlot: document.getElementById('base-inner-slot'),
             keychainEar: document.getElementById('keychain-ear'),
@@ -787,9 +839,7 @@
         }
 
         function createParticles(x, y, count = 6, type = 'star') {
-            for (let i = 0; i < count; i++) {
-                particles.push(new Particle(x, y, type));
-            }
+            for (let i = 0; i < count; i++) particles.push(new Particle(x, y, type));
         }
 
         function animateParticles() {
@@ -829,25 +879,44 @@
                 const now = ctxInst.currentTime;
                 const osc = ctxInst.createOscillator();
                 const gain = ctxInst.createGain();
-                
                 osc.type = 'sine';
                 osc.frequency.setValueAtTime(800, now);
                 osc.frequency.exponentialRampToValueAtTime(150, now + 0.05);
-                
                 gain.gain.setValueAtTime(0.5, now);
                 gain.gain.exponentialRampToValueAtTime(0.01, now + 0.05);
-                
                 osc.connect(gain);
                 gain.connect(ctxInst.destination);
-                
                 osc.start(now);
                 osc.stop(now + 0.05);
-
                 if (navigator.vibrate) navigator.vibrate(10);
             } catch (e) {}
         }
 
-        // --- 🎒 ปุ่มจำลองสลับสีพื้นหลัง ---
+        function renderProductNavBar() {
+            elements.productNavBar.innerHTML = '';
+            Object.values(PRODUCTS).forEach(prod => {
+                const chip = document.createElement('button');
+                chip.className = `product-chip ${prod.id === state.productId ? 'active' : ''}`;
+                chip.innerHTML = `${prod.id === 'clicker' ? '⌨️' : '🐾'} ${prod.subtitle}`;
+                chip.onclick = () => switchProduct(prod.id);
+                elements.productNavBar.appendChild(chip);
+            });
+        }
+
+        function switchProduct(id) {
+            playClickSound();
+            if(!PRODUCTS[id]) return;
+            state.productId = id;
+            const currentProd = PRODUCTS[id];
+            
+            elements.productNameDisplay.textContent = currentProd.name;
+            elements.productSubtitleDisplay.textContent = currentProd.subtitle;
+            elements.leadTimeDisplay.textContent = currentProd.leadTime;
+
+            renderProductNavBar();
+            resetDesign();
+        }
+
         function setPreviewBg(mode) {
             playClickSound();
             const section = elements.captureArea;
@@ -856,10 +925,10 @@
             else if(mode === 'dark') section.style.background = 'radial-gradient(circle at 50% 30%, #4B6584 0%, #2D3436 100%)';
         }
 
-        // --- 🗑️ ปุ่มล้างข้อมูล เริ่มใหม่ ---
         function resetDesign() {
             playClickSound();
-            state.slots = 5;
+            const currentProd = PRODUCTS[state.productId];
+            state.slots = currentProd.defaultSlots;
             state.baseColor = '#ffffff';
             state.selectedSlotIndex = 0;
             state.keycaps = [];
@@ -880,43 +949,32 @@
             renderPreview();
         }
 
-        // --- ซิงค์ข้อความ Quick Input ให้ตรงกับ Keycaps เสมอ ---
         function syncQuickInputDisplay() {
             const fullText = state.keycaps.map(c => c.text).join('');
             elements.quickInput.value = fullText;
         }
 
-        // --- ⚡ ระบบพิมพ์ชื่อด่วน (Auto-fill) ---
         elements.quickInput.addEventListener('input', (e) => {
-            // บังคับตัวพิมพ์ใหญ่
             let val = e.target.value.toUpperCase();
             e.target.value = val;
             
-            // ใช้ Array.from เพื่อรองรับ Emoji ที่ยาวกว่า 1 char
             let chars = Array.from(val); 
             if(chars.length > 10) chars = chars.slice(0, 10);
             
             if(chars.length > 0) {
-                const prevSlots = state.slots;
                 state.slots = chars.length;
-                
                 for(let i=0; i<state.slots; i++) {
                     if(!state.keycaps[i]) {
-                        // ช่องงอกใหม่ ให้สุ่มสี
                         const randColor = keycapColors[Math.floor(Math.random() * keycapColors.length)];
                         state.keycaps.push({ text: chars[i], bgColor: randColor, textColor: COLOR_WHITE });
                     } else {
-                        // ช่องเดิม เปลี่ยนแค่ข้อความ
                         state.keycaps[i].text = chars[i];
                     }
-                    // ปรับสีตัวอักษรให้อ่านง่าย
                     const bg = state.keycaps[i].bgColor;
                     state.keycaps[i].textColor = (bg === COLOR_WHITE || bg === '#cbf7be' || bg === '#ffe955' || bg === '#ffd5df' || bg === '#cde4ff' || bg === '#ffd9c1') ? '#2D3436' : COLOR_WHITE;
                 }
-                // ตัดช่องเกินทิ้ง
                 state.keycaps = state.keycaps.slice(0, state.slots);
             } else {
-                // ถ้าลบหมด ก็เคลียร์ข้อความ แต่เก็บจำนวนช่องและสีเดิมไว้
                 state.keycaps.forEach(c => c.text = '');
             }
             
@@ -926,10 +984,8 @@
             renderPreview();
         });
 
-        // --- ระบบพรีเซ็ตสี (เปลี่ยนเฉพาะสี ล็อกตัวอักษรเดิม 100%) ---
         function applyPreset(theme) {
             playClickSound();
-
             if (theme === 'RAINBOW') {
                 for (let i = 0; i < state.slots; i++) {
                     const colorIndex = (rainbowShiftOffset + i) % paletteColors.length;
@@ -944,14 +1000,11 @@
                     }
                 }
                 rainbowShiftOffset = (rainbowShiftOffset + 1) % paletteColors.length;
-
             } else {
                 const list = presetPalettes[theme];
                 if (!list || list.length === 0) return;
-
                 const idx = presetIndexes[theme] % list.length;
                 presetIndexes[theme]++;
-                
                 const variation = list[idx];
                 state.baseColor = variation.base;
 
@@ -978,14 +1031,13 @@
         }
 
         function calculatePrice(slots) {
-            return 29 + (slots * 20);
+            const currentProd = PRODUCTS[state.productId];
+            return currentProd ? currentProd.calcPrice(slots) : 0;
         }
 
-        // --- 🎨 Smart Shuffle สุ่มหลากสี (ล็อกตัวอักษรเดิม 100%) ---
         function randomizeAll() {
             playClickSound();
             state.baseColor = baseColors[Math.floor(Math.random() * baseColors.length)];
-
             let availableKeycapColors = keycapColors.filter(c => c !== state.baseColor);
             
             for (let i = 0; i < state.slots; i++) {
@@ -1001,20 +1053,16 @@
             }
 
             createColorPalette('base-color-palette', baseColors, (c) => { 
-                state.baseColor = c; 
-                renderPreview(); 
+                state.baseColor = c; renderPreview(); 
             }, state.baseColor);
 
             updateControlsToMatchSelected();
             renderPreview();
         }
 
-        // --- สุ่มสีเดียว (ล็อกตัวอักษรเดิม 100%) ---
         function randomizeSingleColor() {
             playClickSound();
-            if (!state.baseColor) {
-                state.baseColor = baseColors[Math.floor(Math.random() * baseColors.length)];
-            }
+            if (!state.baseColor) state.baseColor = baseColors[Math.floor(Math.random() * baseColors.length)];
 
             const singleKeyBg = keycapColors[currentMonoIndex];
             currentMonoIndex = (currentMonoIndex + 1) % keycapColors.length;
@@ -1032,16 +1080,13 @@
             playClickSound();
             const cap = state.keycaps[state.selectedSlotIndex];
             if (!cap) return;
-
             const temp = cap.bgColor;
             cap.bgColor = cap.textColor;
             cap.textColor = temp;
-
             updateControlsToMatchSelected();
             renderPreview();
         }
 
-        // --- ปุ่มนำทาง ซ้าย ขวา ---
         function nextSlot() {
             playClickSound();
             state.selectedSlotIndex = (state.selectedSlotIndex + 1) % state.slots;
@@ -1073,7 +1118,10 @@
 
         function renderSlotCountGrid() {
             elements.slotCountGrid.innerHTML = '';
-            for (let i = 1; i <= 10; i++) {
+            const currentProd = PRODUCTS[state.productId];
+            const max = currentProd.maxSlots;
+
+            for (let i = 1; i <= max; i++) {
                 const btn = document.createElement('button');
                 btn.className = `btn-slot-num ${i === state.slots ? 'active' : ''}`;
                 btn.textContent = i;
@@ -1132,7 +1180,6 @@
                 capDiv.style.fontSize = `${dim.fontSize}px`;
                 capDiv.style.borderRadius = `${dim.rad}px`;
 
-                // --- 🔤 ลายน้ำบนปุ่มเปล่า (Visual Hint) ---
                 let displayText = cap.text;
                 let isPlaceholder = false;
                 if (!displayText || displayText.trim() === '') {
@@ -1145,10 +1192,8 @@
                 const handleKeyClick = (e) => {
                     e.stopPropagation();
                     playClickSound();
-
                     const rect = capDiv.getBoundingClientRect();
                     createParticles(rect.left + rect.width / 2, rect.top + rect.height / 2, 8, 'heart');
-
                     state.selectedSlotIndex = index;
                     updateControlsToMatchSelected();
                     renderPreview();
@@ -1231,8 +1276,6 @@
             renderPreview();
 
             const target = document.getElementById('capture-area');
-            
-            // ซ่อนปุ่มจำลองพื้นหลังชั่วคราวตอนถ่ายรูป
             elements.bgToggles.style.display = 'none';
 
             setTimeout(() => {
@@ -1250,12 +1293,12 @@
                     }
                 }).then(canvas => {
                     const link = document.createElement('a');
-                    link.download = `bunnymew-${state.slots}slots.png`;
+                    link.download = `bunnymew-${state.productId}-${state.slots}slots.png`;
                     link.href = canvas.toDataURL('image/png');
                     link.click();
                     
                     state.selectedSlotIndex = oldIndex;
-                    elements.bgToggles.style.display = 'flex'; // แสดงกลับ
+                    elements.bgToggles.style.display = 'flex';
                     renderPreview();
                 });
             }, 80);
@@ -1271,6 +1314,7 @@
             const idx = paletteColors.findIndex(c => c.toLowerCase() === hex.toLowerCase());
             return idx !== -1 ? idx : hex;
         }
+
         function getColorFromIndex(val) {
             if (typeof val === 'number' && paletteColors[val]) return paletteColors[val];
             return val;
@@ -1278,6 +1322,7 @@
 
         function generateDesignURL() {
             const minState = {
+                p: state.productId,
                 b: getColorIndex(state.baseColor),
                 s: state.slots,
                 k: state.keycaps.map(c => [c.text, getColorIndex(c.bgColor), getColorIndex(c.textColor)])
@@ -1295,11 +1340,9 @@
             textArea.style.top = "-9999px";
             textArea.style.left = "-9999px";
             textArea.setAttribute("readonly", "");
-            
             document.body.appendChild(textArea);
             textArea.focus();
             textArea.select();
-            
             try {
                 const successful = document.execCommand('copy');
                 if (successful) showToast(successMsg);
@@ -1321,33 +1364,43 @@
             }
         }
 
+        // --- 🛒 สั่งซื้อ LINE ส่งตรงเข้าโปรไฟล์ dew.111 ---
         function orderViaLine() {
             const url = generateDesignURL();
+            const currentProd = PRODUCTS[state.productId];
             const price = calculatePrice(state.slots);
-            const message = `สวัสดีครับ/ค่ะ สนใจสั่งทำพวงกุญแจคลิกเกอร์ 💖\n\n- จำนวนช่อง: ${state.slots} ช่อง\n- ราคาประเมิน: ${price} บาท\n- ระยะเวลา: พรีออเดอร์ 1-2 วัน\n\n📌 แบบที่จัดไว้ครับ:\n${url}`;
+            const textSummary = state.keycaps.map(c => c.text).join('') || '(ไม่มีตัวอักษร)';
             
+            const message = `สวัสดีครับ/ค่ะ สนใจสั่งทำสินค้า 💖\n\n` +
+                            `- สินค้า: ${currentProd.subtitle}\n` +
+                            `- ข้อความ/ชื่อ: ${textSummary}\n` +
+                            `- จำนวนช่อง: ${state.slots} ช่อง\n` +
+                            `- ราคาประเมิน: ${price} บาท\n` +
+                            `- ระยะเวลา: ${currentProd.leadTime.replace('⏳ ', '')}\n\n` +
+                            `📌 ลิงก์ดีไซน์:\n${url}`;
+
             const lineID = "dew.111";
             const lineUrl = `https://line.me/ti/p/~${lineID}`;
+            const alertText = "✅ คัดลอกรายละเอียดสั่งซื้อให้แล้ว!\n\nรบกวนลูกค้ากดเพิ่มเพื่อน แล้วทักแชทพ่อค้ามา กด 'วาง' ข้อความและกดส่งมาได้เลยครับ หรือจะแคปรูปส่งมาก็ได้ครับ";
 
             if (navigator.clipboard && window.isSecureContext) {
                 navigator.clipboard.writeText(message)
                     .then(() => {
-                        alert("✅ คัดลอกรายละเอียดสั่งซื้อให้แล้ว!\n\nเดี๋ยวระบบจะเปิด LINE ให้ รบกวนกดเพิ่มเพื่อน แล้ว 'วาง' ข้อความส่งได้เลยครับ");
+                        alert(alertText);
                         window.location.href = lineUrl;
                     })
                     .catch(() => {
                         copyToClipboardFallback(message, 'เตรียมข้อมูลสั่งซื้อสำเร็จ! ✨');
-                        alert("✅ คัดลอกรายละเอียดสั่งซื้อให้แล้ว!\n\nเดี๋ยวระบบจะเปิด LINE ให้ รบกวนกดเพิ่มเพื่อน แล้ว 'วาง' ข้อความส่งได้เลยครับ");
+                        alert(alertText);
                         window.location.href = lineUrl;
                     });
             } else {
                 copyToClipboardFallback(message, 'เตรียมข้อมูลสั่งซื้อสำเร็จ! ✨');
-                alert("✅ คัดลอกรายละเอียดสั่งซื้อให้แล้ว!\n\nเดี๋ยวระบบจะเปิด LINE ให้ รบกวนกดเพิ่มเพื่อน แล้ว 'วาง' ข้อความส่งได้เลยครับ");
+                alert(alertText);
                 window.location.href = lineUrl;
             }
         }
 
-        // --- 🔠 บังคับพิมพ์ใหญ่อัตโนมัติ (ช่องแต่งเดี่ยว) ---
         elements.textInput.addEventListener('focus', (e) => { e.target.select(); });
         elements.textInput.addEventListener('click', (e) => { e.target.select(); });
 
@@ -1372,6 +1425,7 @@
                 try {
                     const decoded = JSON.parse(decodeURIComponent(escape(atob(decodeURIComponent(designData)))));
                     if (decoded.k) {
+                        state.productId = decoded.p || 'clicker';
                         state.baseColor = getColorFromIndex(decoded.b) || state.baseColor;
                         state.slots = decoded.s || state.slots;
                         state.keycaps = decoded.k.map(c => {
@@ -1381,8 +1435,6 @@
                                 return { text: c.t || '', bgColor: c.b || '#ffffff', textColor: c.c || COLOR_WHITE };
                             }
                         });
-                    } else {
-                        state = { ...state, ...decoded };
                     }
                     elements.slotCountDisplay.textContent = state.slots;
                     return true;
@@ -1392,15 +1444,21 @@
         }
 
         function initApp() {
+            renderProductNavBar();
             buildEmojiPicker();
             renderSlotCountGrid();
             elements.slotCountDisplay.textContent = state.slots;
             
             const hasSharedData = loadFromURL();
             if (hasSharedData) {
+                const currentProd = PRODUCTS[state.productId];
+                elements.productNameDisplay.textContent = currentProd.name;
+                elements.productSubtitleDisplay.textContent = currentProd.subtitle;
+                elements.leadTimeDisplay.textContent = currentProd.leadTime;
+                renderProductNavBar();
+                
                 createColorPalette('base-color-palette', baseColors, (c) => { 
-                    state.baseColor = c; 
-                    renderPreview(); 
+                    state.baseColor = c; renderPreview(); 
                 }, state.baseColor);
                 renderSlotCountGrid();
                 syncQuickInputDisplay();
@@ -1411,15 +1469,13 @@
                     state.keycaps.push({ text: '', bgColor: '#ffd5df', textColor: '#2D3436' });
                 }
                 createColorPalette('base-color-palette', baseColors, (c) => { 
-                    state.baseColor = c; 
-                    renderPreview(); 
+                    state.baseColor = c; renderPreview(); 
                 }, state.baseColor);
                 syncQuickInputDisplay();
                 updateControlsToMatchSelected();
                 renderPreview();
             }
             
-            // ซ่อนข้อความใบ้หลังจาก 4 วินาที
             setTimeout(() => {
                 elements.visualHint.style.opacity = '0';
                 setTimeout(() => elements.visualHint.style.display = 'none', 500);
