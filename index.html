@@ -64,7 +64,7 @@
             flex: none;
             display: flex;
             flex-direction: column;
-            padding: 10px 14px 10px 14px;
+            padding: 8px 14px 10px 14px;
             background: #FFFFFF;
             border-bottom: 2px solid var(--border-color);
             box-shadow: 0 4px 16px rgba(0,0,0,0.03);
@@ -110,13 +110,43 @@
             align-items: center;
             background: radial-gradient(circle at 50% 30%, #FFFFFF 0%, #EDF2F7 100%);
             border-radius: 14px;
-            padding: 12px 18px;
-            min-height: 110px;
-            max-height: 140px;
+            padding: 24px 20px;
+            min-height: 200px;
+            max-height: 240px;
             border: 1.5px solid #E2E8F0;
             position: relative;
-            overflow: hidden;
+            overflow: visible;
             transition: background 0.3s ease;
+        }
+
+        /* ป้าย Badge ขนาดใหญ่ คมชัด */
+        .preview-strap-badge {
+            position: absolute;
+            bottom: 10px;
+            left: 12px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(8px);
+            border: 1.5px solid #E2E8F0;
+            border-radius: 24px;
+            padding: 6px 14px;
+            font-size: 1.15rem;
+            font-weight: bold;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            z-index: 10;
+            pointer-events: none;
+        }
+
+        .strap-color-dot {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            border: 1.5px solid rgba(0, 0, 0, 0.15);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+            display: inline-block;
         }
 
         .bg-toggles {
@@ -138,13 +168,27 @@
         }
         .bg-toggle-btn:active { transform: scale(0.9); }
 
+        /* โมเดลหลักแบบ Flex Flow แนวนอนสมบูรณ์ */
         .model-wrapper {
-            display: flex;
+            display: inline-flex;
             align-items: center;
             justify-content: center;
+            position: relative;
+            max-width: 100%;
+        }
+
+        /* สายคล้องเป็นบล็อกกายภาพจริงใน Flex */
+        .strap-wrapper {
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            margin-right: -4px; /* ซ้อนทับกับหูคล้องพอดี */
+            z-index: 2;
         }
 
         .keychain-ear-loop {
+            flex-shrink: 0;
             border-radius: 10px 0 0 10px;
             border-style: solid;
             border-color: currentColor;
@@ -152,15 +196,18 @@
             position: relative;
             background: transparent;
             box-shadow: -3px 3px 6px rgba(0,0,0,0.12), inset 0 2px 2px rgba(255,255,255,0.7);
+            z-index: 3;
         }
 
         .base-case-frame {
+            flex-shrink: 0;
             display: flex;
             align-items: center;
             border-radius: 18px;
             position: relative;
             background-image: linear-gradient(180deg, rgba(255,255,255,0.35) 0%, rgba(0,0,0,0.1) 100%);
             box-shadow: 0 10px 20px rgba(0,0,0,0.12), 0 3px 6px rgba(0,0,0,0.08);
+            z-index: 4;
         }
 
         .base-inner-slot {
@@ -180,7 +227,6 @@
             position: relative;
             user-select: none;
             line-height: 1;
-            color: #ffffff !important;
             background-image: linear-gradient(180deg, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0) 50%, rgba(0,0,0,0.15) 100%);
             box-shadow: 0 5px 0px rgba(0,0,0,0.18), 0 8px 10px rgba(0,0,0,0.12);
             transition: all 0.15s ease;
@@ -188,14 +234,13 @@
 
         .keycap-content {
             display: inline-block;
-            color: #ffffff !important;
-            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5), 0 2px 4px rgba(0, 0, 0, 0.3);
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 2px 4px rgba(0, 0, 0, 0.25);
             pointer-events: none;
             transform: translateY(-1px);
         }
 
         .keycap-content.placeholder {
-            opacity: 0.5;
+            opacity: 0.35;
             font-size: 0.8em;
             text-shadow: none;
         }
@@ -399,6 +444,52 @@
             transform: scale(1.05);
         }
 
+        .strap-type-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin-top: 4px;
+        }
+
+        .btn-strap {
+            background: #FFFFFF;
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            padding: 6px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            font-family: 'FCCandy', sans-serif;
+            color: var(--text-main);
+            font-size: 0.95rem;
+            font-weight: bold;
+        }
+        .btn-strap.active {
+            border-color: var(--accent);
+            background: #FFF0F5;
+            box-shadow: 0 4px 10px rgba(255, 77, 128, 0.15);
+            transform: scale(1.02);
+            color: var(--accent);
+        }
+        .btn-strap:active {
+            transform: scale(0.95);
+        }
+        .strap-thumb {
+            width: 100%;
+            height: 55px;
+            border-radius: 8px;
+            object-fit: cover;
+            margin-bottom: 6px;
+            background: #F8F9FA;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+        }
+
         .btn-nav {
             background: #F0F3F6;
             border: 1.5px solid #DFE6E9;
@@ -412,6 +503,20 @@
             transition: all 0.1s;
         }
         .btn-nav:active { background: #E2E8F0; transform: scale(0.95); }
+
+        .btn-mini-action {
+            background: #FFF0F5;
+            border: 1.5px solid #FFD1DC;
+            border-radius: 8px;
+            padding: 3px 10px;
+            font-family: 'FCCandy', sans-serif;
+            font-size: 0.95rem;
+            color: var(--accent);
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.1s;
+        }
+        .btn-mini-action:active { transform: scale(0.95); background: #FFD1DC; }
 
         .color-palette {
             display: flex;
@@ -542,13 +647,21 @@
             </div>
             
             <div class="preview-section" id="capture-area">
+                <!-- ป้าย Badge ข้อมูลสายคล้อง ชัดเจน ไม่หลุดเฟรม -->
+                <div class="preview-strap-badge" id="preview-strap-badge">
+                    <span id="strap-badge-text">🎀 สาย: ซิลิโคน</span>
+                    <span class="strap-color-dot" id="strap-badge-dot"></span>
+                </div>
+
                 <div class="bg-toggles" id="bg-toggles">
                     <div class="bg-toggle-btn" style="background: #FFFFFF; border: 1.5px solid #DFE6E9;" onclick="setPreviewBg('light')"></div>
                     <div class="bg-toggle-btn" style="background: #FDF1D6; border: 1.5px solid #E6DDC4;" onclick="setPreviewBg('cream')"></div>
                     <div class="bg-toggle-btn" style="background: #2D3436; border: 1.5px solid #1E272E;" onclick="setPreviewBg('dark')"></div>
                 </div>
 
+                <!-- จัด Flex Layout ในตัวโมเดล: สาย -> หู -> ตัวเคส -->
                 <div class="model-wrapper" id="model-3d">
+                    <div class="strap-wrapper" id="strap-container"></div>
                     <div class="keychain-ear-loop" id="keychain-ear"></div>
                     <div id="base-container" class="base-case-frame">
                         <div class="base-inner-slot" id="base-inner-slot"></div>
@@ -581,41 +694,77 @@
 
             <div class="control-card">
                 <div class="card-header">🏷️ 1. ขนาดและสีฐาน</div>
-                <label>จำนวนช่อง: <span id="slot-count-display" style="color:var(--accent); font-weight:bold;">5</span> ช่อง</label>
+                <label>จำนวนช่อง <span id="slot-count-display" style="color:var(--accent); font-weight:bold;">5</span> ช่อง</label>
                 <div class="slot-count-grid" id="slot-count-grid"></div>
                 
-                <label>สีฐาน:</label>
+                <label>สีฐาน</label>
                 <div class="color-palette" id="base-color-palette"></div>
+            </div>
+
+            <div class="control-card">
+                <div class="card-header">🎀 2. สายคล้อง</div>
+                
+                <div class="strap-type-grid">
+                    <button class="btn-strap active" id="btn-strap-silicone" onclick="setStrapType('silicone')">
+                        <img src="th-11134207-7r98x-lwol526q7n3kf2.jpg" class="strap-thumb" alt="ซิลิโคน">
+                        <span>ซิลิโคน</span>
+                    </button>
+                    <button class="btn-strap" id="btn-strap-chain" onclick="setStrapType('chain')">
+                        <div class="strap-thumb">
+                            <svg width="100%" height="100%" viewBox="0 0 100 55">
+                                <path d="M15,27 Q50,5 85,27" fill="none" stroke="#A0AAB2" stroke-width="8" stroke-dasharray="0.1 13" stroke-linecap="round"/>
+                                <path d="M15,27 Q50,5 85,27" fill="none" stroke="#FFFFFF" stroke-width="2.5" stroke-dasharray="0.1 13" stroke-linecap="round" transform="translate(-1,-1)"/>
+                            </svg>
+                        </div>
+                        <span>โซ่ไข่ปลา</span>
+                    </button>
+                    <button class="btn-strap" id="btn-strap-none" onclick="setStrapType('none')">
+                        <div class="strap-thumb" style="background: #F0F3F6; color: #B2BEC3;">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                        </div>
+                        <span>ไม่รับสาย</span>
+                    </button>
+                </div>
+                
+                <div id="strap-color-section">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 8px; margin-bottom: 4px;">
+                        <label>สีสายคล้อง (<span id="strap-color-name" style="color:var(--accent);">ชมพูนม</span>)</label>
+                        <button class="btn-mini-action" onclick="matchStrapColor()">✨ แมตช์สีสายเข้าเซ็ต</button>
+                    </div>
+                    <div class="color-palette" id="strap-color-palette"></div>
+                </div>
             </div>
 
             <div class="control-card">
                 <div style="display: flex; justify-content: space-between; align-items: center; gap: 8px;">
                     <div class="card-header" style="white-space: nowrap; margin-bottom: 4px;">
-                        🎨 2. แต่งปุ่มที่ <span id="selected-slot-display" style="color: #0984E3; font-size: 1.4rem; margin-left: 6px;">1</span>
+                        🎨 3. แต่งปุ่มที่ <span id="selected-slot-display" style="color: #0984E3; font-size: 1.4rem; margin-left: 6px;">1</span>
                     </div>
                     <div style="display: flex; gap: 6px;">
-                        <button class="btn-nav" onclick="prevSlot()">◀ ก่อนหน้า</button>
-                        <button class="btn-nav" onclick="nextSlot()">ถัดไป ▶</button>
+                        <button class="btn-nav" onclick="prevSlot()" style="color: #0984E3;">◀ ก่อนหน้า</button>
+                        <button class="btn-nav" onclick="nextSlot()" style="color: #0984E3;">ถัดไป ▶</button>
                     </div>
                 </div>
 
                 <div style="display: flex; gap: 10px; align-items: flex-end; margin-top: 2px;">
                     <div>
-                        <label>พิมพ์ตัวอักษร:</label><br>
+                        <label>พิมพ์ตัวอักษร</label><br>
                         <input type="text" id="keycap-text-input" class="single-char" maxlength="2">
                     </div>
                     <div>
-                        <label>ไอคอนหัวใจ:</label>
+                        <label>ไอคอนหัวใจ</label>
                         <div class="emoji-grid" id="emoji-picker"></div>
                     </div>
                 </div>
 
-                <label style="margin-top: 6px;">สีคีย์แคป:</label>
+                <label style="margin-top: 6px;">สีตัวอักษร</label>
+                <div class="color-palette" id="font-color-palette"></div>
+
+                <label style="margin-top: 6px;">สีคีย์แคป</label>
                 <div class="color-palette" id="keycap-color-palette"></div>
             </div>
         </div>
 
-        <!-- STICKY BOTTOM BAR -->
         <div class="sticky-bottom-bar">
             <div class="color-disclaimer">⚠️ สีจริงอาจต่างจากหน้าจอเล็กน้อยตามแสงและการแสดงผล</div>
             <div class="action-buttons">
@@ -633,17 +782,41 @@
     <script>
         const COLOR_WHITE = '#ffffff';
 
-        // 19 สี (ไม่มีเฉดสีเทา)
-        const paletteColors = [
-            '#ffd5df', '#ff67b5', '#ff0063', '#dd1515', '#cbf7be', 
-            '#ffe955', '#ffd65c', '#ffd9c1', '#ff7a00', '#ff4b08', 
-            '#06a869', '#3d9ceb', '#cde4ff', '#768cff', '#9e8bf8', 
-            '#ffffff', '#bc927b', '#604623', '#000000'
+        const colorDictionary = [
+            { hex: '#ffd5df', name: 'ชมพูนม' },
+            { hex: '#ff67b5', name: 'ชมพูเข้ม' },
+            { hex: '#ff0063', name: 'ชมพูบานเย็น' },
+            { hex: '#dd1515', name: 'แดงสด' },
+            { hex: '#ff4b08', name: 'ส้มอิฐ' },
+            { hex: '#ff7a00', name: 'ส้มสด' },
+            { hex: '#ffd9c1', name: 'ครีมพีช' },
+            { hex: '#ffd65c', name: 'เหลืองมัสตาร์ด' },
+            { hex: '#ffe955', name: 'เหลืองสด' },
+            { hex: '#daf4cb', name: 'เขียวพาสเทล' },
+            { hex: '#06a869', name: 'เขียวมรกต' },
+            { hex: '#3d9ceb', name: 'ฟ้าสด' },
+            { hex: '#a8e2ff', name: 'ฟ้าพาสเทล' },
+            { hex: '#cde4ff', name: 'ฟ้าอ่อน' },
+            { hex: '#768cff', name: 'น้ำเงินพาสเทล' },
+            { hex: '#917df0', name: 'ม่วงลาเวนเดอร์' },
+            { hex: '#d3b8ff', name: 'ม่วงพาสเทล' },
+            { hex: '#1733c5', name: 'น้ำเงินเข้ม' },
+            { hex: '#ffffff', name: 'ขาวคลีน' },
+            { hex: '#bdc1cb', name: 'เทาอ่อน' },
+            { hex: '#bc927b', name: 'น้ำตาลชานม' },
+            { hex: '#7c4f29', name: 'น้ำตาลช็อกโกแลต' },
+            { hex: '#000000', name: 'ดำคลาสสิก' }
         ];
 
+        const paletteColors = colorDictionary.map(c => c.hex);
         const baseColors = paletteColors;
         const keycapColors = paletteColors;
         const heartEmojis = ['❤️', '🩷', '🧡', '💛', '💚', '🩵', '💙', '💜', '🖤', '🤍'];
+
+        function getColorName(hex) {
+            const found = colorDictionary.find(c => c.hex.toLowerCase() === (hex || '').toLowerCase());
+            return found ? found.name : hex;
+        }
 
         const presetPalettes = {
             LOVE: [
@@ -652,14 +825,14 @@
                 { base: '#dd1515', pool: ['#ffd5df', '#ff67b5', '#ffffff'] }
             ],
             SWEET: [
-                { base: '#cde4ff', pool: ['#ffd5df', '#cbf7be', '#ffe955', '#cde4ff', '#9e8bf8'] },
-                { base: '#ffd5df', pool: ['#cde4ff', '#ffd5df', '#ffe955', '#cbf7be', '#9e8bf8'] },
-                { base: '#cbf7be', pool: ['#ffe955', '#cde4ff', '#ffd5df', '#ffffff'] }
+                { base: '#cde4ff', pool: ['#ffd5df', '#daf4cb', '#ffe955', '#cde4ff', '#d3b8ff'] },
+                { base: '#ffd5df', pool: ['#cde4ff', '#ffd5df', '#ffe955', '#daf4cb', '#d3b8ff'] },
+                { base: '#daf4cb', pool: ['#ffe955', '#cde4ff', '#ffd5df', '#ffffff'] }
             ],
             LUCKY: [
-                { base: '#06a869', pool: ['#cbf7be', '#ffffff', '#06a869', '#ffffff'] },
-                { base: '#cbf7be', pool: ['#06a869', '#ffffff', '#06a869'] },
-                { base: '#ffffff', pool: ['#06a869', '#cbf7be'] }
+                { base: '#06a869', pool: ['#daf4cb', '#ffffff', '#06a869', '#ffffff'] },
+                { base: '#daf4cb', pool: ['#06a869', '#ffffff', '#06a869'] },
+                { base: '#ffffff', pool: ['#06a869', '#daf4cb'] }
             ],
             HAPPY: [
                 { base: '#ff7a00', pool: ['#ffe955', '#ffd65c', '#ff7a00', '#ff4b08'] },
@@ -675,13 +848,16 @@
             baseColor: '#ffffff',
             slots: 5,
             selectedSlotIndex: 0,
-            keycaps: []
+            keycaps: [],
+            strapType: 'silicone',
+            strapColor: '#917df0'
         };
 
         const elements = {
             baseContainer: document.getElementById('base-container'),
             baseInnerSlot: document.getElementById('base-inner-slot'),
             keychainEar: document.getElementById('keychain-ear'),
+            strapContainer: document.getElementById('strap-container'),
             slotCountGrid: document.getElementById('slot-count-grid'),
             slotCountDisplay: document.getElementById('slot-count-display'),
             selectedSlotDisplay: document.getElementById('selected-slot-display'),
@@ -692,7 +868,15 @@
             captureArea: document.getElementById('capture-area'),
             toast: document.getElementById('toast'),
             bgToggles: document.getElementById('bg-toggles'),
-            visualHint: document.getElementById('visual-hint')
+            visualHint: document.getElementById('visual-hint'),
+            btnStrapSilicone: document.getElementById('btn-strap-silicone'),
+            btnStrapChain: document.getElementById('btn-strap-chain'),
+            btnStrapNone: document.getElementById('btn-strap-none'),
+            strapColorSection: document.getElementById('strap-color-section'),
+            previewStrapBadge: document.getElementById('preview-strap-badge'),
+            strapBadgeText: document.getElementById('strap-badge-text'),
+            strapBadgeDot: document.getElementById('strap-badge-dot'),
+            strapColorName: document.getElementById('strap-color-name')
         };
 
         let currentMonoIndex = 0;
@@ -722,21 +906,18 @@
                 this.rotation = Math.random() * Math.PI * 2;
                 this.rotSpeed = (Math.random() - 0.5) * 0.1;
             }
-
             update() {
                 this.x += this.speedX;
                 this.y += this.speedY;
                 this.alpha -= this.decay;
                 this.rotation += this.rotSpeed;
             }
-
             draw() {
                 ctx.save();
                 ctx.globalAlpha = Math.max(0, this.alpha);
                 ctx.translate(this.x, this.y);
                 ctx.rotate(this.rotation);
                 ctx.fillStyle = this.color;
-
                 if (this.type === 'heart') {
                     ctx.font = `${this.size * 2}px sans-serif`;
                     ctx.fillText('❤️', -this.size, this.size);
@@ -815,6 +996,136 @@
             else if(mode === 'dark') section.style.background = 'radial-gradient(circle at 50% 30%, #4B6584 0%, #2D3436 100%)';
         }
 
+        function setStrapType(type) {
+            playClickSound();
+            state.strapType = type;
+            
+            elements.btnStrapSilicone.classList.remove('active');
+            elements.btnStrapChain.classList.remove('active');
+            elements.btnStrapNone.classList.remove('active');
+            
+            if(type === 'silicone') elements.btnStrapSilicone.classList.add('active');
+            else if(type === 'chain') elements.btnStrapChain.classList.add('active');
+            else elements.btnStrapNone.classList.add('active');
+
+            elements.strapColorSection.style.display = type === 'none' ? 'none' : 'block';
+            renderStrapGraphic();
+        }
+
+        // ระบบแมตช์สีสายเข้าเซ็ตอัตโนมัติ
+        function matchStrapColor() {
+            playClickSound();
+            if (state.strapType === 'none') {
+                setStrapType('silicone');
+            }
+
+            const candidateColors = [];
+            if (state.baseColor && state.baseColor !== '#ffffff') candidateColors.push(state.baseColor);
+            state.keycaps.forEach(k => {
+                if (k.bgColor && !candidateColors.includes(k.bgColor)) candidateColors.push(k.bgColor);
+            });
+
+            if (candidateColors.length > 0) {
+                const picked = candidateColors[Math.floor(Math.random() * candidateColors.length)];
+                state.strapColor = picked;
+            } else {
+                state.strapColor = paletteColors[Math.floor(Math.random() * paletteColors.length)];
+            }
+
+            createColorPalette('strap-color-palette', baseColors, (c) => { 
+                state.strapColor = c; renderStrapGraphic(); 
+            }, state.strapColor);
+
+            renderStrapGraphic();
+        }
+
+        // วาดสายคล้องให้เป็นกล่อง Flex ทางกายภาพจริง ไร้ขอบเทาหนาเตอะ
+        function renderStrapGraphic() {
+            elements.strapContainer.innerHTML = '';
+            
+            if (state.strapType === 'none') {
+                elements.previewStrapBadge.style.display = 'flex';
+                elements.strapBadgeText.textContent = '🎀 ไม่รับสายคล้อง';
+                elements.strapBadgeDot.style.display = 'none';
+                elements.strapContainer.style.display = 'none';
+                return;
+            }
+
+            elements.previewStrapBadge.style.display = 'flex';
+            elements.strapBadgeDot.style.display = 'inline-block';
+            elements.strapContainer.style.display = 'flex';
+
+            const color = state.strapColor || '#ffd5df';
+            const colorName = getColorName(color);
+            const strapName = state.strapType === 'silicone' ? 'ซิลิโคน' : 'โซ่ไข่ปลา';
+
+            elements.strapBadgeText.textContent = `🎀 ${strapName} (${colorName})`;
+            elements.strapBadgeDot.style.backgroundColor = color;
+            elements.strapColorName.textContent = colorName;
+
+            if (state.strapType === 'silicone') {
+                // กราฟิกสายซิลิโคนแบบนุ่มนวล ไม่มีขอบปูนสีเทาหนาเตอะ
+                elements.strapContainer.innerHTML = `
+                    <svg width="135" height="150" viewBox="0 0 135 150" style="overflow: visible;">
+                        <defs>
+                            <filter id="soft-silicone-shadow" x="-30%" y="-30%" width="160%" height="160%">
+                                <feDropShadow dx="-2" dy="4" stdDeviation="3.5" flood-opacity="0.12"/>
+                            </filter>
+                        </defs>
+                        <g filter="url(#soft-silicone-shadow)">
+                            <!-- ลอนข้อลูกปัดซิลิโคนนูนหนา -->
+                            <path d="M 132,75 C 85,28 28,18 14,75 C 4,126 68,138 132,75" fill="none" stroke="${color}" stroke-width="16" stroke-linecap="round" stroke-dasharray="0 18"/>
+                            <!-- แกนยางกลางเพิ่มความหนาแน่น -->
+                            <path d="M 132,75 C 85,28 28,18 14,75 C 4,126 68,138 132,75" fill="none" stroke="${color}" stroke-width="9" stroke-linecap="round"/>
+                            <!-- แสงไฮไลท์ผิวนุ่มนวลด้านบน -->
+                            <path d="M 132,75 C 85,28 28,18 14,75 C 4,126 68,138 132,75" fill="none" stroke="rgba(255,255,255,0.65)" stroke-width="4.5" stroke-linecap="round" stroke-dasharray="0 18" transform="translate(-1.5, -2)"/>
+                            
+                            <!-- ปลายสายซิลิโคนยื่นออกด้านบน -->
+                            <path d="M 38,38 L 10,20" fill="none" stroke="${color}" stroke-width="8" stroke-linecap="round" stroke-dasharray="0 9"/>
+                            <path d="M 38,38 L 10,20" fill="none" stroke="${color}" stroke-width="5" stroke-linecap="round"/>
+
+                            <!-- ดอกไม้ซิลิโคนตัวล็อกแบบมินิมอล -->
+                            <g transform="translate(42, 42) scale(1.85)">
+                                <circle cx="0" cy="-5" r="4" fill="${color}"/>
+                                <circle cx="4.8" cy="-1.5" r="4" fill="${color}"/>
+                                <circle cx="3" cy="4" r="4" fill="${color}"/>
+                                <circle cx="-3" cy="4" r="4" fill="${color}"/>
+                                <circle cx="-4.8" cy="-1.5" r="4" fill="${color}"/>
+                                <circle cx="0" cy="0" r="4.6" fill="${color}"/>
+                                
+                                <circle cx="0" cy="0" r="1.9" fill="#2D3436"/>
+                                <circle cx="0" cy="0" r="1.3" fill="#FFFFFF"/>
+                                
+                                <circle cx="-1.5" cy="-5.5" r="1.1" fill="rgba(255,255,255,0.7)"/>
+                                <circle cx="-3.5" cy="-2" r="0.9" fill="rgba(255,255,255,0.6)"/>
+                            </g>
+                        </g>
+                    </svg>
+                `;
+            } else if (state.strapType === 'chain') {
+                // กราฟิกโซ่ไข่ปลา
+                elements.strapContainer.innerHTML = `
+                    <svg width="115" height="135" viewBox="0 0 115 135" style="overflow: visible;">
+                        <defs>
+                            <filter id="soft-chain-shadow" x="-30%" y="-30%" width="160%" height="160%">
+                                <feDropShadow dx="-1" dy="3" stdDeviation="2.5" flood-opacity="0.12"/>
+                            </filter>
+                        </defs>
+                        <g filter="url(#soft-chain-shadow)">
+                            <path d="M 112,68 C 68,28 26,22 14,68 C 6,108 58,116 112,68" fill="none" stroke="${color}" stroke-width="2.8" stroke-linecap="round"/>
+                            <path d="M 112,68 C 68,28 26,22 14,68 C 6,108 58,116 112,68" fill="none" stroke="${color}" stroke-width="9.5" stroke-linecap="round" stroke-dasharray="0 13"/>
+                            <path d="M 112,68 C 68,28 26,22 14,68 C 6,108 58,116 112,68" fill="none" stroke="rgba(255,255,255,0.75)" stroke-width="3" stroke-linecap="round" stroke-dasharray="0 13" transform="translate(-1.2, -1.2)"/>
+                            
+                            <g transform="translate(18, 58) rotate(-15)">
+                                <rect x="-4.5" y="-1.5" width="9" height="15" rx="4.5" fill="${color}" stroke="rgba(0,0,0,0.12)" stroke-width="0.8"/>
+                                <rect x="-1.5" y="1" width="3" height="10" rx="1.5" fill="rgba(255,255,255,0.75)"/>
+                            </g>
+                        </g>
+                    </svg>
+                `;
+            }
+        }
+
         function resetDesign() {
             playClickSound();
             state.slots = 5;
@@ -827,10 +1138,15 @@
             
             elements.quickInput.value = '';
             setPreviewBg('light');
+            setStrapType('silicone');
             
             createColorPalette('base-color-palette', baseColors, (c) => { 
                 state.baseColor = c; renderPreview(); 
             }, state.baseColor);
+
+            createColorPalette('strap-color-palette', baseColors, (c) => { 
+                state.strapColor = c; renderStrapGraphic(); 
+            }, state.strapColor);
             
             elements.slotCountDisplay.textContent = state.slots;
             renderSlotCountGrid();
@@ -858,14 +1174,12 @@
                         state.keycaps.push({ text: chars[i], bgColor: randColor, textColor: COLOR_WHITE });
                     } else {
                         state.keycaps[i].text = chars[i];
-                        state.keycaps[i].textColor = COLOR_WHITE;
                     }
                 }
                 state.keycaps = state.keycaps.slice(0, state.slots);
             } else {
                 state.keycaps.forEach(c => {
                     c.text = '';
-                    c.textColor = COLOR_WHITE;
                 });
             }
             
@@ -884,7 +1198,6 @@
                     
                     if (state.keycaps[i]) {
                         state.keycaps[i].bgColor = currentColor;
-                        state.keycaps[i].textColor = COLOR_WHITE;
                     } else {
                         state.keycaps.push({ text: '', bgColor: currentColor, textColor: COLOR_WHITE });
                     }
@@ -903,7 +1216,6 @@
                     
                     if (state.keycaps[i]) {
                         state.keycaps[i].bgColor = currentColor;
-                        state.keycaps[i].textColor = COLOR_WHITE;
                     } else {
                         state.keycaps.push({ text: '', bgColor: currentColor, textColor: COLOR_WHITE });
                     }
@@ -933,7 +1245,6 @@
                 
                 if (state.keycaps[i]) {
                     state.keycaps[i].bgColor = randomKeyBg;
-                    state.keycaps[i].textColor = COLOR_WHITE;
                 } else {
                     state.keycaps.push({ text: '', bgColor: randomKeyBg, textColor: COLOR_WHITE });
                 }
@@ -956,7 +1267,6 @@
 
             state.keycaps.forEach(cap => {
                 cap.bgColor = singleKeyBg;
-                cap.textColor = COLOR_WHITE;
             });
 
             updateControlsToMatchSelected();
@@ -1033,6 +1343,8 @@
             elements.keychainEar.style.color = state.baseColor;
             elements.baseInnerSlot.innerHTML = '';
 
+            renderStrapGraphic();
+
             const dim = getDynamicDimensions(state.slots);
             
             elements.baseContainer.style.padding = `${dim.pad}px`;
@@ -1047,7 +1359,7 @@
                 const capDiv = document.createElement('div');
                 capDiv.className = `keycap ${index === state.selectedSlotIndex ? 'selected' : ''}`;
                 capDiv.style.backgroundColor = cap.bgColor;
-                capDiv.style.color = COLOR_WHITE; 
+                capDiv.style.color = cap.textColor || COLOR_WHITE; 
                 capDiv.style.width = `${dim.keySize}px`;
                 capDiv.style.height = `${dim.keySize}px`;
                 capDiv.style.fontSize = `${dim.fontSize}px`;
@@ -1109,7 +1421,6 @@
                     createParticles(rect.left + rect.width / 2, rect.top + rect.height / 2, 6, 'heart');
                     if (state.keycaps[state.selectedSlotIndex]) {
                         state.keycaps[state.selectedSlotIndex].text = emoji;
-                        state.keycaps[state.selectedSlotIndex].textColor = COLOR_WHITE;
                         elements.textInput.value = emoji;
                         syncQuickInputDisplay();
                         renderPreview();
@@ -1133,13 +1444,18 @@
 
             if (!currentCap) return;
 
+            createColorPalette('font-color-palette', paletteColors, (color) => {
+                state.keycaps[state.selectedSlotIndex].textColor = color;
+                renderPreview();
+            }, currentCap.textColor || COLOR_WHITE);
+
             createColorPalette('keycap-color-palette', keycapColors, (color) => {
                 state.keycaps[state.selectedSlotIndex].bgColor = color;
-                state.keycaps[state.selectedSlotIndex].textColor = COLOR_WHITE;
                 renderPreview();
             }, currentCap.bgColor);
         }
 
+        // เซฟรูปภาพด้วย html2canvas ครบเต็มเฟรม ไม่ขาดไม่แหว่ง
         function saveImage() {
             const oldIndex = state.selectedSlotIndex;
             state.selectedSlotIndex = -1; 
@@ -1154,6 +1470,8 @@
                     scale: 3,
                     useCORS: true,
                     logging: false,
+                    scrollX: 0,
+                    scrollY: 0,
                     onclone: (clonedDoc) => {
                         const clonedArea = clonedDoc.getElementById('capture-area');
                         if (clonedArea) {
@@ -1171,7 +1489,7 @@
                     elements.bgToggles.style.display = 'flex';
                     renderPreview();
                 });
-            }, 80);
+            }, 100);
         }
 
         function showToast(msg) {
@@ -1194,7 +1512,9 @@
             const minState = {
                 b: getColorIndex(state.baseColor),
                 s: state.slots,
-                k: state.keycaps.map(c => [c.text, getColorIndex(c.bgColor)])
+                st: state.strapType === 'silicone' ? 's' : (state.strapType === 'chain' ? 'c' : 'n'),
+                sc: getColorIndex(state.strapColor),
+                k: state.keycaps.map(c => [c.text, getColorIndex(c.bgColor), getColorIndex(c.textColor)])
             };
             const jsonString = JSON.stringify(minState);
             const encoded = encodeURIComponent(btoa(unescape(encodeURIComponent(jsonString))));
@@ -1237,11 +1557,14 @@
             const url = generateDesignURL();
             const price = calculatePrice(state.slots);
             const textSummary = state.keycaps.map(c => c.text).join('') || '(ไม่มีตัวอักษร)';
+            const strapColorName = getColorName(state.strapColor);
+            const strapName = state.strapType === 'silicone' ? `ซิลิโคน (${strapColorName})` : (state.strapType === 'chain' ? `โซ่ไข่ปลา (${strapColorName})` : 'ไม่รับสาย');
             
             const message = `สวัสดีครับ/ค่ะ สนใจสั่งทำสินค้า 💖\n\n` +
                             `- สินค้า: พวงกุญแจคลิกเกอร์\n` +
                             `- ข้อความ/ชื่อ: ${textSummary}\n` +
                             `- จำนวนช่อง: ${state.slots} ช่อง\n` +
+                            `- สายคล้อง: ${strapName}\n` +
                             `- ราคาประเมิน: ${price} บาท\n` +
                             `- ระยะเวลา: 1-2 วัน\n\n` +
                             `📌 ลิงก์ดีไซน์:\n${url}`;
@@ -1276,7 +1599,6 @@
             e.target.value = val;
             if (state.keycaps[state.selectedSlotIndex]) {
                 state.keycaps[state.selectedSlotIndex].text = val;
-                state.keycaps[state.selectedSlotIndex].textColor = COLOR_WHITE;
                 syncQuickInputDisplay();
                 renderPreview();
             }
@@ -1295,11 +1617,14 @@
                     if (decoded.k) {
                         state.baseColor = getColorFromIndex(decoded.b) || state.baseColor;
                         state.slots = decoded.s || state.slots;
+                        state.strapType = decoded.st === 's' ? 'silicone' : (decoded.st === 'c' ? 'chain' : 'none');
+                        state.strapColor = getColorFromIndex(decoded.sc) || '#ffd5df';
+                        
                         state.keycaps = decoded.k.map(c => {
                             if (Array.isArray(c)) {
-                                return { text: c[0] || '', bgColor: getColorFromIndex(c[1]) || '#ffffff', textColor: COLOR_WHITE };
+                                return { text: c[0] || '', bgColor: getColorFromIndex(c[1]) || '#ffffff', textColor: getColorFromIndex(c[2]) || COLOR_WHITE };
                             } else {
-                                return { text: c.t || '', bgColor: c.b || '#ffffff', textColor: COLOR_WHITE };
+                                return { text: c.t || '', bgColor: c.b || '#ffffff', textColor: c.c || COLOR_WHITE };
                             }
                         });
                     }
@@ -1316,10 +1641,18 @@
             elements.slotCountDisplay.textContent = state.slots;
             
             const hasSharedData = loadFromURL();
+            
+            setStrapType(state.strapType);
+            
             if (hasSharedData) {
                 createColorPalette('base-color-palette', baseColors, (c) => { 
                     state.baseColor = c; renderPreview(); 
                 }, state.baseColor);
+
+                createColorPalette('strap-color-palette', baseColors, (c) => { 
+                    state.strapColor = c; renderStrapGraphic(); 
+                }, state.strapColor);
+                
                 renderSlotCountGrid();
                 syncQuickInputDisplay();
                 updateControlsToMatchSelected();
@@ -1331,6 +1664,11 @@
                 createColorPalette('base-color-palette', baseColors, (c) => { 
                     state.baseColor = c; renderPreview(); 
                 }, state.baseColor);
+
+                createColorPalette('strap-color-palette', baseColors, (c) => { 
+                    state.strapColor = c; renderStrapGraphic(); 
+                }, state.strapColor);
+
                 syncQuickInputDisplay();
                 updateControlsToMatchSelected();
                 renderPreview();
